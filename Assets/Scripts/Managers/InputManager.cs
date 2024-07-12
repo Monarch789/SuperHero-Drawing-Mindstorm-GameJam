@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class InputManager : MonoBehaviour{
+public class InputManager : MonoBehaviour {
 
     //Singleton pattern
     public static InputManager Instance;
@@ -20,11 +20,13 @@ public class InputManager : MonoBehaviour{
             Instance = this;
         else
             Debug.LogError("More than one instance of InputManager");
-    
+
         inputActions = new TouchInputActions();
     }
 
     private void Start() {
+        inputActions.Touch.Enable();
+
         inputActions.Touch.TouchContact.started += TouchContact_started;
         inputActions.Touch.TouchContact.canceled += TouchContact_canceled;
     }
@@ -45,7 +47,9 @@ public class InputManager : MonoBehaviour{
 
         inputActions.Dispose();
     }
-
-
+    
+    public Vector2 GetTouchPosition() {
+        return inputActions.Touch.TouchPosition.ReadValue<Vector2>();
+    }
 
 }
