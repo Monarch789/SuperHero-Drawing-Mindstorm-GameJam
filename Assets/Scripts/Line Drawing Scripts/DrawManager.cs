@@ -12,7 +12,7 @@ public class DrawManager : MonoBehaviour{
     private Line currentLine;
 
     //resolution for reducing jankiness
-    public const float LineResolution = 0.2f;
+    public const float LineResolution = 0.1f;
 
     //bool to see if we should draw i.e when the player starts pressing on the screen
     private bool ShouldStartDrawing;
@@ -25,31 +25,32 @@ public class DrawManager : MonoBehaviour{
     private void Start() {
         ShouldStartDrawing = false;
 
-        InputManager.Instance.OnTouchStarted += InputManager_OnTouchStarted;
-        InputManager.Instance.OnTouchEnded += InputManager_OnTouchEnded;
+        Player.Instance.OnPlayerTouch += Player_OnPlayerTouch;
+        Player.Instance.OnDrawComplete += Player_OnDrawComplete;
     }
 
-    private void InputManager_OnTouchEnded(object sender, System.EventArgs e) {
+    private void Player_OnDrawComplete(object sender, System.EventArgs e) {
         ShouldStartDrawing = false;
-
-        if(currentLine.GetPointsCount() < 2) {
-            //there exists no line with only 1 or 0 vertices so destroy that line
-            Destroy(currentLine.gameObject);
-        }
     }
 
-    private void InputManager_OnTouchStarted(object sender, System.EventArgs e) {
+    private void Player_OnPlayerTouch(object sender, Player.OnPlayerTouchEventArgs e) {
+        mainCam = e.lookCamera;
+
         ShouldStartDrawing = true;
 
         //Get the world pos
         Vector2 MouseWorldPos = mainCam.ScreenToWorldPoint(InputManager.Instance.GetTouchPosition());
-        currentLine = Instantiate(linePrefab,MouseWorldPos,Quaternion.identity);
+
+        //make a new Line i.e object with line renderer
+        currentLine = Instantiate(linePrefab, MouseWorldPos, Quaternion.identity);
     }
 
     private void Update() {
         if (ShouldStartDrawing) {
 
             Vector2 MouseWorldPos = mainCam.ScreenToWorldPoint(InputManager.Instance.GetTouchPosition());
+            
+            //say the line to extend or extrude its vertices
             currentLine.SetPosition(MouseWorldPos);
         }
     }
