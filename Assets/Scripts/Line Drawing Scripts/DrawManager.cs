@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DrawManager : MonoBehaviour{
+    //Singleton
+    public static DrawManager Instance {  get; private set; }
 
     //Camera Reference
     private Camera mainCam;
@@ -19,7 +21,7 @@ public class DrawManager : MonoBehaviour{
 
 
     private void Awake() {
-        mainCam = Camera.main;
+        Instance = this;
     }
 
     private void Start() {
@@ -27,6 +29,17 @@ public class DrawManager : MonoBehaviour{
 
         Player.Instance.OnPlayerTouch += Player_OnPlayerTouch;
         Player.Instance.OnDrawComplete += Player_OnDrawComplete;
+        Player.Instance.OnPlayerPathFollowed += Player_OnPlayerPathFollowed;
+    }
+
+    private void Player_OnPlayerPathFollowed(object sender, System.EventArgs e) {
+        //destroy the line
+        if(currentLine == null) {
+            Debug.LogError("There is a line drawn when its not supposed to!");
+        }
+        
+        Destroy(currentLine.gameObject);
+
     }
 
     private void Player_OnDrawComplete(object sender, System.EventArgs e) {
@@ -53,5 +66,13 @@ public class DrawManager : MonoBehaviour{
             //say the line to extend or extrude its vertices
             currentLine.SetPosition(MouseWorldPos);
         }
+    }
+
+    public void GetPositions(Vector3[] FollowPositions) {
+        currentLine.GetPositions(FollowPositions);
+    }
+
+    public int GetLength() {
+        return currentLine.GetPointsCount();
     }
 }

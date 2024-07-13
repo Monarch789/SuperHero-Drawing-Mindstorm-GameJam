@@ -35,4 +35,8 @@ public class Line : MonoBehaviour{
         return lineRenderer.positionCount;
     }
 
+    public void GetPositions(Vector3[] positions) {
+        lineRenderer.GetPositions(positions);
+    }
+
 }
