@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMarkerToMarker : MonoBehaviour
@@ -6,7 +7,8 @@ public class PlayerMarkerToMarker : MonoBehaviour
     public float speed = 10f; // Speed of the player movement
     private Transform[] markers; // Array to store marker positions
     public GameObject slashPrefab; // Prefab for the slash effect
-    private int currentMarkerIndex = 0;
+    private List<Transform> remainingMarkers = new List<Transform>(); // List to track unvisited markers
+    private bool isFirstMove = true; // Flag to check if it's the first move
 
     void Start()
     {
@@ -17,49 +19,53 @@ public class PlayerMarkerToMarker : MonoBehaviour
         for (int i = 0; i < markerObjects.Length; i++)
         {
             markers[i] = markerObjects[i].transform;
+            remainingMarkers.Add(markers[i]); // Add all markers to the list of remaining markers
         }
 
         // Start the movement coroutine
         StartCoroutine(MoveToRandomMarker());
     }
 
-    // This method should be called when the finger is released
-    //public void OnFingerRelease()
-    //{
-    //    StartCoroutine(MoveToRandomMarkers());
-    //}
-
     IEnumerator MoveToRandomMarker()
     {
-        while (true)
+        while (remainingMarkers.Count > 0)
         {
-            for (int i = 0; i < markers.Length; i++)
+            // Choose a random index from remaining markers
+            int randomIndex = Random.Range(0, remainingMarkers.Count);
+            Transform nextMarker = remainingMarkers[randomIndex];
+
+            Vector2 startPosition = transform.position;
+            Vector2 endPosition = nextMarker.position;
+
+            Debug.Log($"Moving to marker at position {endPosition}");
+
+            // Move towards the chosen marker
+            while (Vector2.Distance(transform.position, endPosition) > 0.1f)
             {
-                // Choose a random marker index
-                currentMarkerIndex = Random.Range(0, markers.Length);
-                Vector2 startPosition = transform.position;
-                Vector2 endPosition = markers[currentMarkerIndex].position;
-
-                Debug.Log($"Moving to marker {currentMarkerIndex} at position {endPosition}");
-
-                // Move towards the chosen marker
-                while (Vector2.Distance(transform.position, endPosition) > 0.1f)
-                {
-                    transform.position = Vector2.MoveTowards(transform.position, endPosition, speed * Time.deltaTime);
-                    yield return null;
-                }
-
-                Debug.Log($"Reached marker {currentMarkerIndex}, drawing slash");
-
-                // Draw slash from startPosition to endPosition
-                DrawSlash(startPosition, endPosition);
-
-                // Wait for a short duration before moving to the next marker
-                yield return new WaitForSeconds(0.1f); // Reduced wait time for quick slashes
+                transform.position = Vector2.MoveTowards(transform.position, endPosition, speed * Time.deltaTime);
+                yield return null;
             }
 
-            Debug.Log("Finished moving to all markers");
+            // Skip drawing slash for the first move
+            if (!isFirstMove)
+            {
+                // Draw slash from startPosition to endPosition
+                DrawSlash(startPosition, endPosition);
+            }
+            else
+            {
+                isFirstMove = false;
+            }
+
+            // Remove visited marker from remaining markers
+            remainingMarkers.RemoveAt(randomIndex);
+
+            // Wait for a short duration before moving to the next marker
+            yield return new WaitForSeconds(0.1f); // Reduced wait time for quick slashes
         }
+
+        Debug.Log("All markers visited, deleting all slashes");
+        DeleteAllSlashes();
     }
 
     void DrawSlash(Vector2 start, Vector2 end)
@@ -75,8 +81,19 @@ public class PlayerMarkerToMarker : MonoBehaviour
         // Adjust the size of the sprite to match the distance
         slash.transform.localScale = new Vector3(distance, slash.transform.localScale.y, slash.transform.localScale.z);
 
-        Debug.Log($"Drawing slash from {start} to {end} with distance {distance}");
+        // Destroy the slash effect after a short duration
+        //Destroy(slash, 0.5f);
+    }
 
-        Destroy(slash, 0.5f); // Destroy the slash effect after a short duration
+    void DeleteAllSlashes()
+    {
+        // Find all current slashes in the scene
+        GameObject[] existingSlashes = GameObject.FindGameObjectsWithTag("Slash");
+
+        // Destroy each slash game object
+        foreach (var slash in existingSlashes)
+        {
+            Destroy(slash);
+        }
     }
 }
