@@ -16,6 +16,9 @@ public class Player : MonoBehaviour{
 
     public event EventHandler OnPlayerPathFollowed;
 
+    //event to send the draw manager and player line follow to cancel movement
+    public event EventHandler OnPlayerMoveStop;
+
     //reference of camera
     private Camera mainCam;
 
@@ -28,6 +31,9 @@ public class Player : MonoBehaviour{
     //reference of the player follow line
     private PlayerFollowLine followLine;
 
+    //references for checking if the player collided with the floor from the sides
+    [SerializeField] private PlayerCollideFloor sideCollider;
+    
     private void Awake() {
         Instance = this;
     
@@ -43,6 +49,12 @@ public class Player : MonoBehaviour{
         InputManager.Instance.OnTouchEnded += InputManager_OnTouchEnded;
         followLine.OnPathFollowed += FollowLine_OnPathFollowed;
 
+        sideCollider.OnPlayerCollideWithFloorFromSide += LeftCollider_OnPlayerCollideWithFloorFromSide;
+
+    }
+
+    private void LeftCollider_OnPlayerCollideWithFloorFromSide(object sender, EventArgs e) {
+        OnPlayerMoveStop?.Invoke(this, EventArgs.Empty);
     }
 
     private void FollowLine_OnPathFollowed(object sender, EventArgs e) {

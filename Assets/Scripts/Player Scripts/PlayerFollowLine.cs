@@ -7,7 +7,8 @@ public class PlayerFollowLine : MonoBehaviour{
     //general variables
     private float speed;
     private float MinDistanceRequired;
-    
+    private float ForceMultiplier;
+
     //refernce for all the positions of the line
     private Vector3[] FollowPositions;
 
@@ -34,8 +35,23 @@ public class PlayerFollowLine : MonoBehaviour{
         ShouldStartFollow = false;
         speed = 5f;
         MinDistanceRequired = 0.05f;
+        ForceMultiplier = 65f;
 
         Player.Instance.OnDrawComplete += Player_OnDrawComplete;
+        Player.Instance.OnPlayerMoveStop += Player_OnPlayerMoveStop;
+    
+    }
+
+    private void Player_OnPlayerMoveStop(object sender, EventArgs e) {
+        ShouldStartFollow = false;
+
+        rigidbodyComponent.gravityScale = 1f;
+
+        //get directio of force
+        Direction = ( -FollowPositions[moveIndex] + FollowPositions[moveIndex-1]).normalized;
+        rigidbodyComponent.AddForce(Direction * speed * ForceMultiplier, ForceMode2D.Force);
+
+        OnPathFollowed?.Invoke(this, EventArgs.Empty);
     }
 
     private void Player_OnDrawComplete(object sender, System.EventArgs e) {
@@ -78,7 +94,7 @@ public class PlayerFollowLine : MonoBehaviour{
 
                     //Turn on gravity
                     rigidbodyComponent.gravityScale = 1f;
-                    rigidbodyComponent.AddForce(Direction * speed * 65f, ForceMode2D.Force);
+                    rigidbodyComponent.AddForce(Direction * speed * ForceMultiplier, ForceMode2D.Force);
                 }
             }
         }
