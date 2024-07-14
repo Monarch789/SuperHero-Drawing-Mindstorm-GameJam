@@ -20,6 +20,16 @@ public class PlayerFollowLine : MonoBehaviour{
     //event to send the player that he has followed the path so allow drawing again
     public event EventHandler OnPathFollowed;
 
+    //reference of rigdbody
+    private Rigidbody2D rigidbodyComponent;
+
+    //direction of force to be applied after its done
+    private Vector2 Direction;
+
+    private void Awake() {
+        rigidbodyComponent = GetComponent<Rigidbody2D>();
+    }
+
     private void Start() {
         ShouldStartFollow = false;
         speed = 5f;
@@ -36,11 +46,17 @@ public class PlayerFollowLine : MonoBehaviour{
         
         ShouldStartFollow = true;
         moveIndex = 0;
+
+        //get the direction of the force to be applied
+        Direction = (FollowPositions[FollowPositions.Length - 1] - FollowPositions[FollowPositions.Length - 2]).normalized;
     }
 
 
     private void Update() {
         if (ShouldStartFollow) {
+
+            //turn off gravity
+            rigidbodyComponent.gravityScale = 0f;
 
             //get the next position it has to go to
             Vector2 currentPosition = FollowPositions[moveIndex];
@@ -59,6 +75,10 @@ public class PlayerFollowLine : MonoBehaviour{
                     ShouldStartFollow = false;
 
                     OnPathFollowed?.Invoke(this, EventArgs.Empty);
+
+                    //Turn on gravity
+                    rigidbodyComponent.gravityScale = 1f;
+                    rigidbodyComponent.AddForce(Direction * speed * 65f, ForceMode2D.Force);
                 }
             }
         }
