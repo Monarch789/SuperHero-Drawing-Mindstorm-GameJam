@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerFollowLine : MonoBehaviour{
+    //reference of player
+    [SerializeField] private Player player;
+    
     //general variables
     private float speed;
     private float MinDistanceRequired;
@@ -37,9 +40,25 @@ public class PlayerFollowLine : MonoBehaviour{
         MinDistanceRequired = 0.05f;
         ForceMultiplier = 65f;
 
-        Player.Instance.OnDrawComplete += Player_OnDrawComplete;
-        Player.Instance.OnPlayerMoveStop += Player_OnPlayerMoveStop;
+        player.OnDrawComplete += Player_OnDrawComplete;
+        player.OnPlayerMoveStop += Player_OnPlayerMoveStop;
+        player.OnMoveTowrdsNextPoint += Player_OnMoveTowrdsNextPoint;
     
+    }
+
+    private void Player_OnMoveTowrdsNextPoint(object sender, EventArgs e) {
+        moveIndex++;
+
+        if(moveIndex > FollowPositions.Length-1 && ShouldStartFollow /* ShouldStartFollow bcz this event is called 2 times so it says to destroy line 2 times when the line has been destroyed*/) {
+            //the player has reached the final position on the line
+            ShouldStartFollow = false;
+
+            OnPathFollowed?.Invoke(this, EventArgs.Empty);
+
+            //Turn on gravity
+            rigidbodyComponent.gravityScale = 1f;
+            rigidbodyComponent.AddForce(Direction * speed * ForceMultiplier, ForceMode2D.Force);
+        }
     }
 
     private void Player_OnPlayerMoveStop(object sender, EventArgs e) {
@@ -47,8 +66,12 @@ public class PlayerFollowLine : MonoBehaviour{
 
         rigidbodyComponent.gravityScale = 1f;
 
-        //get directio of force
-        Direction = ( -FollowPositions[moveIndex] + FollowPositions[moveIndex-1]).normalized;
+        //get direction of force
+        if (FollowPositions.Length > 1)
+            Direction = (-FollowPositions[moveIndex] + FollowPositions[moveIndex - 1]).normalized;
+        else
+            Direction = FollowPositions[0] - transform.position;
+
         rigidbodyComponent.AddForce(Direction * speed * ForceMultiplier, ForceMode2D.Force);
 
         OnPathFollowed?.Invoke(this, EventArgs.Empty);
@@ -64,7 +87,10 @@ public class PlayerFollowLine : MonoBehaviour{
         moveIndex = 0;
 
         //get the direction of the force to be applied
-        Direction = (FollowPositions[FollowPositions.Length - 1] - FollowPositions[FollowPositions.Length - 2]).normalized;
+        if (FollowPositions.Length > 1)
+            Direction = (FollowPositions[FollowPositions.Length - 1] - FollowPositions[FollowPositions.Length - 2]).normalized;
+        else
+            Direction = Vector2.zero;
     }
 
 

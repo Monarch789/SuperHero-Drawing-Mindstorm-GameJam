@@ -37,9 +37,8 @@ public class DrawManager : MonoBehaviour{
         if(currentLine == null) {
             Debug.LogError("There is a line drawn when its not supposed to!");
         }
-        
-        Destroy(currentLine.gameObject);
 
+        Destroy(currentLine.gameObject);
     }
 
     private void Player_OnDrawComplete(object sender, System.EventArgs e) {

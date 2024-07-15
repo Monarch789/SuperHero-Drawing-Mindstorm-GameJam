@@ -19,6 +19,9 @@ public class Player : MonoBehaviour{
     //event to send the draw manager and player line follow to cancel movement
     public event EventHandler OnPlayerMoveStop;
 
+    //event to send the player follow Line to move towards next position
+    public event EventHandler OnMoveTowrdsNextPoint;
+
     //reference of camera
     private Camera mainCam;
 
@@ -28,11 +31,13 @@ public class Player : MonoBehaviour{
     //bool to see if the the player has followed the line so he can start drawing again
     private bool hasFollowedPath;
 
-    //reference of the player follow line
+    //reference of the player scipts
     private PlayerFollowLine followLine;
-
-    //references for checking if the player collided with the floor from the sides
+    
+    //references for checking if the player collided with the floor
     [SerializeField] private PlayerCollideFloor sideCollider;
+    [SerializeField] private PlayerCollideFloorDownwards downCollider;
+
     
     private void Awake() {
         Instance = this;
@@ -50,7 +55,12 @@ public class Player : MonoBehaviour{
         followLine.OnPathFollowed += FollowLine_OnPathFollowed;
 
         sideCollider.OnPlayerCollideWithFloorFromSide += LeftCollider_OnPlayerCollideWithFloorFromSide;
+        downCollider.OnColliderFloorFromDown += DownCollider_OnColliderFloorFromDown;
 
+    }
+
+    private void DownCollider_OnColliderFloorFromDown(object sender, EventArgs e) {
+        OnMoveTowrdsNextPoint?.Invoke(this, EventArgs.Empty);
     }
 
     private void LeftCollider_OnPlayerCollideWithFloorFromSide(object sender, EventArgs e) {
