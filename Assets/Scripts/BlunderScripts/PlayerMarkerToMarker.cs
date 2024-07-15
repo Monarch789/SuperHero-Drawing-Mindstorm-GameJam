@@ -8,6 +8,7 @@ public class PlayerMarkerToMarker : MonoBehaviour
     private Transform[] markers; // Array to store marker positions
     public GameObject slashPrefab; // Prefab for the slash effect
     private List<Transform> remainingMarkers = new List<Transform>(); // List to track unvisited markers
+    private List<Transform> visitedMarkers = new List<Transform>(); // List to track visited markers
     private bool isFirstMove = true; // Flag to check if it's the first move
 
     void Start()
@@ -28,7 +29,7 @@ public class PlayerMarkerToMarker : MonoBehaviour
 
     IEnumerator MoveToRandomMarker()
     {
-        while (remainingMarkers.Count > 0)
+        while (remainingMarkers.Count > 1)
         {
             // Choose a random index from remaining markers
             int randomIndex = Random.Range(0, remainingMarkers.Count);
@@ -57,15 +58,16 @@ public class PlayerMarkerToMarker : MonoBehaviour
                 isFirstMove = false;
             }
 
-            // Remove visited marker from remaining markers
+            // Remove visited marker from remaining markers and add to visited markers
             remainingMarkers.RemoveAt(randomIndex);
+            visitedMarkers.Add(nextMarker);
 
             // Wait for a short duration before moving to the next marker
             yield return new WaitForSeconds(0.1f); // Reduced wait time for quick slashes
         }
 
-        Debug.Log("All markers visited, deleting all slashes");
-        DeleteAllSlashes();
+        Debug.Log("All markers visited, deleting all slashes and visited markers");
+        DeleteAllSlashesAndVisitedMarkers();
     }
 
     void DrawSlash(Vector2 start, Vector2 end)
@@ -82,10 +84,10 @@ public class PlayerMarkerToMarker : MonoBehaviour
         slash.transform.localScale = new Vector3(distance, slash.transform.localScale.y, slash.transform.localScale.z);
 
         // Destroy the slash effect after a short duration
-        //Destroy(slash, 0.5f);
+        // Destroy(slash, 0.5f);
     }
 
-    void DeleteAllSlashes()
+    void DeleteAllSlashesAndVisitedMarkers()
     {
         // Find all current slashes in the scene
         GameObject[] existingSlashes = GameObject.FindGameObjectsWithTag("Slash");
@@ -93,7 +95,13 @@ public class PlayerMarkerToMarker : MonoBehaviour
         // Destroy each slash game object
         foreach (var slash in existingSlashes)
         {
-            Destroy(slash);
+            Destroy(slash, 0.2f);
+        }
+
+        // Destroy all visited markers
+        foreach (var marker in visitedMarkers)
+        {
+            Destroy(marker.gameObject);
         }
     }
 }

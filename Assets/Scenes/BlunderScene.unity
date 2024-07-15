@@ -357,11 +357,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4493808035581539480, guid: b3485f936d947dc459364203239f58d5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.116529
+      value: 8.5
       objectReference: {fileID: 0}
     - target: {fileID: 4493808035581539480, guid: b3485f936d947dc459364203239f58d5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.767955
+      value: 15.32
       objectReference: {fileID: 0}
     - target: {fileID: 4493808035581539480, guid: b3485f936d947dc459364203239f58d5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -536,7 +536,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 24.24
+  orthographic size: 26.38
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -561,7 +561,7 @@ Transform:
   m_GameObject: {fileID: 634054670}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.81, y: 0, z: -10}
+  m_LocalPosition: {x: -3.2, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1013,7 +1013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72bbcf09eab348e488ea0ab4f5b8c18f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 200
+  speed: 300
   slashPrefab: {fileID: 1187770632640093488, guid: d1cfc950a0af51742a122ebdd218102c, type: 3}
 --- !u!4 &1807697476 stripped
 Transform:
