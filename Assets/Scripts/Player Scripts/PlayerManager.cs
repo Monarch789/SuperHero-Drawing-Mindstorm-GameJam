@@ -15,7 +15,7 @@ public class PlayerManager : MonoBehaviour{
     public event EventHandler OnPlayerCanAttack;
 
     //event to send camera manager to put the camera on waves display
-    public event EventHandler OnNewWaveStart;
+    public event EventHandler OnWaveStart;
 
     //event to send EnemyManager for enemies to start attacking
     public event EventHandler OnEnemyStartAttack;
@@ -112,7 +112,7 @@ public class PlayerManager : MonoBehaviour{
                 if (Vector2.Distance(transform.position, IdlePosition.position) < 0.05f) {
                     HasReachedIdlePosition = true;
 
-                    OnNewWaveStart?.Invoke(this,EventArgs.Empty);
+                    OnWaveStart?.Invoke(this,EventArgs.Empty);
 
                     state = PlayerStates.Jumping;
                 }

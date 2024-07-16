@@ -26,7 +26,9 @@ public class Enemy : MonoBehaviour{
     }
 
     private void EnemyManager_OnEnemyShouldAttack(object sender, EventArgs e) {
-        if (isAttacking) {
+        if (isAttacking && gameObject.activeSelf) {
+            //if the enemy is not dead and it was attacking
+
             Debug.Log("Attack");
             readyToAttackImage.gameObject.SetActive(false);
         }

@@ -15,6 +15,7 @@ public class DrawManager : MonoBehaviour{
 
     //resolution for reducing jankiness
     public const float LineResolution = 0.1f;
+    public float MaxPoints;
 
     //bool to see if we should draw i.e when the player starts pressing on the screen
     private bool ShouldStartDrawing;
@@ -30,6 +31,8 @@ public class DrawManager : MonoBehaviour{
         Player.Instance.OnPlayerTouch += Player_OnPlayerTouch;
         Player.Instance.OnDrawComplete += Player_OnDrawComplete;
         Player.Instance.OnPlayerPathFollowed += Player_OnPlayerPathFollowed;
+
+        MaxPoints = 100;
     }
 
     private void Player_OnPlayerPathFollowed(object sender, System.EventArgs e) {

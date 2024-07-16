@@ -28,7 +28,7 @@ public class Line : MonoBehaviour{
             return true;
 
         //if the distance between current drawing position and last drawn position is greater than resolution then return true so that it draw another line
-        return Vector2.Distance(position, lineRenderer.GetPosition(lineRenderer.positionCount - 1)) > DrawManager.LineResolution;
+        return Vector2.Distance(position, lineRenderer.GetPosition(lineRenderer.positionCount - 1)) > DrawManager.LineResolution && lineRenderer.positionCount <= DrawManager.Instance.MaxPoints;
     }
 
     public int GetPointsCount() {

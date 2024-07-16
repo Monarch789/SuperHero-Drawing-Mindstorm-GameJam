@@ -13,7 +13,7 @@ public class CameraManager : MonoBehaviour{
         WaveCam.Priority = 0;
         PlayerFollowCam.Priority = 1;
 
-        PlayerManager.Instance.OnNewWaveStart += PlayerManager_OnNewWaveStart;
+        PlayerManager.Instance.OnWaveStart += PlayerManager_OnNewWaveStart;
     }
 
     private void PlayerManager_OnNewWaveStart(object sender, System.EventArgs e) {

@@ -10,6 +10,9 @@ public class EnemyManager : MonoBehaviour{
 
     private List<Enemy> SeenEnemyList;
 
+    //reference of how many waves there are
+    [SerializeField] private int NumberOfEnemies;
+
     //event to send enemies to say that they should ready their attack
     public event EventHandler OnEnemyShouldReadyAttack;
     public event EventHandler OnEnemyShouldAttack;
@@ -22,6 +25,11 @@ public class EnemyManager : MonoBehaviour{
     private float Timer;
     private bool ShouldStartTimer;
 
+    private bool allEnemiesKilled;
+
+    //int to see how may enemies have been killed
+    private int EnemiesKiled;
+
     private void Awake() {
         Instance = this;
 
@@ -32,10 +40,12 @@ public class EnemyManager : MonoBehaviour{
         MaxWaitTime = 2f;
         Timer = 0f;
         ShouldStartTimer = false;
-        
+        allEnemiesKilled = false;
+        EnemiesKiled = 0;
+
         Player.Instance.OnPlayerPathFollowed += Player_OnPlayerPathFollowed;
         PlayerManager.Instance.OnEnemyStartAttack += PlayerManager_OnEnemyStartAttack;
-        PlayerManager.Instance.OnNewWaveStart += PlayerManager_OnNewWaveStart;
+        PlayerManager.Instance.OnWaveStart += PlayerManager_OnNewWaveStart;
     }
 
     private void PlayerManager_OnNewWaveStart(object sender, EventArgs e) {
@@ -50,8 +60,14 @@ public class EnemyManager : MonoBehaviour{
 
     private void Player_OnPlayerPathFollowed(object sender, System.EventArgs e) {
         foreach (Enemy enemy in SeenEnemyList) {
-            if(enemy != null)
-                Destroy(enemy.gameObject);
+            if (enemy.gameObject.activeSelf) {
+                enemy.gameObject.SetActive(false);
+                EnemiesKiled++;
+            }
+        }
+
+        if(EnemiesKiled == NumberOfEnemies) {
+            allEnemiesKilled = true;
         }
     }
 
@@ -60,7 +76,7 @@ public class EnemyManager : MonoBehaviour{
     }
 
     private void Update() {
-        if (ShouldStartTimer) {
+        if (!allEnemiesKilled && ShouldStartTimer) {
             Timer += Time.deltaTime;
 
             if(Timer > MaxWaitTime) {
