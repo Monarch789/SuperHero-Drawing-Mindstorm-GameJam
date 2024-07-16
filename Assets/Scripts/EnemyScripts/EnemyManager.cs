@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,12 @@ public class EnemyManager : MonoBehaviour{
 
     private List<Enemy> SeenEnemyList;
 
+    //event to send enemies to say that they should ready their attack
+    public event EventHandler OnEnemyShouldReadyAttack;
+
+    //bool to see if it the enemy turn
+    private bool isEnemyTurn;
+
     private void Awake() {
         Instance = this;
 
@@ -16,7 +23,11 @@ public class EnemyManager : MonoBehaviour{
     }
 
     private void Start() {
+        isEnemyTurn = false;
+
         Player.Instance.OnPlayerPathFollowed += Player_OnPlayerPathFollowed;
+
+        OnEnemyShouldReadyAttack?.Invoke(this, EventArgs.Empty);
     }
 
     private void Player_OnPlayerPathFollowed(object sender, System.EventArgs e) {

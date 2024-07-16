@@ -31,9 +31,13 @@ public class Player : MonoBehaviour{
     //bool to see if the the player has followed the line so he can start drawing again
     private bool hasFollowedPath;
 
+    //bool to see if the player can atack
+    private bool canAttack;
+
     //reference of the player scipts
     private PlayerFollowLine followLine;
-    
+    private PlayerManager playerManager;
+
     //references for checking if the player collided with the floor
     [SerializeField] private PlayerCollideFloor sideCollider;
     [SerializeField] private PlayerCollideFloorDownwards downCollider;
@@ -43,12 +47,14 @@ public class Player : MonoBehaviour{
         Instance = this;
     
         followLine = GetComponent<PlayerFollowLine>();
+        playerManager = GetComponent<PlayerManager>();
     }
 
     private void Start() {
         mainCam = Camera.main;
         didDrawFromPlayer = false;
         hasFollowedPath = true;
+        canAttack = false;
 
         InputManager.Instance.OnTouchStarted += InputManager_OnTouchStarted;
         InputManager.Instance.OnTouchEnded += InputManager_OnTouchEnded;
@@ -57,6 +63,12 @@ public class Player : MonoBehaviour{
         sideCollider.OnPlayerCollideWithFloorFromSide += LeftCollider_OnPlayerCollideWithFloorFromSide;
         downCollider.OnColliderFloorFromDown += DownCollider_OnColliderFloorFromDown;
 
+        playerManager.OnPlayerCanAttack += PlayerManager_OnPlayerCanAttack;
+
+    }
+
+    private void PlayerManager_OnPlayerCanAttack(object sender, EventArgs e) {
+        canAttack = true;
     }
 
     private void DownCollider_OnColliderFloorFromDown(object sender, EventArgs e) {
@@ -84,7 +96,7 @@ public class Player : MonoBehaviour{
     }
 
     private void InputManager_OnTouchStarted(object sender, System.EventArgs e) {
-        if (hasFollowedPath) {
+        if (canAttack && hasFollowedPath) {
 
             //see if the touch is on the player
             var rayCastHit = Physics2D.GetRayIntersection(mainCam.ScreenPointToRay(InputManager.Instance.GetTouchPosition()));
@@ -96,7 +108,6 @@ public class Player : MonoBehaviour{
                 //player started form hitbo
                 didDrawFromPlayer = true;
                 hasFollowedPath = false;
-
             }
         }
     }
