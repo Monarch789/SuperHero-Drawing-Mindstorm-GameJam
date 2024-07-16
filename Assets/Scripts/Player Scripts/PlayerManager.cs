@@ -24,10 +24,14 @@ public class PlayerManager : MonoBehaviour{
     [SerializeField] private Transform IdlePosition;
     [SerializeField] private Transform AttackingPosition;
 
+    [SerializeField] private LayerMask FloorDeathLayerMask;
+
     //hitbox to get raycast distance
     private BoxCollider2D hitbox;
     private Rigidbody2D rigidBody;
 
+
+    private float speed;
 
     //Different states of the player
     public enum PlayerStates {
@@ -66,10 +70,21 @@ public class PlayerManager : MonoBehaviour{
         state = PlayerStates.Running;
 
         isPlayerTurn = true;
+        speed = 5f;
+
 
         player.OnDrawComplete += Player_OnDrawComplete;
         player.OnPlayerMoveStop += Player_OnPlayerMoveStop;
         player.OnPlayerPathFollowed += Player_OnPlayerPathFollowed;
+
+        EnemyManager.Instance.OnStartAgain += EnemyManager_OnStartAgain;
+    }
+
+    private void EnemyManager_OnStartAgain(object sender, EventArgs e) {
+        isPlayerTurn = true;
+
+        HasReachedIdlePosition = false;
+        HasReachedAttackingPosition = false;
     }
 
     private void Player_OnPlayerPathFollowed(object sender, EventArgs e) {
@@ -92,14 +107,9 @@ public class PlayerManager : MonoBehaviour{
             if (!HasReachedIdlePosition) {
                 //the player has not reached idle position
 
-                float LerpSpeed = .6f;
+                transform.position = Vector2.MoveTowards(transform.position, IdlePosition.position, speed * Time.deltaTime);
 
-                //move towards the idle Position
-                transform.position = Vector3.Lerp(transform.position, IdlePosition.position, LerpSpeed * Time.deltaTime);
-
-
-
-                if (Vector3.Distance(transform.position, IdlePosition.position) < 0.05f) {
+                if (Vector2.Distance(transform.position, IdlePosition.position) < 0.05f) {
                     HasReachedIdlePosition = true;
 
                     OnNewWaveStart?.Invoke(this,EventArgs.Empty);
@@ -110,13 +120,9 @@ public class PlayerManager : MonoBehaviour{
             else if (!HasReachedAttackingPosition) {
                 //the player has reached idle position and is now attacking
 
+                transform.position = Vector2.MoveTowards(transform.position, AttackingPosition.position, speed * Time.deltaTime);
 
-                float LerpSpeed = .6f;
-
-                //move towards the idle Position
-                transform.position = Vector3.Lerp(transform.position, AttackingPosition.position, LerpSpeed * Time.deltaTime);
-
-                if (Vector3.Distance(transform.position, AttackingPosition.position) < 0.05f) {
+                if (Vector2.Distance(transform.position, AttackingPosition.position) < 0.05f) {
                     HasReachedAttackingPosition = true;
                 }
             }
@@ -130,14 +136,11 @@ public class PlayerManager : MonoBehaviour{
 
         else if (!HasReachedIdlePosition) {
             //it is not the players turn but he still hasnt reached the idle position
-            float LerpSpeed = .6f;
 
             //move towards the idle Position
-            transform.position = Vector3.Lerp(transform.position, IdlePosition.position, LerpSpeed);
+            transform.position = Vector2.MoveTowards(transform.position,IdlePosition.position,speed * Time.deltaTime);
 
-
-
-            if (Vector3.Distance(transform.position, IdlePosition.position) < 0.05f) {
+            if (Vector2.Distance(transform.position, IdlePosition.position) < 0.05f) {
                 HasReachedIdlePosition = true;
 
                 OnEnemyStartAttack?.Invoke(this, EventArgs.Empty);
@@ -147,17 +150,23 @@ public class PlayerManager : MonoBehaviour{
         if (ShouldCheckBelow) {
             float rayCastDistance = hitbox.size.y/2 + 0.1f;
 
-            RaycastHit2D hitObject = Physics2D.Raycast(transform.position,Vector2.down,rayCastDistance);
+            RaycastHit2D hitObject = Physics2D.Raycast(transform.position,Vector2.down,rayCastDistance,FloorDeathLayerMask);
 
             if (hitObject) {
                 //player hit something
+
                 if(hitObject.transform.tag == "Floor") {
                     //player hit the floor
+
+                    ShouldCheckBelow = false;
+
                     state = PlayerStates.Running;
                     HasReachedIdlePosition = false;
                 }
                 else if(hitObject.transform.tag == "Death") {
                     //player fell down to death
+                    ShouldCheckBelow = false;
+
                     Debug.Log("Death");
                 }
             }

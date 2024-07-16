@@ -12,9 +12,15 @@ public class EnemyManager : MonoBehaviour{
 
     //event to send enemies to say that they should ready their attack
     public event EventHandler OnEnemyShouldReadyAttack;
+    public event EventHandler OnEnemyShouldAttack;
 
-    //bool to see if it the enemy turn
-    private bool isEnemyTurn;
+    //event to send player Manager to start again
+    public event EventHandler OnStartAgain;
+
+    //Timer variables
+    private float MaxWaitTime;
+    private float Timer;
+    private bool ShouldStartTimer;
 
     private void Awake() {
         Instance = this;
@@ -23,11 +29,23 @@ public class EnemyManager : MonoBehaviour{
     }
 
     private void Start() {
-        isEnemyTurn = false;
-
+        MaxWaitTime = 2f;
+        Timer = 0f;
+        ShouldStartTimer = false;
+        
         Player.Instance.OnPlayerPathFollowed += Player_OnPlayerPathFollowed;
+        PlayerManager.Instance.OnEnemyStartAttack += PlayerManager_OnEnemyStartAttack;
+        PlayerManager.Instance.OnNewWaveStart += PlayerManager_OnNewWaveStart;
+    }
 
-        OnEnemyShouldReadyAttack?.Invoke(this, EventArgs.Empty);
+    private void PlayerManager_OnNewWaveStart(object sender, EventArgs e) {
+        OnEnemyShouldReadyAttack?.Invoke(this,EventArgs.Empty);
+    }
+
+    private void PlayerManager_OnEnemyStartAttack(object sender, EventArgs e) {
+        OnEnemyShouldAttack?.Invoke(this, EventArgs.Empty);
+
+        ShouldStartTimer = true;
     }
 
     private void Player_OnPlayerPathFollowed(object sender, System.EventArgs e) {
@@ -39,6 +57,19 @@ public class EnemyManager : MonoBehaviour{
 
     public void AddEnemyInSeenList(Enemy enemy) {
         SeenEnemyList.Add(enemy);
+    }
+
+    private void Update() {
+        if (ShouldStartTimer) {
+            Timer += Time.deltaTime;
+
+            if(Timer > MaxWaitTime) {
+                ShouldStartTimer = false;
+                Timer = 0f;
+
+                OnStartAgain?.Invoke(this, EventArgs.Empty);
+            }
+        }
     }
 
 }

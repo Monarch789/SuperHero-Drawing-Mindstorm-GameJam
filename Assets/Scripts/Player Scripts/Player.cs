@@ -108,6 +108,7 @@ public class Player : MonoBehaviour{
                 //player started form hitbo
                 didDrawFromPlayer = true;
                 hasFollowedPath = false;
+                canAttack = false;
             }
         }
     }

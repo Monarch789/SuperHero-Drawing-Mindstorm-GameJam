@@ -1,4 +1,5 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,12 +22,19 @@ public class Enemy : MonoBehaviour{
         readyToAttackImage.gameObject.SetActive(false);
 
         EnemyManager.Instance.OnEnemyShouldReadyAttack += EnemyManager_OnEnemyShouldReadyAttack;
+        EnemyManager.Instance.OnEnemyShouldAttack += EnemyManager_OnEnemyShouldAttack;
+    }
+
+    private void EnemyManager_OnEnemyShouldAttack(object sender, EventArgs e) {
+        if (isAttacking) {
+            Debug.Log("Attack");
+            readyToAttackImage.gameObject.SetActive(false);
+        }
     }
 
     private void EnemyManager_OnEnemyShouldReadyAttack(object sender, EventArgs e) {
-        float randomFloat = UnityEngine.Random.Range(0.0f, 1.0f);
-
-        isAttacking = randomFloat <= 0.5f;
+        
+        isAttacking = UnityEngine.Random.Range(0, 2) == 0;
 
         if (isAttacking) {
             readyToAttackImage.gameObject.SetActive(true);
