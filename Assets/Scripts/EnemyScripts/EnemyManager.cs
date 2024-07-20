@@ -17,6 +17,10 @@ public class EnemyManager : MonoBehaviour{
     public event EventHandler OnEnemyShouldReadyAttack;
     public event EventHandler OnEnemyShouldAttack;
 
+    //event to send when an enemy takes damage
+    public class OnTakeDamageEventArgs :EventArgs { public Enemy enemy; public float damage; }
+    public event EventHandler<OnTakeDamageEventArgs> OnTakeDamage;
+
     //event to send player Manager to start again
     public event EventHandler OnStartAgain;
 
@@ -61,8 +65,7 @@ public class EnemyManager : MonoBehaviour{
     private void Player_OnPlayerPathFollowed(object sender, System.EventArgs e) {
         foreach (Enemy enemy in SeenEnemyList) {
             if (enemy.gameObject.activeSelf) {
-                enemy.gameObject.SetActive(false);
-                EnemiesKiled++;
+                OnTakeDamage?.Invoke(this, new OnTakeDamageEventArgs {enemy = enemy,damage = Player.Instance.GetDamage() });
             }
         }
 

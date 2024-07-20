@@ -33,6 +33,8 @@ public class PlayerManager : MonoBehaviour{
 
     private float speed;
 
+    private bool isPlayerDead;
+
     //Different states of the player
     public enum PlayerStates {
         Idle,
@@ -69,6 +71,7 @@ public class PlayerManager : MonoBehaviour{
 
         state = PlayerStates.Running;
 
+        isPlayerDead = false;
         isPlayerTurn = true;
         speed = 5f;
 
@@ -76,8 +79,13 @@ public class PlayerManager : MonoBehaviour{
         player.OnDrawComplete += Player_OnDrawComplete;
         player.OnPlayerMoveStop += Player_OnPlayerMoveStop;
         player.OnPlayerPathFollowed += Player_OnPlayerPathFollowed;
+        player.OnPlayerDeath += Player_OnPlayerDeath;
 
         EnemyManager.Instance.OnStartAgain += EnemyManager_OnStartAgain;
+    }
+
+    private void Player_OnPlayerDeath(object sender, EventArgs e) {
+        isPlayerDead = true;
     }
 
     private void EnemyManager_OnStartAgain(object sender, EventArgs e) {
@@ -100,74 +108,78 @@ public class PlayerManager : MonoBehaviour{
     }
 
     private void Update() {
-        if (isPlayerTurn) {
+        if (!isPlayerDead) {
+            //if the layer is still alive then make him go towards the idle and attack positions
 
-            rigidBody.gravityScale = 0f;
+            if (isPlayerTurn) {
 
-            if (!HasReachedIdlePosition) {
-                //the player has not reached idle position
+                rigidBody.gravityScale = 0f;
 
-                transform.position = Vector2.MoveTowards(transform.position, IdlePosition.position, speed * Time.deltaTime);
+                if (!HasReachedIdlePosition) {
+                    //the player has not reached idle position
+
+                    transform.position = Vector2.MoveTowards(transform.position, IdlePosition.position, speed * Time.deltaTime);
+
+                    if (Vector2.Distance(transform.position, IdlePosition.position) < 0.05f) {
+                        HasReachedIdlePosition = true;
+
+                        OnWaveStart?.Invoke(this, EventArgs.Empty);
+
+                        state = PlayerStates.Jumping;
+                    }
+                }
+                else if (!HasReachedAttackingPosition) {
+                    //the player has reached idle position and is now attacking
+
+                    transform.position = Vector2.MoveTowards(transform.position, AttackingPosition.position, speed * Time.deltaTime);
+
+                    if (Vector2.Distance(transform.position, AttackingPosition.position) < 0.05f) {
+                        HasReachedAttackingPosition = true;
+                    }
+                }
+                else {
+                    //player has reached attacking position
+
+                    isPlayerTurn = false;
+                    OnPlayerCanAttack?.Invoke(this, EventArgs.Empty);
+                }
+            }
+
+            else if (!HasReachedIdlePosition) {
+                //it is not the players turn but he still hasnt reached the idle position
+
+                //move towards the idle Position
+                transform.position = IdlePosition.position;
 
                 if (Vector2.Distance(transform.position, IdlePosition.position) < 0.05f) {
                     HasReachedIdlePosition = true;
 
-                    OnWaveStart?.Invoke(this,EventArgs.Empty);
-
-                    state = PlayerStates.Jumping;
+                    OnEnemyStartAttack?.Invoke(this, EventArgs.Empty);
                 }
             }
-            else if (!HasReachedAttackingPosition) {
-                //the player has reached idle position and is now attacking
 
-                transform.position = Vector2.MoveTowards(transform.position, AttackingPosition.position, speed * Time.deltaTime);
+            if (ShouldCheckBelow) {
+                float rayCastDistance = hitbox.size.y / 2 + 0.1f;
 
-                if (Vector2.Distance(transform.position, AttackingPosition.position) < 0.05f) {
-                    HasReachedAttackingPosition = true;
-                }
-            }
-            else {
-                //player has reached attacking position
+                RaycastHit2D hitObject = Physics2D.Raycast(transform.position, Vector2.down, rayCastDistance, FloorDeathLayerMask);
 
-                isPlayerTurn = false;
-                OnPlayerCanAttack?.Invoke(this, EventArgs.Empty);
-            }
-        }
+                if (hitObject) {
+                    //player hit something
 
-        else if (!HasReachedIdlePosition) {
-            //it is not the players turn but he still hasnt reached the idle position
+                    if (hitObject.transform.tag == "Floor") {
+                        //player hit the floor
 
-            //move towards the idle Position
-            transform.position = Vector2.MoveTowards(transform.position,IdlePosition.position,speed * Time.deltaTime);
+                        ShouldCheckBelow = false;
 
-            if (Vector2.Distance(transform.position, IdlePosition.position) < 0.05f) {
-                HasReachedIdlePosition = true;
+                        state = PlayerStates.Running;
+                        HasReachedIdlePosition = false;
+                    }
+                    else if (hitObject.transform.tag == "Death") {
+                        //player fell down to death
+                        ShouldCheckBelow = false;
 
-                OnEnemyStartAttack?.Invoke(this, EventArgs.Empty);
-            }
-        }
-
-        if (ShouldCheckBelow) {
-            float rayCastDistance = hitbox.size.y/2 + 0.1f;
-
-            RaycastHit2D hitObject = Physics2D.Raycast(transform.position,Vector2.down,rayCastDistance,FloorDeathLayerMask);
-
-            if (hitObject) {
-                //player hit something
-
-                if(hitObject.transform.tag == "Floor") {
-                    //player hit the floor
-
-                    ShouldCheckBelow = false;
-
-                    state = PlayerStates.Running;
-                    HasReachedIdlePosition = false;
-                }
-                else if(hitObject.transform.tag == "Death") {
-                    //player fell down to death
-                    ShouldCheckBelow = false;
-
-                    Debug.Log("Death");
+                        Debug.Log("Death");
+                    }
                 }
             }
         }
@@ -178,5 +190,4 @@ public class PlayerManager : MonoBehaviour{
 
         ShouldCheckBelow = true;
     }
-
 }

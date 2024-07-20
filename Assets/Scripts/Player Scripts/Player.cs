@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Player : MonoBehaviour{
+public class Player : MonoBehaviour,IHasProgress{
     //Singleton
     public static Player Instance { get; private set; }
 
@@ -21,6 +21,10 @@ public class Player : MonoBehaviour{
 
     //event to send the player follow Line to move towards next position
     public event EventHandler OnMoveTowrdsNextPoint;
+    
+    //healrh events
+    public event EventHandler<IHasProgress.OnProgressChangeEventAgs> OnProgressChanged;
+    public event EventHandler OnPlayerDeath;
 
     //reference of camera
     private Camera mainCam;
@@ -42,6 +46,11 @@ public class Player : MonoBehaviour{
     [SerializeField] private PlayerCollideFloor sideCollider;
     [SerializeField] private PlayerCollideFloorDownwards downCollider;
 
+
+    //health and damage
+    private float MaxHealth;
+    private float health;
+    private float damage;
     
     private void Awake() {
         Instance = this;
@@ -56,15 +65,30 @@ public class Player : MonoBehaviour{
         hasFollowedPath = true;
         canAttack = false;
 
+        MaxHealth = 50;
+        health = MaxHealth;
+        damage = 5;
+
         InputManager.Instance.OnTouchStarted += InputManager_OnTouchStarted;
         InputManager.Instance.OnTouchEnded += InputManager_OnTouchEnded;
         followLine.OnPathFollowed += FollowLine_OnPathFollowed;
+        Enemy.OnAttack += Enemy_OnAttack;
 
         sideCollider.OnPlayerCollideWithFloorFromSide += LeftCollider_OnPlayerCollideWithFloorFromSide;
         downCollider.OnColliderFloorFromDown += DownCollider_OnColliderFloorFromDown;
 
         playerManager.OnPlayerCanAttack += PlayerManager_OnPlayerCanAttack;
 
+    }
+
+    private void Enemy_OnAttack(object sender, Enemy.OnAttackEventArgs e) {
+        health -= e.Damage;
+
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = health/MaxHealth });
+
+        if(health <= 0) {
+            OnPlayerDeath?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void PlayerManager_OnPlayerCanAttack(object sender, EventArgs e) {
@@ -111,5 +135,9 @@ public class Player : MonoBehaviour{
                 canAttack = false;
             }
         }
+    }
+
+    public float GetDamage() {
+        return damage;
     }
 }

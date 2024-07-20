@@ -279,7 +279,7 @@ Transform:
   m_GameObject: {fileID: 654422810}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.99, y: -0.4850961, z: 0}
+  m_LocalPosition: {x: 4.21, y: -0.4850961, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -779,9 +779,9 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &1859990133 stripped
+--- !u!114 &1891947697 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8938077371824232632, guid: 0e50427c9e0afca4aa36bbaf794d0cda, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2174526659220299035, guid: 0e50427c9e0afca4aa36bbaf794d0cda, type: 3}
   m_PrefabInstance: {fileID: 3845911004645086715}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -1185,7 +1185,7 @@ PrefabInstance:
     - target: {fileID: 3153990267136665983, guid: 6095468949a76274ab808966ee5166cb, type: 3}
       propertyPath: PlayerFollowCam
       value: 
-      objectReference: {fileID: 1859990133}
+      objectReference: {fileID: 1891947697}
     - target: {fileID: 6012915295526503825, guid: 6095468949a76274ab808966ee5166cb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
