@@ -70,7 +70,7 @@ public class DrawManager : MonoBehaviour,IHasProgress{
             currentLine.SetPosition(MouseWorldPos);
 
 
-            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = currentLine.GetPointsCount() / MaxPoints});
+            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = 1 - (currentLine.GetPointsCount() / MaxPoints) });
         }
     }
 
