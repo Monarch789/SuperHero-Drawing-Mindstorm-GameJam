@@ -67,13 +67,20 @@ public class PlayerFollowLine : MonoBehaviour{
         rigidbodyComponent.gravityScale = 1f;
 
         //get direction of force
-        if (FollowPositions.Length > 1)
-            Direction = (-FollowPositions[moveIndex] + FollowPositions[moveIndex - 1]).normalized;
-        else
-            Direction = FollowPositions[0] - transform.position;
 
-        rigidbodyComponent.AddForce(Direction * speed * ForceMultiplier, ForceMode2D.Force);
+        if (moveIndex < FollowPositions.Length) {
+            if (FollowPositions.Length > 1)
+                Direction = (-FollowPositions[moveIndex] + FollowPositions[moveIndex - 1]).normalized;
+            else
+                Direction = FollowPositions[0] - transform.position;
 
+            rigidbodyComponent.AddForce(Direction * speed * ForceMultiplier, ForceMode2D.Force);
+
+        }
+        else {
+            //delete any force from the rigidBody
+            rigidbodyComponent.velocity = Vector2.zero;
+        }
         OnPathFollowed?.Invoke(this, EventArgs.Empty);
     }
 

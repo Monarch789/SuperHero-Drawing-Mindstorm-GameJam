@@ -20,6 +20,9 @@ public class PlayerManager : MonoBehaviour{
     //event to send EnemyManager for enemies to start attacking
     public event EventHandler OnEnemyStartAttack;
 
+    //event to send Player that hes dead
+    public event EventHandler OnPlayerDeath;
+
     //positions for different states
     [SerializeField] private Transform IdlePosition;
     [SerializeField] private Transform AttackingPosition;
@@ -149,7 +152,7 @@ public class PlayerManager : MonoBehaviour{
                 //it is not the players turn but he still hasnt reached the idle position
 
                 //move towards the idle Position
-                transform.position = IdlePosition.position;
+                transform.position = Vector2.MoveTowards(transform.position, IdlePosition.position, speed * Time.deltaTime * 5f);
 
                 if (Vector2.Distance(transform.position, IdlePosition.position) < 0.05f) {
                     HasReachedIdlePosition = true;
@@ -178,7 +181,7 @@ public class PlayerManager : MonoBehaviour{
                         //player fell down to death
                         ShouldCheckBelow = false;
 
-                        Debug.Log("Death");
+                        OnPlayerDeath?.Invoke(this, EventArgs.Empty);
                     }
                 }
             }

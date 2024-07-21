@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DrawManager : MonoBehaviour{
+public class DrawManager : MonoBehaviour,IHasProgress{
     //Singleton
     public static DrawManager Instance {  get; private set; }
 
@@ -20,6 +21,7 @@ public class DrawManager : MonoBehaviour{
     //bool to see if we should draw i.e when the player starts pressing on the screen
     private bool ShouldStartDrawing;
 
+    public event EventHandler<IHasProgress.OnProgressChangeEventAgs> OnProgressChanged;
 
     private void Awake() {
         Instance = this;
@@ -37,11 +39,10 @@ public class DrawManager : MonoBehaviour{
 
     private void Player_OnPlayerPathFollowed(object sender, System.EventArgs e) {
         //destroy the line
-        if(currentLine == null) {
-            Debug.LogError("There is a line drawn when its not supposed to!");
+        if(currentLine != null){
+            //Destroy the line only when its there
+            Destroy(currentLine.gameObject);
         }
-
-        Destroy(currentLine.gameObject);
     }
 
     private void Player_OnDrawComplete(object sender, System.EventArgs e) {
@@ -67,6 +68,9 @@ public class DrawManager : MonoBehaviour{
             
             //say the line to extend or extrude its vertices
             currentLine.SetPosition(MouseWorldPos);
+
+
+            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = currentLine.GetPointsCount() / MaxPoints});
         }
     }
 

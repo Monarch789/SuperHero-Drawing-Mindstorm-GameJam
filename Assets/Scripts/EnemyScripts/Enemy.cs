@@ -3,7 +3,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Enemy : MonoBehaviour,IHasProgress{
+public class Enemy : MonoBehaviour,IHasProgress,IHasDeathEffect{
     //reference of Enemy Scriptable Object
     [SerializeField] private EnemySO enemyData;
 
@@ -25,6 +25,11 @@ public class Enemy : MonoBehaviour,IHasProgress{
     public static event EventHandler<OnAttackEventArgs> OnAttack;
 
     public event EventHandler<IHasProgress.OnProgressChangeEventAgs> OnProgressChanged;
+
+    public event EventHandler OnDeath;
+
+    //event to send EnemyManager
+    public static event EventHandler OnEnemyDeath;
 
     private void OnTriggerEnter2D(Collider2D other) {
         if(didCollideWhileFollowingTheLine && other.gameObject.TryGetComponent(out Player player)) {
@@ -72,7 +77,8 @@ public class Enemy : MonoBehaviour,IHasProgress{
             //send event to make the health bar
             OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = health/enemyData.Health });
             if(health <= 0) {
-                gameObject.SetActive(false);
+                OnDeath?.Invoke(this, EventArgs.Empty);
+                OnEnemyDeath?.Invoke(this, EventArgs.Empty);
             }
         }
     }

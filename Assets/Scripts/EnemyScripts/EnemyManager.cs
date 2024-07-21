@@ -50,6 +50,15 @@ public class EnemyManager : MonoBehaviour{
         Player.Instance.OnPlayerPathFollowed += Player_OnPlayerPathFollowed;
         PlayerManager.Instance.OnEnemyStartAttack += PlayerManager_OnEnemyStartAttack;
         PlayerManager.Instance.OnWaveStart += PlayerManager_OnNewWaveStart;
+        Enemy.OnEnemyDeath += Enemy_OnEnemyDeath;
+    }
+
+    private void Enemy_OnEnemyDeath(object sender, EventArgs e) {
+        EnemiesKiled++;
+
+        if(EnemiesKiled == NumberOfEnemies) {
+            allEnemiesKilled = true;
+        }
     }
 
     private void PlayerManager_OnNewWaveStart(object sender, EventArgs e) {
@@ -69,9 +78,7 @@ public class EnemyManager : MonoBehaviour{
             }
         }
 
-        if(EnemiesKiled == NumberOfEnemies) {
-            allEnemiesKilled = true;
-        }
+        SeenEnemyList.Clear();
     }
 
     public void AddEnemyInSeenList(Enemy enemy) {

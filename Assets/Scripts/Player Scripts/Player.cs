@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Player : MonoBehaviour,IHasProgress{
+public class Player : MonoBehaviour,IHasProgress,IHasDeathEffect{
     //Singleton
     public static Player Instance { get; private set; }
 
@@ -25,6 +25,9 @@ public class Player : MonoBehaviour,IHasProgress{
     //healrh events
     public event EventHandler<IHasProgress.OnProgressChangeEventAgs> OnProgressChanged;
     public event EventHandler OnPlayerDeath;
+
+    //death effect event
+    public event EventHandler OnDeath;
 
     //reference of camera
     private Camera mainCam;
@@ -78,16 +81,50 @@ public class Player : MonoBehaviour,IHasProgress{
         downCollider.OnColliderFloorFromDown += DownCollider_OnColliderFloorFromDown;
 
         playerManager.OnPlayerCanAttack += PlayerManager_OnPlayerCanAttack;
+        playerManager.OnPlayerDeath += PlayerManager_OnPlayerDeath;
 
+        SpikeWall.OnPlayerCollisionWithSpikeWall += SpikeWall_OnPlayerCollisionWithSpikeWall;
+        HealthBuff.OnHealthAdd += HealthBuff_OnHealthAdd;
+        DamageBuff.OnDamageAdd += DamageBuff_OnDamageAdd;
+        
+    }
+
+    private void PlayerManager_OnPlayerDeath(object sender, EventArgs e) {
+        OnDeath?.Invoke(this,EventArgs.Empty);
+    }
+
+    private void DamageBuff_OnDamageAdd(object sender, DamageBuff.OnDamageAddEventArgs e) {
+        damage += e.addDamage;
+    }
+
+    private void HealthBuff_OnHealthAdd(object sender, HealthBuff.OnHealthAddEventArgs e) {
+        health += e.addHealth;
+
+        health = Mathf.Clamp(health, 0f, MaxHealth);
+
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = health / MaxHealth });
+    }
+
+    private void SpikeWall_OnPlayerCollisionWithSpikeWall(object sender, EventArgs e) {
+        //send events to stop following the line, and stop movement
+        OnPlayerMoveStop?.Invoke(this, EventArgs.Empty);
+
+        OnPlayerDeath?.Invoke(this, EventArgs.Empty);
+        OnDeath?.Invoke(this,EventArgs.Empty);
+
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = 0f });
     }
 
     private void Enemy_OnAttack(object sender, Enemy.OnAttackEventArgs e) {
         health -= e.Damage;
 
+        health = Mathf.Clamp(health, 0f, MaxHealth);
+
         OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = health/MaxHealth });
 
         if(health <= 0) {
             OnPlayerDeath?.Invoke(this, EventArgs.Empty);
+            OnDeath?.Invoke(this, EventArgs.Empty);
         }
     }
 
