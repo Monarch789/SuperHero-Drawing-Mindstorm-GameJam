@@ -1,14 +1,13 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerFollowLine : MonoBehaviour{
+public class PlayerFollowLine : MonoBehaviour
+{
     //reference of player
     [SerializeField] private Player player;
-    
+
     //general variables
-    private float speed;
+    [SerializeField] private float speed;
     private float MinDistanceRequired;
     private float ForceMultiplier;
 
@@ -30,26 +29,30 @@ public class PlayerFollowLine : MonoBehaviour{
     //direction of force to be applied after its done
     private Vector2 Direction;
 
-    private void Awake() {
+    private void Awake()
+    {
         rigidbodyComponent = GetComponent<Rigidbody2D>();
     }
 
-    private void Start() {
+    private void Start()
+    {
         ShouldStartFollow = false;
-        speed = 5f;
+        //speed = 5f;
         MinDistanceRequired = 0.05f;
         ForceMultiplier = 65f;
 
         player.OnDrawComplete += Player_OnDrawComplete;
         player.OnPlayerMoveStop += Player_OnPlayerMoveStop;
         player.OnMoveTowrdsNextPoint += Player_OnMoveTowrdsNextPoint;
-    
+
     }
 
-    private void Player_OnMoveTowrdsNextPoint(object sender, EventArgs e) {
+    private void Player_OnMoveTowrdsNextPoint(object sender, EventArgs e)
+    {
         moveIndex++;
 
-        if(moveIndex > FollowPositions.Length-1 && ShouldStartFollow /* ShouldStartFollow bcz this event is called 2 times so it says to destroy line 2 times when the line has been destroyed*/) {
+        if (moveIndex > FollowPositions.Length - 1 && ShouldStartFollow /* ShouldStartFollow bcz this event is called 2 times so it says to destroy line 2 times when the line has been destroyed*/)
+        {
             //the player has reached the final position on the line
             ShouldStartFollow = false;
 
@@ -61,14 +64,16 @@ public class PlayerFollowLine : MonoBehaviour{
         }
     }
 
-    private void Player_OnPlayerMoveStop(object sender, EventArgs e) {
+    private void Player_OnPlayerMoveStop(object sender, EventArgs e)
+    {
         ShouldStartFollow = false;
 
         rigidbodyComponent.gravityScale = 1f;
 
         //get direction of force
 
-        if (moveIndex < FollowPositions.Length) {
+        if (moveIndex < FollowPositions.Length)
+        {
             if (FollowPositions.Length > 1)
                 Direction = (-FollowPositions[moveIndex] + FollowPositions[moveIndex - 1]).normalized;
             else
@@ -77,19 +82,21 @@ public class PlayerFollowLine : MonoBehaviour{
             rigidbodyComponent.AddForce(Direction * speed * ForceMultiplier, ForceMode2D.Force);
 
         }
-        else {
+        else
+        {
             //delete any force from the rigidBody
             rigidbodyComponent.velocity = Vector2.zero;
         }
         OnPathFollowed?.Invoke(this, EventArgs.Empty);
     }
 
-    private void Player_OnDrawComplete(object sender, System.EventArgs e) {
+    private void Player_OnDrawComplete(object sender, System.EventArgs e)
+    {
         //Get the positions for the following
         FollowPositions = new Vector3[DrawManager.Instance.GetLength()];
 
         DrawManager.Instance.GetPositions(FollowPositions);
-        
+
         ShouldStartFollow = true;
         moveIndex = 0;
 
@@ -101,8 +108,10 @@ public class PlayerFollowLine : MonoBehaviour{
     }
 
 
-    private void Update() {
-        if (ShouldStartFollow) {
+    private void Update()
+    {
+        if (ShouldStartFollow)
+        {
 
             //turn off gravity
             rigidbodyComponent.gravityScale = 0f;
@@ -111,15 +120,17 @@ public class PlayerFollowLine : MonoBehaviour{
             Vector2 currentPosition = FollowPositions[moveIndex];
 
             //move towards the positon
-            transform.position = Vector2.MoveTowards(transform.position,currentPosition,Time.deltaTime * speed);
-        
+            transform.position = Vector2.MoveTowards(transform.position, currentPosition, Time.deltaTime * speed);
+
             //see if the distance is less than minDistaceReqired
-            if(Vector2.Distance(transform.position,currentPosition) < MinDistanceRequired) {
+            if (Vector2.Distance(transform.position, currentPosition) < MinDistanceRequired)
+            {
                 //the player has almost reached the next position
 
                 moveIndex++;
 
-                if(moveIndex > FollowPositions.Length - 1) {
+                if (moveIndex > FollowPositions.Length - 1)
+                {
                     //the player has reached the final position on the line
                     ShouldStartFollow = false;
 
