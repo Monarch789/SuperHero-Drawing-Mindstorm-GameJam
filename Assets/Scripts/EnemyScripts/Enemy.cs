@@ -21,11 +21,16 @@ public class Enemy : MonoBehaviour,IHasProgress,IHasDeathEffect{
     //event to send EnemyManager
     public static event EventHandler OnEnemyDeath;
 
+    //events for animation
+    public event EventHandler OnDead;
+    public event EventHandler OnThisAttack;
+
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.TryGetComponent(out Player player)) {
             //attack the player first then reduce health
             OnAttack?.Invoke(this, new OnAttackEventArgs { Damage = enemyData.Damage });
-            
+            OnThisAttack?.Invoke(this,EventArgs.Empty);
+
             health -= player.GetDamage();
 
             health = Mathf.Clamp(health, 0, enemyData.Health);
@@ -36,6 +41,7 @@ public class Enemy : MonoBehaviour,IHasProgress,IHasDeathEffect{
                 //enemy is dead
                 OnDeath?.Invoke(this, EventArgs.Empty);
                 OnEnemyDeath?.Invoke(this, EventArgs.Empty);
+                OnDead?.Invoke(this, EventArgs.Empty);
             }
         }
     }
@@ -43,9 +49,5 @@ public class Enemy : MonoBehaviour,IHasProgress,IHasDeathEffect{
 
     private void Start() {
         health = enemyData.Health;
-
-        //spawn the enemy model
-        Instantiate(enemyData.EnemyModelPrefab,transform);
-
     }
 }

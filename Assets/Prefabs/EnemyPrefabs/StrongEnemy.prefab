@@ -485,7 +485,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyData: {fileID: 11400000, guid: b91acbc7ceaf0744eae22713a23fa33d, type: 2}
-  readyToAttackImage: {fileID: 3874868697652065140}
 --- !u!1 &9199579587941117558
 GameObject:
   m_ObjectHideFlags: 0

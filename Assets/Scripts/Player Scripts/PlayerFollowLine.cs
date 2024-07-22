@@ -37,9 +37,9 @@ public class PlayerFollowLine : MonoBehaviour
     private void Start()
     {
         ShouldStartFollow = false;
-        //speed = 5f;
+        
         MinDistanceRequired = 0.05f;
-        ForceMultiplier = 65f;
+        ForceMultiplier = 20f;
 
         player.OnDrawComplete += Player_OnDrawComplete;
         player.OnPlayerMoveStop += Player_OnPlayerMoveStop;

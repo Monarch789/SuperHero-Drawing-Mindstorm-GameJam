@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_eyebat_Cartoon
-  m_Shader: {fileID: 4800000, guid: 3e304acfb50351649a51471ec02e7192, type: 3}
+  m_Shader: {fileID: 4800000, guid: 92b6d82f215bd9c48882601079dcbf32, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
