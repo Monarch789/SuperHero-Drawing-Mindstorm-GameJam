@@ -17,11 +17,11 @@ public class PlayerManager : MonoBehaviour{
     //event to send camera manager to put the camera on waves display
     public event EventHandler OnWaveStart;
 
-    //event to send EnemyManager for enemies to start attacking
-    public event EventHandler OnEnemyStartAttack;
-
     //event to send Player that hes dead
     public event EventHandler OnPlayerDeath;
+
+    //event to say to the floor to disappear
+    public event EventHandler OnFloorDisappear;
 
     //positions for different states
     [SerializeField] private Transform IdlePosition;
@@ -33,14 +33,12 @@ public class PlayerManager : MonoBehaviour{
     private BoxCollider2D hitbox;
     private Rigidbody2D rigidBody;
 
-
     private float speed;
 
     private bool isPlayerDead;
 
     //Different states of the player
     public enum PlayerStates {
-        Idle,
         Running,
         Attacking,
         Jumping,
@@ -55,9 +53,6 @@ public class PlayerManager : MonoBehaviour{
 
     //bool to see if the player is falling so check below
     private bool ShouldCheckBelow;
-
-    //bool to see if it is player turn
-    private bool isPlayerTurn;
 
     private void Awake() {
         Instance = this;
@@ -75,7 +70,6 @@ public class PlayerManager : MonoBehaviour{
         state = PlayerStates.Running;
 
         isPlayerDead = false;
-        isPlayerTurn = true;
         speed = 5f;
 
 
@@ -83,19 +77,10 @@ public class PlayerManager : MonoBehaviour{
         player.OnPlayerMoveStop += Player_OnPlayerMoveStop;
         player.OnPlayerPathFollowed += Player_OnPlayerPathFollowed;
         player.OnPlayerDeath += Player_OnPlayerDeath;
-
-        EnemyManager.Instance.OnStartAgain += EnemyManager_OnStartAgain;
     }
 
     private void Player_OnPlayerDeath(object sender, EventArgs e) {
         isPlayerDead = true;
-    }
-
-    private void EnemyManager_OnStartAgain(object sender, EventArgs e) {
-        isPlayerTurn = true;
-
-        HasReachedIdlePosition = false;
-        HasReachedAttackingPosition = false;
     }
 
     private void Player_OnPlayerPathFollowed(object sender, EventArgs e) {
@@ -113,52 +98,36 @@ public class PlayerManager : MonoBehaviour{
     private void Update() {
         if (!isPlayerDead) {
             //if the layer is still alive then make him go towards the idle and attack positions
+            
+            rigidBody.gravityScale = 0f;
 
-            if (isPlayerTurn) {
+            if (!HasReachedIdlePosition) {
+                //the player has not reached idle position
 
-                rigidBody.gravityScale = 0f;
-
-                if (!HasReachedIdlePosition) {
-                    //the player has not reached idle position
-
-                    transform.position = Vector2.MoveTowards(transform.position, IdlePosition.position, speed * Time.deltaTime);
-
-                    if (Vector2.Distance(transform.position, IdlePosition.position) < 0.05f) {
-                        HasReachedIdlePosition = true;
-
-                        OnWaveStart?.Invoke(this, EventArgs.Empty);
-
-                        state = PlayerStates.Jumping;
-                    }
-                }
-                else if (!HasReachedAttackingPosition) {
-                    //the player has reached idle position and is now attacking
-
-                    transform.position = Vector2.MoveTowards(transform.position, AttackingPosition.position, speed * Time.deltaTime);
-
-                    if (Vector2.Distance(transform.position, AttackingPosition.position) < 0.05f) {
-                        HasReachedAttackingPosition = true;
-                    }
-                }
-                else {
-                    //player has reached attacking position
-
-                    isPlayerTurn = false;
-                    OnPlayerCanAttack?.Invoke(this, EventArgs.Empty);
-                }
-            }
-
-            else if (!HasReachedIdlePosition) {
-                //it is not the players turn but he still hasnt reached the idle position
-
-                //move towards the idle Position
-                transform.position = Vector2.MoveTowards(transform.position, IdlePosition.position, speed * Time.deltaTime * 5f);
+                transform.position = Vector2.MoveTowards(transform.position, IdlePosition.position, speed * Time.deltaTime);
 
                 if (Vector2.Distance(transform.position, IdlePosition.position) < 0.05f) {
                     HasReachedIdlePosition = true;
 
-                    OnEnemyStartAttack?.Invoke(this, EventArgs.Empty);
+                    OnWaveStart?.Invoke(this, EventArgs.Empty);
+
+                    state = PlayerStates.Jumping;
                 }
+            }
+            else if (!HasReachedAttackingPosition) {
+                //the player has reached idle position and is now attacking
+
+                transform.position = Vector2.MoveTowards(transform.position, AttackingPosition.position, speed * Time.deltaTime);
+
+                if (Vector2.Distance(transform.position, AttackingPosition.position) < 0.05f) {
+                    HasReachedAttackingPosition = true;
+
+                    OnFloorDisappear?.Invoke(this, EventArgs.Empty);
+                }
+            }
+            else {
+                //player has reached attacking position
+                OnPlayerCanAttack?.Invoke(this, EventArgs.Empty);
             }
 
             if (ShouldCheckBelow) {
