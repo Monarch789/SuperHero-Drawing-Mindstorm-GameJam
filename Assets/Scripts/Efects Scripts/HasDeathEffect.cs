@@ -36,4 +36,8 @@ public class HasDeathEffect : MonoBehaviour{
 
         IHasDeathEffectGameObject.SetActive(false);
     }
+
+    private void OnDestroy() {
+        hasDeathEffect.OnDeath -= HasDeathEffect_OnDeath;
+    }
 }

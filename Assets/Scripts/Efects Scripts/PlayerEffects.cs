@@ -25,4 +25,9 @@ public class PlayerEffects : MonoBehaviour{
         newDamageParticles.transform.parent = transform;
     }
 
+    private void OnDestroy() {
+        DamageBuff.OnDamageAdd -= DamageBuff_OnDamageAdd;
+        HealthBuff.OnHealthAdd -= HealthBuff_OnHealthAdd;
+    }
+
 }

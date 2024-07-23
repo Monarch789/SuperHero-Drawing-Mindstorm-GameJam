@@ -29,4 +29,9 @@ public class ProgressBarUI : MonoBehaviour{
     private void HasProgress_OnProgressChanged(object sender, IHasProgress.OnProgressChangeEventAgs e) {
         barImage.fillAmount = e.progressAmount;
     }
+
+    private void OnDestroy() {
+        hasProgress.OnProgressChanged -= HasProgress_OnProgressChanged;
+
+    }
 }

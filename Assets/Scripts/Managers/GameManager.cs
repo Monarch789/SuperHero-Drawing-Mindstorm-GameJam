@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour{
 
     //int to see ow many enemies have been killed
     private int EnemiesKilled;
+    private bool gamePaused = false;
 
     private void Awake() {
         Instance = this;
@@ -25,6 +26,18 @@ public class GameManager : MonoBehaviour{
         Enemy.OnEnemyDeath += Enemy_OnEnemyDeath;
 
         Player.Instance.OnDeath += Player_OnDeath;
+        PauseMenu.Instance.OnPauseButtonClick += PauseMenu_OnPauseButtonClick;
+    }
+
+    private void PauseMenu_OnPauseButtonClick(object sender, System.EventArgs e) {
+        gamePaused = !gamePaused;
+
+        if (gamePaused) {
+            Time.timeScale = 0f;
+        }
+        else {
+            Time.timeScale = 1f;
+        }
     }
 
     private void Player_OnDeath(object sender, System.EventArgs e) {
@@ -50,5 +63,13 @@ public class GameManager : MonoBehaviour{
 
     private void Enemy_OnEnemyDeath(object sender, System.EventArgs e) {
         EnemiesKilled++;
+    }
+
+    private void OnDestroy() {
+        Enemy.OnEnemyDeath -= Enemy_OnEnemyDeath;
+
+        Player.Instance.OnDeath -= Player_OnDeath;
+
+        PauseMenu.Instance.OnPauseButtonClick -= PauseMenu_OnPauseButtonClick;
     }
 }
