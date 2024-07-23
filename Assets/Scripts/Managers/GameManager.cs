@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,9 +13,12 @@ public class GameManager : MonoBehaviour{
     [SerializeField] private int TwoStarEnemies;
     [SerializeField] private int ThreeStarEnemies;
 
+    //events of Pause and UnPause to send other scripts to not do stuff
+    public event EventHandler OnPause;
+    public event EventHandler OnUnPause;
+
     //int to see ow many enemies have been killed
     private int EnemiesKilled;
-    private bool gamePaused = false;
 
     private void Awake() {
         Instance = this;
@@ -27,17 +31,19 @@ public class GameManager : MonoBehaviour{
 
         Player.Instance.OnDeath += Player_OnDeath;
         PauseMenu.Instance.OnPauseButtonClick += PauseMenu_OnPauseButtonClick;
+        PauseMenu.Instance.OnPlayButtonClick += PauseMenu_OnPlayButtonClick;
+    }
+
+    private void PauseMenu_OnPlayButtonClick(object sender, System.EventArgs e) {
+        Time.timeScale = 1f;
+
+        OnUnPause?.Invoke(this, EventArgs.Empty);
     }
 
     private void PauseMenu_OnPauseButtonClick(object sender, System.EventArgs e) {
-        gamePaused = !gamePaused;
+        Time.timeScale = 0f;
 
-        if (gamePaused) {
-            Time.timeScale = 0f;
-        }
-        else {
-            Time.timeScale = 1f;
-        }
+        OnPause?.Invoke(this, EventArgs.Empty);
     }
 
     private void Player_OnDeath(object sender, System.EventArgs e) {
@@ -67,9 +73,8 @@ public class GameManager : MonoBehaviour{
 
     private void OnDestroy() {
         Enemy.OnEnemyDeath -= Enemy_OnEnemyDeath;
-
         Player.Instance.OnDeath -= Player_OnDeath;
-
         PauseMenu.Instance.OnPauseButtonClick -= PauseMenu_OnPauseButtonClick;
+        PauseMenu.Instance.OnPlayButtonClick -= PauseMenu_OnPlayButtonClick;
     }
 }

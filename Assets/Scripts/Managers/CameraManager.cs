@@ -20,4 +20,8 @@ public class CameraManager : MonoBehaviour{
         PlayerFollowCam.Priority = 0;
         WaveCam.Priority = 1;
     }
+
+    private void OnDestroy() {
+        PlayerManager.Instance.OnWaveStart -= PlayerManager_OnNewWaveStart;
+    }
 }

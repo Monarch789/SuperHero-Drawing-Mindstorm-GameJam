@@ -81,4 +81,10 @@ public class DrawManager : MonoBehaviour,IHasProgress{
     public int GetLength() {
         return currentLine.GetPointsCount();
     }
+
+    private void OnDestroy() {
+        Player.Instance.OnPlayerTouch -= Player_OnPlayerTouch;
+        Player.Instance.OnDrawComplete -= Player_OnDrawComplete;
+        Player.Instance.OnPlayerPathFollowed -= Player_OnPlayerPathFollowed;
+    }
 }

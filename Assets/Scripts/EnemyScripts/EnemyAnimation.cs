@@ -28,4 +28,9 @@ public class EnemyAnimation : MonoBehaviour{
     private void Enemy_OnDead(object sender, System.EventArgs e) {
         animator.SetBool(DeadBool,true);
     }
+
+    private void OnDestroy() {
+        enemy.OnDead -= Enemy_OnDead;
+        enemy.OnThisAttack -= Enemy_OnThisAttack;
+    }
 }

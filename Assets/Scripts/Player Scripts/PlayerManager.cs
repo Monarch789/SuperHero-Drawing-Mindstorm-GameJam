@@ -162,4 +162,11 @@ public class PlayerManager : MonoBehaviour{
 
         ShouldCheckBelow = true;
     }
+
+    private void OnDestroy() {
+        player.OnDrawComplete -= Player_OnDrawComplete;
+        player.OnPlayerMoveStop -= Player_OnPlayerMoveStop;
+        player.OnPlayerPathFollowed -= Player_OnPlayerPathFollowed;
+        player.OnPlayerDeath -= Player_OnPlayerDeath;
+    }
 }

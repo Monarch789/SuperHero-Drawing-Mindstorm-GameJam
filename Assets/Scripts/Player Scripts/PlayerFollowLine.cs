@@ -143,4 +143,10 @@ public class PlayerFollowLine : MonoBehaviour
             }
         }
     }
+
+    private void OnDestroy() {
+        player.OnDrawComplete -= Player_OnDrawComplete;
+        player.OnPlayerMoveStop -= Player_OnPlayerMoveStop;
+        player.OnMoveTowrdsNextPoint -= Player_OnMoveTowrdsNextPoint;
+    }
 }

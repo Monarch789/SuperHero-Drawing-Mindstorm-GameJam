@@ -41,6 +41,9 @@ public class Player : MonoBehaviour,IHasProgress,IHasDeathEffect{
     //bool to see if the player can atack
     private bool canAttack;
 
+    //bool to see that if the gaem is paused only then allow line drawing
+    private bool isGamePaused;
+
     //reference of the player scipts
     private PlayerFollowLine followLine;
     private PlayerManager playerManager;
@@ -67,6 +70,7 @@ public class Player : MonoBehaviour,IHasProgress,IHasDeathEffect{
         didDrawFromPlayer = false;
         hasFollowedPath = true;
         canAttack = false;
+        isGamePaused = false;
 
         MaxHealth = 50;
         health = MaxHealth;
@@ -86,7 +90,18 @@ public class Player : MonoBehaviour,IHasProgress,IHasDeathEffect{
         SpikeWall.OnPlayerCollisionWithSpikeWall += SpikeWall_OnPlayerCollisionWithSpikeWall;
         HealthBuff.OnHealthAdd += HealthBuff_OnHealthAdd;
         DamageBuff.OnDamageAdd += DamageBuff_OnDamageAdd;
+
+        GameManager.Instance.OnPause += GameManager_OnPause;
+        GameManager.Instance.OnUnPause += GameManager_OnUnPause;
         
+    }
+
+    private void GameManager_OnUnPause(object sender, EventArgs e) {
+        isGamePaused = false;
+    }
+
+    private void GameManager_OnPause(object sender, EventArgs e) {
+        isGamePaused = true;
     }
 
     private void PlayerManager_OnPlayerDeath(object sender, EventArgs e) {
@@ -157,7 +172,7 @@ public class Player : MonoBehaviour,IHasProgress,IHasDeathEffect{
     }
 
     private void InputManager_OnTouchStarted(object sender, System.EventArgs e) {
-        if (canAttack && hasFollowedPath) {
+        if (!isGamePaused && canAttack && hasFollowedPath) {
 
             //see if the touch is on the player
             var rayCastHit = Physics2D.GetRayIntersection(mainCam.ScreenPointToRay(InputManager.Instance.GetTouchPosition()));
@@ -176,5 +191,25 @@ public class Player : MonoBehaviour,IHasProgress,IHasDeathEffect{
 
     public float GetDamage() {
         return damage;
+    }
+
+    private void OnDestroy() {
+        InputManager.Instance.OnTouchStarted -= InputManager_OnTouchStarted;
+        InputManager.Instance.OnTouchEnded -= InputManager_OnTouchEnded;
+        followLine.OnPathFollowed -= FollowLine_OnPathFollowed;
+        Enemy.OnAttack -= Enemy_OnAttack;
+
+        sideCollider.OnPlayerCollideWithFloorFromSide -= LeftCollider_OnPlayerCollideWithFloorFromSide;
+        downCollider.OnColliderFloorFromDown -= DownCollider_OnColliderFloorFromDown;
+
+        playerManager.OnPlayerCanAttack -= PlayerManager_OnPlayerCanAttack;
+        playerManager.OnPlayerDeath -= PlayerManager_OnPlayerDeath;
+
+        SpikeWall.OnPlayerCollisionWithSpikeWall -= SpikeWall_OnPlayerCollisionWithSpikeWall;
+        HealthBuff.OnHealthAdd -= HealthBuff_OnHealthAdd;
+        DamageBuff.OnDamageAdd -= DamageBuff_OnDamageAdd;
+
+        GameManager.Instance.OnPause -= GameManager_OnPause;
+        GameManager.Instance.OnUnPause -= GameManager_OnUnPause;
     }
 }

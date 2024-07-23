@@ -32,4 +32,9 @@ public class InkBarUI : MonoBehaviour{
         gameObject.SetActive(true);
     }
 
+    private void OnDestroy() {
+        Player.Instance.OnPlayerTouch -= Player_OnPlayerTouch;
+        Player.Instance.OnDrawComplete -= Player_OnDrawComplete;
+    }
+
 }
