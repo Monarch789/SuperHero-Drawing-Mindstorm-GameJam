@@ -1,12 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour{
+public class PlayerManager : MonoBehaviour
+{
     //Singleton
-    public static PlayerManager Instance {  get; private set; }
+    public static PlayerManager Instance { get; private set; }
 
     //player reference
     private Player player;
@@ -38,7 +36,8 @@ public class PlayerManager : MonoBehaviour{
     private bool isPlayerDead;
 
     //Different states of the player
-    public enum PlayerStates {
+    public enum PlayerStates
+    {
         Running,
         Attacking,
         Jumping,
@@ -54,15 +53,17 @@ public class PlayerManager : MonoBehaviour{
     //bool to see if the player is falling so check below
     private bool ShouldCheckBelow;
 
-    private void Awake() {
+    private void Awake()
+    {
         Instance = this;
-    
+
         hitbox = GetComponent<BoxCollider2D>();
         player = GetComponent<Player>();
         rigidBody = GetComponent<Rigidbody2D>();
     }
 
-    private void Start() {
+    private void Start()
+    {
         HasReachedAttackingPosition = false;
         HasReachedIdlePosition = false;
         ShouldCheckBelow = false;
@@ -79,34 +80,42 @@ public class PlayerManager : MonoBehaviour{
         player.OnPlayerDeath += Player_OnPlayerDeath;
     }
 
-    private void Player_OnPlayerDeath(object sender, EventArgs e) {
+    private void Player_OnPlayerDeath(object sender, EventArgs e)
+    {
         isPlayerDead = true;
     }
 
-    private void Player_OnPlayerPathFollowed(object sender, EventArgs e) {
+    private void Player_OnPlayerPathFollowed(object sender, EventArgs e)
+    {
         PlayerStop();
     }
 
-    private void Player_OnPlayerMoveStop(object sender, EventArgs e) {
+    private void Player_OnPlayerMoveStop(object sender, EventArgs e)
+    {
         PlayerStop();
     }
 
-    private void Player_OnDrawComplete(object sender, EventArgs e) {
+    private void Player_OnDrawComplete(object sender, EventArgs e)
+    {
         state = PlayerStates.Attacking;
     }
 
-    private void Update() {
-        if (!isPlayerDead) {
+    private void Update()
+    {
+        if (!isPlayerDead)
+        {
             //if the layer is still alive then make him go towards the idle and attack positions
-            
+
             rigidBody.gravityScale = 0f;
 
-            if (!HasReachedIdlePosition) {
+            if (!HasReachedIdlePosition)
+            {
                 //the player has not reached idle position
 
                 transform.position = Vector2.MoveTowards(transform.position, IdlePosition.position, speed * Time.deltaTime);
 
-                if (Vector2.Distance(transform.position, IdlePosition.position) < 0.05f) {
+                if (Vector2.Distance(transform.position, IdlePosition.position) < 0.05f)
+                {
                     HasReachedIdlePosition = true;
 
                     OnWaveStart?.Invoke(this, EventArgs.Empty);
@@ -114,31 +123,37 @@ public class PlayerManager : MonoBehaviour{
                     state = PlayerStates.Jumping;
                 }
             }
-            else if (!HasReachedAttackingPosition) {
+            else if (!HasReachedAttackingPosition)
+            {
                 //the player has reached idle position and is now attacking
 
                 transform.position = Vector2.MoveTowards(transform.position, AttackingPosition.position, speed * Time.deltaTime);
 
-                if (Vector2.Distance(transform.position, AttackingPosition.position) < 0.05f) {
+                if (Vector2.Distance(transform.position, AttackingPosition.position) < 0.05f)
+                {
                     HasReachedAttackingPosition = true;
 
                     OnFloorDisappear?.Invoke(this, EventArgs.Empty);
                 }
             }
-            else {
+            else
+            {
                 //player has reached attacking position
                 OnPlayerCanAttack?.Invoke(this, EventArgs.Empty);
             }
 
-            if (ShouldCheckBelow) {
+            if (ShouldCheckBelow)
+            {
                 float rayCastDistance = hitbox.size.y / 2 + 0.1f;
 
                 RaycastHit2D hitObject = Physics2D.Raycast(transform.position, Vector2.down, rayCastDistance, FloorDeathLayerMask);
 
-                if (hitObject) {
+                if (hitObject)
+                {
                     //player hit something
 
-                    if (hitObject.transform.tag == "Floor") {
+                    if (hitObject.transform.tag == "Floor")
+                    {
                         //player hit the floor
 
                         ShouldCheckBelow = false;
@@ -146,7 +161,8 @@ public class PlayerManager : MonoBehaviour{
                         state = PlayerStates.Running;
                         HasReachedIdlePosition = false;
                     }
-                    else if (hitObject.transform.tag == "Death") {
+                    else if (hitObject.transform.tag == "Death")
+                    {
                         //player fell down to death
                         ShouldCheckBelow = false;
 
@@ -157,16 +173,24 @@ public class PlayerManager : MonoBehaviour{
         }
     }
 
-    private void PlayerStop() {
+    private void PlayerStop()
+    {
         state = PlayerStates.Falling;
 
         ShouldCheckBelow = true;
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
         player.OnDrawComplete -= Player_OnDrawComplete;
         player.OnPlayerMoveStop -= Player_OnPlayerMoveStop;
         player.OnPlayerPathFollowed -= Player_OnPlayerPathFollowed;
         player.OnPlayerDeath -= Player_OnPlayerDeath;
     }
+    public PlayerStates GetState()
+    {
+        return state;
+    }
+
+
 }

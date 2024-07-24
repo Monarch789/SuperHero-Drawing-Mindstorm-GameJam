@@ -1,15 +1,13 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Player : MonoBehaviour,IHasProgress,IHasDeathEffect{
+public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect
+{
     //Singleton
     public static Player Instance { get; private set; }
 
     //event to say to draw manager to start drawing
-    public class OnPlayerTouchEventArgs: EventArgs { public Camera lookCamera; }
+    public class OnPlayerTouchEventArgs : EventArgs { public Camera lookCamera; }
 
     public event EventHandler<OnPlayerTouchEventArgs> OnPlayerTouch;
     public event EventHandler OnDrawComplete;
@@ -21,7 +19,7 @@ public class Player : MonoBehaviour,IHasProgress,IHasDeathEffect{
 
     //event to send the player follow Line to move towards next position
     public event EventHandler OnMoveTowrdsNextPoint;
-    
+
     //healrh events
     public event EventHandler<IHasProgress.OnProgressChangeEventAgs> OnProgressChanged;
     public event EventHandler OnPlayerDeath;
@@ -57,15 +55,17 @@ public class Player : MonoBehaviour,IHasProgress,IHasDeathEffect{
     private float MaxHealth;
     private float health;
     private float damage;
-    
-    private void Awake() {
+
+    private void Awake()
+    {
         Instance = this;
-    
+
         followLine = GetComponent<PlayerFollowLine>();
         playerManager = GetComponent<PlayerManager>();
     }
 
-    private void Start() {
+    private void Start()
+    {
         mainCam = Camera.main;
         didDrawFromPlayer = false;
         hasFollowedPath = true;
@@ -93,26 +93,31 @@ public class Player : MonoBehaviour,IHasProgress,IHasDeathEffect{
 
         GameManager.Instance.OnPause += GameManager_OnPause;
         GameManager.Instance.OnUnPause += GameManager_OnUnPause;
-        
+
     }
 
-    private void GameManager_OnUnPause(object sender, EventArgs e) {
+    private void GameManager_OnUnPause(object sender, EventArgs e)
+    {
         isGamePaused = false;
     }
 
-    private void GameManager_OnPause(object sender, EventArgs e) {
+    private void GameManager_OnPause(object sender, EventArgs e)
+    {
         isGamePaused = true;
     }
 
-    private void PlayerManager_OnPlayerDeath(object sender, EventArgs e) {
-        OnDeath?.Invoke(this,EventArgs.Empty);
+    private void PlayerManager_OnPlayerDeath(object sender, EventArgs e)
+    {
+        OnDeath?.Invoke(this, EventArgs.Empty);
     }
 
-    private void DamageBuff_OnDamageAdd(object sender, DamageBuff.OnDamageAddEventArgs e) {
+    private void DamageBuff_OnDamageAdd(object sender, DamageBuff.OnDamageAddEventArgs e)
+    {
         damage += e.addDamage;
     }
 
-    private void HealthBuff_OnHealthAdd(object sender, HealthBuff.OnHealthAddEventArgs e) {
+    private void HealthBuff_OnHealthAdd(object sender, HealthBuff.OnHealthAddEventArgs e)
+    {
         health += e.addHealth;
 
         health = Mathf.Clamp(health, 0f, MaxHealth);
@@ -120,50 +125,59 @@ public class Player : MonoBehaviour,IHasProgress,IHasDeathEffect{
         OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = health / MaxHealth });
     }
 
-    private void SpikeWall_OnPlayerCollisionWithSpikeWall(object sender, EventArgs e) {
+    private void SpikeWall_OnPlayerCollisionWithSpikeWall(object sender, EventArgs e)
+    {
         //send events to stop following the line, and stop movement
         OnPlayerMoveStop?.Invoke(this, EventArgs.Empty);
 
         OnPlayerDeath?.Invoke(this, EventArgs.Empty);
-        OnDeath?.Invoke(this,EventArgs.Empty);
+        OnDeath?.Invoke(this, EventArgs.Empty);
 
         OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = 0f });
     }
 
-    private void Enemy_OnAttack(object sender, Enemy.OnAttackEventArgs e) {
+    private void Enemy_OnAttack(object sender, Enemy.OnAttackEventArgs e)
+    {
         health -= e.Damage;
 
         health = Mathf.Clamp(health, 0f, MaxHealth);
 
-        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = health/MaxHealth });
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = health / MaxHealth });
 
-        if(health <= 0) {
+        if (health <= 0)
+        {
             OnPlayerDeath?.Invoke(this, EventArgs.Empty);
             OnDeath?.Invoke(this, EventArgs.Empty);
         }
     }
 
-    private void PlayerManager_OnPlayerCanAttack(object sender, EventArgs e) {
+    private void PlayerManager_OnPlayerCanAttack(object sender, EventArgs e)
+    {
         canAttack = true;
     }
 
-    private void DownCollider_OnColliderFloorFromDown(object sender, EventArgs e) {
+    private void DownCollider_OnColliderFloorFromDown(object sender, EventArgs e)
+    {
         OnMoveTowrdsNextPoint?.Invoke(this, EventArgs.Empty);
     }
 
-    private void LeftCollider_OnPlayerCollideWithFloorFromSide(object sender, EventArgs e) {
+    private void LeftCollider_OnPlayerCollideWithFloorFromSide(object sender, EventArgs e)
+    {
         OnPlayerMoveStop?.Invoke(this, EventArgs.Empty);
     }
 
-    private void FollowLine_OnPathFollowed(object sender, EventArgs e) {
+    private void FollowLine_OnPathFollowed(object sender, EventArgs e)
+    {
         hasFollowedPath = true;
 
         //send event to say to draw manager to destory line
         OnPlayerPathFollowed?.Invoke(this, EventArgs.Empty);
     }
 
-    private void InputManager_OnTouchEnded(object sender, EventArgs e) {
-        if (didDrawFromPlayer) {
+    private void InputManager_OnTouchEnded(object sender, EventArgs e)
+    {
+        if (didDrawFromPlayer)
+        {
             //the player started from he hitbox so there are lines drawn
 
             OnDrawComplete?.Invoke(this, EventArgs.Empty);
@@ -171,13 +185,16 @@ public class Player : MonoBehaviour,IHasProgress,IHasDeathEffect{
         }
     }
 
-    private void InputManager_OnTouchStarted(object sender, System.EventArgs e) {
-        if (!isGamePaused && canAttack && hasFollowedPath) {
+    private void InputManager_OnTouchStarted(object sender, System.EventArgs e)
+    {
+        if (!isGamePaused && canAttack && hasFollowedPath)
+        {
 
             //see if the touch is on the player
             var rayCastHit = Physics2D.GetRayIntersection(mainCam.ScreenPointToRay(InputManager.Instance.GetTouchPosition()));
 
-            if (rayCastHit /*player touch something*/ && rayCastHit.collider.gameObject.TryGetComponent(out Player player)) {
+            if (rayCastHit /*player touch something*/ && rayCastHit.collider.gameObject.TryGetComponent(out Player player))
+            {
                 //the player started touching from the player hitbox
                 OnPlayerTouch?.Invoke(this, new OnPlayerTouchEventArgs { lookCamera = mainCam });
 
@@ -189,11 +206,13 @@ public class Player : MonoBehaviour,IHasProgress,IHasDeathEffect{
         }
     }
 
-    public float GetDamage() {
+    public float GetDamage()
+    {
         return damage;
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
         InputManager.Instance.OnTouchStarted -= InputManager_OnTouchStarted;
         InputManager.Instance.OnTouchEnded -= InputManager_OnTouchEnded;
         followLine.OnPathFollowed -= FollowLine_OnPathFollowed;
