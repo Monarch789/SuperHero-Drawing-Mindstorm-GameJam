@@ -36,7 +36,7 @@ public class PlayerManager : MonoBehaviour
     private bool isPlayerDead;
 
     // Different states of the player
-    public enum PlayerStates
+    public enum PlayerMoveStates
     {
         Running,
         Attacking,
@@ -44,7 +44,11 @@ public class PlayerManager : MonoBehaviour
         Idle
     }
 
-    private PlayerStates state;
+    //event for state changes
+    public class OnMoveStateChangeEventArgs : EventArgs {
+        public PlayerMoveStates state;
+    }
+    public event EventHandler<OnMoveStateChangeEventArgs> OnPlayerMoveStateChange;
 
     // Bools to see if the player has reached the desired position
     private bool HasReachedIdlePosition;
@@ -71,7 +75,7 @@ public class PlayerManager : MonoBehaviour
         ShouldCheckBelow = false;
         isGameStarted = false;
 
-        state = PlayerStates.Idle;
+        OnPlayerMoveStateChange?.Invoke(this, new OnMoveStateChangeEventArgs { state = PlayerMoveStates.Idle});
 
         isPlayerDead = false;
         speed = 5f;
@@ -87,7 +91,7 @@ public class PlayerManager : MonoBehaviour
     private void GameManager_OnGameStarted(object sender, EventArgs e) {
         isGameStarted = true;
 
-        state = PlayerStates.Running;
+        OnPlayerMoveStateChange?.Invoke(this, new OnMoveStateChangeEventArgs { state = PlayerMoveStates.Running });
     }
 
     private void Player_OnPlayerDeath(object sender, EventArgs e)
@@ -107,7 +111,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Player_OnDrawComplete(object sender, EventArgs e)
     {
-        state = PlayerStates.Attacking;
+        OnPlayerMoveStateChange?.Invoke(this, new OnMoveStateChangeEventArgs { state = PlayerMoveStates.Attacking });
     }
 
     private void Update()
@@ -128,7 +132,7 @@ public class PlayerManager : MonoBehaviour
 
                     OnWaveStart?.Invoke(this, EventArgs.Empty);
 
-                    state = PlayerStates.Jumping;
+                    OnPlayerMoveStateChange?.Invoke(this, new OnMoveStateChangeEventArgs { state = PlayerMoveStates.Jumping });
                 }
             }
             else if (!HasReachedAttackingPosition)
@@ -163,7 +167,7 @@ public class PlayerManager : MonoBehaviour
                         // Player hit the floor
                         ShouldCheckBelow = false;
 
-                        state = PlayerStates.Running;
+                        OnPlayerMoveStateChange?.Invoke(this, new OnMoveStateChangeEventArgs { state = PlayerMoveStates.Running });
                         HasReachedIdlePosition = false;
                     }
                     else if (hitObject.transform.tag == "Death")
@@ -180,7 +184,8 @@ public class PlayerManager : MonoBehaviour
 
     private void PlayerStop()
     {
-        state = PlayerStates.Idle;
+        OnPlayerMoveStateChange?.Invoke(this, new OnMoveStateChangeEventArgs { state = PlayerMoveStates.Idle });
+
         ShouldCheckBelow = true;
     }
 
@@ -192,11 +197,5 @@ public class PlayerManager : MonoBehaviour
         player.OnPlayerDeath -= Player_OnPlayerDeath;
 
         GameManager.Instance.OnGameStarted -= GameManager_OnGameStarted;
-    }
-
-    // Method to get the current state
-    public PlayerStates GetState()
-    {
-        return state;
     }
 }
