@@ -5,6 +5,10 @@ public class PlayerAnimator : MonoBehaviour
     private Animator animator;
     private PlayerManager playerManager;
 
+    [SerializeField] private GameObject trailLinePrefab; // Reference to the trail_line prefab
+    [SerializeField] private Transform trailTransform; // Reference to the Trail GameObject
+
+    private GameObject trailObject; // Reference to the instantiated trail object
     private void Awake()
     {
         playerManager = GetComponent<PlayerManager>();
@@ -46,6 +50,7 @@ public class PlayerAnimator : MonoBehaviour
                 {
                     Debug.Log("Setting animation to Attacking from HandleAnimations");
                     animator.SetInteger("anim", 3);
+                    OnAttackStart();
                 }
                 break;
             default:
@@ -73,6 +78,26 @@ public class PlayerAnimator : MonoBehaviour
         {
             Debug.Log("Setting animation to Attacking from Player_OnDrawComplete");
             animator.SetInteger("anim", 3); // Attacking
+            OnAttackStart();
+        }
+    }
+
+    private void OnAttackStart()
+    {
+        // Instantiate the trailLinePrefab at the Trail position
+        if (trailLinePrefab != null && trailTransform != null)
+        {
+            if (trailObject != null)
+            {
+                Destroy(trailObject); // Optionally destroy the old trail if it exists
+            }
+
+            trailObject = Instantiate(trailLinePrefab, trailTransform.position, Quaternion.identity, trailTransform);
+            Debug.Log("Trail Line instantiated at the Trail position.");
+        }
+        else
+        {
+            Debug.LogWarning("Trail Line prefab or Trail Transform is not assigned.");
         }
     }
 
