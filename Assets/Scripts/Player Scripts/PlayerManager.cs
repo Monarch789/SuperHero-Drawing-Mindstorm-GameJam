@@ -3,31 +3,31 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    //Singleton
+    // Singleton
     public static PlayerManager Instance { get; private set; }
 
-    //player reference
+    // Player reference
     private Player player;
 
-    //event to send player to start drawing
+    // Event to send player to start drawing
     public event EventHandler OnPlayerCanAttack;
 
-    //event to send camera manager to put the camera on waves display
+    // Event to send camera manager to put the camera on waves display
     public event EventHandler OnWaveStart;
 
-    //event to send Player that hes dead
+    // Event to send Player that he's dead
     public event EventHandler OnPlayerDeath;
 
-    //event to say to the floor to disappear
+    // Event to say to the floor to disappear
     public event EventHandler OnFloorDisappear;
 
-    //positions for different states
+    // Positions for different states
     [SerializeField] private Transform IdlePosition;
     [SerializeField] private Transform AttackingPosition;
 
     [SerializeField] private LayerMask FloorDeathLayerMask;
 
-    //hitbox to get raycast distance
+    // Hitbox to get raycast distance
     private BoxCollider2D hitbox;
     private Rigidbody2D rigidBody;
 
@@ -35,7 +35,7 @@ public class PlayerManager : MonoBehaviour
 
     private bool isPlayerDead;
 
-    //Different states of the player
+    // Different states of the player
     public enum PlayerStates
     {
         Running,
@@ -46,11 +46,11 @@ public class PlayerManager : MonoBehaviour
 
     private PlayerStates state;
 
-    //bools to see if the player has reached the desired posiiton
+    // Bools to see if the player has reached the desired position
     private bool HasReachedIdlePosition;
     private bool HasReachedAttackingPosition;
 
-    //bool to see if the player is falling so check below
+    // Bool to see if the player is falling so check below
     private bool ShouldCheckBelow;
 
     private void Awake()
@@ -72,7 +72,6 @@ public class PlayerManager : MonoBehaviour
 
         isPlayerDead = false;
         speed = 5f;
-
 
         player.OnDrawComplete += Player_OnDrawComplete;
         player.OnPlayerMoveStop += Player_OnPlayerMoveStop;
@@ -104,14 +103,12 @@ public class PlayerManager : MonoBehaviour
     {
         if (!isPlayerDead)
         {
-            //if the layer is still alive then make him go towards the idle and attack positions
-
+            // If the player is alive then make them go towards the idle and attack positions
             rigidBody.gravityScale = 0f;
 
             if (!HasReachedIdlePosition)
             {
-                //the player has not reached idle position
-
+                // The player has not reached idle position
                 transform.position = Vector2.MoveTowards(transform.position, IdlePosition.position, speed * Time.deltaTime);
 
                 if (Vector2.Distance(transform.position, IdlePosition.position) < 0.05f)
@@ -125,8 +122,7 @@ public class PlayerManager : MonoBehaviour
             }
             else if (!HasReachedAttackingPosition)
             {
-                //the player has reached idle position and is now attacking
-
+                // The player has reached idle position and is now attacking
                 transform.position = Vector2.MoveTowards(transform.position, AttackingPosition.position, speed * Time.deltaTime);
 
                 if (Vector2.Distance(transform.position, AttackingPosition.position) < 0.05f)
@@ -138,7 +134,7 @@ public class PlayerManager : MonoBehaviour
             }
             else
             {
-                //player has reached attacking position
+                // Player has reached attacking position
                 OnPlayerCanAttack?.Invoke(this, EventArgs.Empty);
             }
 
@@ -150,12 +146,10 @@ public class PlayerManager : MonoBehaviour
 
                 if (hitObject)
                 {
-                    //player hit something
-
+                    // Player hit something
                     if (hitObject.transform.tag == "Floor")
                     {
-                        //player hit the floor
-
+                        // Player hit the floor
                         ShouldCheckBelow = false;
 
                         state = PlayerStates.Running;
@@ -163,7 +157,7 @@ public class PlayerManager : MonoBehaviour
                     }
                     else if (hitObject.transform.tag == "Death")
                     {
-                        //player fell down to death
+                        // Player fell down to death
                         ShouldCheckBelow = false;
 
                         OnPlayerDeath?.Invoke(this, EventArgs.Empty);
@@ -176,7 +170,6 @@ public class PlayerManager : MonoBehaviour
     private void PlayerStop()
     {
         state = PlayerStates.Falling;
-
         ShouldCheckBelow = true;
     }
 
@@ -187,10 +180,10 @@ public class PlayerManager : MonoBehaviour
         player.OnPlayerPathFollowed -= Player_OnPlayerPathFollowed;
         player.OnPlayerDeath -= Player_OnPlayerDeath;
     }
+
+    // Method to get the current state
     public PlayerStates GetState()
     {
         return state;
     }
-
-
 }

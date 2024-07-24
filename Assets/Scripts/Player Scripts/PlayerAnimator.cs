@@ -14,7 +14,7 @@ public class PlayerAnimator : MonoBehaviour
     private void Start()
     {
         playerManager.OnWaveStart += PlayerManager_OnWaveStart;
-        playerManager.OnPlayerCanAttack += PlayerManager_OnPlayerCanAttack;
+        playerManager.OnPlayerCanAttack += Player_OnDrawComplete;
     }
 
     private void Update()
@@ -24,36 +24,61 @@ public class PlayerAnimator : MonoBehaviour
 
     private void HandleAnimations()
     {
-        switch (playerManager.GetState())
+        var currentState = playerManager.GetState();
+        switch (currentState)
         {
             case PlayerManager.PlayerStates.Running:
-                animator.SetInteger("anim", 1);
+                if (animator.GetInteger("anim") != 1)
+                {
+                    Debug.Log("Setting animation to Running from HandleAnimations");
+                    animator.SetInteger("anim", 1);
+                }
                 break;
             case PlayerManager.PlayerStates.Jumping:
-                animator.SetInteger("anim", 2);
+                if (animator.GetInteger("anim") != 2)
+                {
+                    Debug.Log("Setting animation to Jumping from HandleAnimations");
+                    animator.SetInteger("anim", 2);
+                }
                 break;
             case PlayerManager.PlayerStates.Attacking:
-                animator.SetInteger("anim", 3);
+                if (animator.GetInteger("anim") != 3)
+                {
+                    Debug.Log("Setting animation to Attacking from HandleAnimations");
+                    animator.SetInteger("anim", 3);
+                }
                 break;
             default:
-                animator.SetInteger("anim", 0);
+                if (animator.GetInteger("anim") != 0)
+                {
+                    Debug.Log("Setting animation to Default from HandleAnimations");
+                    animator.SetInteger("anim", 0);
+                }
                 break;
         }
     }
 
     private void PlayerManager_OnWaveStart(object sender, System.EventArgs e)
     {
-        animator.SetInteger("anim", 1); // Running
+        if (animator.GetInteger("anim") != 1)
+        {
+            Debug.Log("Setting animation to Running from PlayerManager_OnWaveStart");
+            animator.SetInteger("anim", 1); // Running
+        }
     }
 
-    private void PlayerManager_OnPlayerCanAttack(object sender, System.EventArgs e)
+    private void Player_OnDrawComplete(object sender, System.EventArgs e)
     {
-        animator.SetInteger("anim", 3); // Attacking
+        if (animator.GetInteger("anim") != 3)
+        {
+            Debug.Log("Setting animation to Attacking from Player_OnDrawComplete");
+            animator.SetInteger("anim", 3); // Attacking
+        }
     }
 
     private void OnDestroy()
     {
         playerManager.OnWaveStart -= PlayerManager_OnWaveStart;
-        playerManager.OnPlayerCanAttack -= PlayerManager_OnPlayerCanAttack;
+        playerManager.OnPlayerCanAttack -= Player_OnDrawComplete;
     }
 }
