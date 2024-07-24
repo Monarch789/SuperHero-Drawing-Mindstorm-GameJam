@@ -41,7 +41,7 @@ public class PlayerManager : MonoBehaviour
         Running,
         Attacking,
         Jumping,
-        Falling
+        Idle
     }
 
     private PlayerStates state;
@@ -52,6 +52,8 @@ public class PlayerManager : MonoBehaviour
 
     // Bool to see if the player is falling so check below
     private bool ShouldCheckBelow;
+
+    private bool isGameStarted;
 
     private void Awake()
     {
@@ -67,8 +69,9 @@ public class PlayerManager : MonoBehaviour
         HasReachedAttackingPosition = false;
         HasReachedIdlePosition = false;
         ShouldCheckBelow = false;
+        isGameStarted = false;
 
-        state = PlayerStates.Running;
+        state = PlayerStates.Idle;
 
         isPlayerDead = false;
         speed = 5f;
@@ -77,6 +80,14 @@ public class PlayerManager : MonoBehaviour
         player.OnPlayerMoveStop += Player_OnPlayerMoveStop;
         player.OnPlayerPathFollowed += Player_OnPlayerPathFollowed;
         player.OnPlayerDeath += Player_OnPlayerDeath;
+
+        GameManager.Instance.OnGameStarted += GameManager_OnGameStarted;
+    }
+
+    private void GameManager_OnGameStarted(object sender, EventArgs e) {
+        isGameStarted = true;
+
+        state = PlayerStates.Running;
     }
 
     private void Player_OnPlayerDeath(object sender, EventArgs e)
@@ -101,7 +112,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
-        if (!isPlayerDead)
+        if (!isPlayerDead && isGameStarted)
         {
             // If the player is alive then make them go towards the idle and attack positions
             rigidBody.gravityScale = 0f;
@@ -169,7 +180,7 @@ public class PlayerManager : MonoBehaviour
 
     private void PlayerStop()
     {
-        state = PlayerStates.Falling;
+        state = PlayerStates.Idle;
         ShouldCheckBelow = true;
     }
 
@@ -179,6 +190,8 @@ public class PlayerManager : MonoBehaviour
         player.OnPlayerMoveStop -= Player_OnPlayerMoveStop;
         player.OnPlayerPathFollowed -= Player_OnPlayerPathFollowed;
         player.OnPlayerDeath -= Player_OnPlayerDeath;
+
+        GameManager.Instance.OnGameStarted -= GameManager_OnGameStarted;
     }
 
     // Method to get the current state

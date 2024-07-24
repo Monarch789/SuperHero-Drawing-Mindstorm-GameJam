@@ -20,11 +20,19 @@ public class GameManager : MonoBehaviour{
     //int to see ow many enemies have been killed
     private int EnemiesKilled;
 
+    //bool to see if the level is waiting to start
+    private bool isGameWaitingToStart;
+
+    //event to send to tell that game is started
+    public event EventHandler OnGameStarted;
+    
     private void Awake() {
         Instance = this;
     }
 
     private void Start() {
+        isGameWaitingToStart = false;
+
         EnemiesKilled = 0;
 
         Enemy.OnEnemyDeath += Enemy_OnEnemyDeath;
@@ -32,6 +40,15 @@ public class GameManager : MonoBehaviour{
         Player.Instance.OnDeath += Player_OnDeath;
         PauseMenu.Instance.OnPauseButtonClick += PauseMenu_OnPauseButtonClick;
         PauseMenu.Instance.OnPlayButtonClick += PauseMenu_OnPlayButtonClick;
+
+        InputManager.Instance.OnTouchStarted += InputManager_OnTouchStarted;
+    }
+
+    private void InputManager_OnTouchStarted(object sender, EventArgs e) {
+        if (!isGameWaitingToStart) {
+            OnGameStarted?.Invoke(this, EventArgs.Empty);
+            isGameWaitingToStart = true;
+        }
     }
 
     private void PauseMenu_OnPlayButtonClick(object sender, System.EventArgs e) {
@@ -76,5 +93,6 @@ public class GameManager : MonoBehaviour{
         Player.Instance.OnDeath -= Player_OnDeath;
         PauseMenu.Instance.OnPauseButtonClick -= PauseMenu_OnPauseButtonClick;
         PauseMenu.Instance.OnPlayButtonClick -= PauseMenu_OnPlayButtonClick;
+        InputManager.Instance.OnTouchStarted -= InputManager_OnTouchStarted;
     }
 }
