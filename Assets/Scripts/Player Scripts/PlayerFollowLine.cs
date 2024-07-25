@@ -68,8 +68,6 @@ public class PlayerFollowLine : MonoBehaviour
     {
         ShouldStartFollow = false;
 
-        rigidbodyComponent.gravityScale = 1f;
-
         //get direction of force
 
         if (moveIndex < FollowPositions.Length)

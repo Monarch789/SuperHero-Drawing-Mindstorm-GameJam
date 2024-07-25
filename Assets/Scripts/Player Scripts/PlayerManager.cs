@@ -64,6 +64,8 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
+        rigidBody.gravityScale = 0f;
+
         HasReachedAttackingPosition = false;
         HasReachedIdlePosition = false;
         isGameStarted = false;
@@ -111,8 +113,7 @@ public class PlayerManager : MonoBehaviour
         if (!isPlayerDead && isGameStarted)
         {
             // If the player is alive then make them go towards the idle and attack positions
-            rigidBody.gravityScale = 0f;
-
+            
             if (!HasReachedIdlePosition)
             {
                 // The player has not reached idle position
@@ -148,6 +149,8 @@ public class PlayerManager : MonoBehaviour
     }
 
     private void PlayerStop(){
+        rigidBody.gravityScale = 1f;
+
         OnPlayerMoveStateChange?.Invoke(this, new OnMoveStateChangeEventArgs { state = PlayerMoveStates.Idle });
     }
 
