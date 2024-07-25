@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e104578a01d8548b343c38d9008353, type: 3}
   m_Name: MediumEnemySO
   m_EditorClassIdentifier: 
-  EnemyModelPrefab: {fileID: 1922871260932798889, guid: 10fccf7c74f2b004f83317c734488c41, type: 3}
   Health: 25
   Damage: 8
+  moneyIncrease: 20

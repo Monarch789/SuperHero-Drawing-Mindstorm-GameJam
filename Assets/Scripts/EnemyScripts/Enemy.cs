@@ -42,6 +42,9 @@ public class Enemy : MonoBehaviour,IHasProgress,IHasDeathEffect{
                 OnDeath?.Invoke(this, EventArgs.Empty);
                 OnEnemyDeath?.Invoke(this, EventArgs.Empty);
                 OnDead?.Invoke(this, EventArgs.Empty);
+
+
+                Money.Instance.IncreaseMoney(enemyData.moneyIncrease);
             }
         }
     }

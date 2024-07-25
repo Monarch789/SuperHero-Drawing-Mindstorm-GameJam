@@ -6,5 +6,6 @@ using UnityEngine;
 public class EnemySO : ScriptableObject{
     public float Health;
     public float Damage;
+    public int moneyIncrease;
 
 }
