@@ -15,9 +15,6 @@ public class PlayerManager : MonoBehaviour
     // Event to send camera manager to put the camera on waves display
     public event EventHandler OnWaveStart;
 
-    // Event to send Player that he's dead
-    public event EventHandler OnPlayerDeath;
-
     // Event to say to the floor to disappear
     public event EventHandler OnFloorDisappear;
 
@@ -54,9 +51,6 @@ public class PlayerManager : MonoBehaviour
     private bool HasReachedIdlePosition;
     private bool HasReachedAttackingPosition;
 
-    // Bool to see if the player is falling so check below
-    private bool ShouldCheckBelow;
-
     private bool isGameStarted;
 
     private void Awake()
@@ -72,7 +66,6 @@ public class PlayerManager : MonoBehaviour
     {
         HasReachedAttackingPosition = false;
         HasReachedIdlePosition = false;
-        ShouldCheckBelow = false;
         isGameStarted = false;
 
         OnPlayerMoveStateChange?.Invoke(this, new OnMoveStateChangeEventArgs { state = PlayerMoveStates.Idle});
@@ -114,8 +107,7 @@ public class PlayerManager : MonoBehaviour
         OnPlayerMoveStateChange?.Invoke(this, new OnMoveStateChangeEventArgs { state = PlayerMoveStates.Attacking });
     }
 
-    private void Update()
-    {
+    private void Update(){
         if (!isPlayerDead && isGameStarted)
         {
             // If the player is alive then make them go towards the idle and attack positions
@@ -152,45 +144,14 @@ public class PlayerManager : MonoBehaviour
                 // Player has reached attacking position
                 OnPlayerCanAttack?.Invoke(this, EventArgs.Empty);
             }
-
-            if (ShouldCheckBelow)
-            {
-                float rayCastDistance = hitbox.size.y / 2 + 0.1f;
-
-                RaycastHit2D hitObject = Physics2D.Raycast(transform.position, Vector2.down, rayCastDistance, FloorDeathLayerMask);
-
-                if (hitObject)
-                {
-                    // Player hit something
-                    if (hitObject.transform.tag == "Floor")
-                    {
-                        // Player hit the floor
-                        ShouldCheckBelow = false;
-
-                        OnPlayerMoveStateChange?.Invoke(this, new OnMoveStateChangeEventArgs { state = PlayerMoveStates.Running });
-                        HasReachedIdlePosition = false;
-                    }
-                    else if (hitObject.transform.tag == "Death")
-                    {
-                        // Player fell down to death
-                        ShouldCheckBelow = false;
-
-                        OnPlayerDeath?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-            }
         }
     }
 
-    private void PlayerStop()
-    {
+    private void PlayerStop(){
         OnPlayerMoveStateChange?.Invoke(this, new OnMoveStateChangeEventArgs { state = PlayerMoveStates.Idle });
-
-        ShouldCheckBelow = true;
     }
 
-    private void OnDestroy()
-    {
+    private void OnDestroy(){
         player.OnDrawComplete -= Player_OnDrawComplete;
         player.OnPlayerMoveStop -= Player_OnPlayerMoveStop;
         player.OnPlayerPathFollowed -= Player_OnPlayerPathFollowed;

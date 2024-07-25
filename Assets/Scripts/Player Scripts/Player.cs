@@ -1,8 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect
-{
+public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
     //Singleton
     public static Player Instance { get; private set; }
 
@@ -85,8 +84,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect
         downCollider.OnColliderFloorFromDown += DownCollider_OnColliderFloorFromDown;
 
         playerManager.OnPlayerCanAttack += PlayerManager_OnPlayerCanAttack;
-        playerManager.OnPlayerDeath += PlayerManager_OnPlayerDeath;
-
+        
         SpikeWall.OnPlayerCollisionWithSpikeWall += SpikeWall_OnPlayerCollisionWithSpikeWall;
         HealthBuff.OnHealthAdd += HealthBuff_OnHealthAdd;
         DamageBuff.OnDamageAdd += DamageBuff_OnDamageAdd;
@@ -106,10 +104,6 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect
         isGamePaused = true;
     }
 
-    private void PlayerManager_OnPlayerDeath(object sender, EventArgs e)
-    {
-        OnDeath?.Invoke(this, EventArgs.Empty);
-    }
 
     private void DamageBuff_OnDamageAdd(object sender, DamageBuff.OnDamageAddEventArgs e)
     {
@@ -222,8 +216,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect
         downCollider.OnColliderFloorFromDown -= DownCollider_OnColliderFloorFromDown;
 
         playerManager.OnPlayerCanAttack -= PlayerManager_OnPlayerCanAttack;
-        playerManager.OnPlayerDeath -= PlayerManager_OnPlayerDeath;
-
+        
         SpikeWall.OnPlayerCollisionWithSpikeWall -= SpikeWall_OnPlayerCollisionWithSpikeWall;
         HealthBuff.OnHealthAdd -= HealthBuff_OnHealthAdd;
         DamageBuff.OnDamageAdd -= DamageBuff_OnDamageAdd;

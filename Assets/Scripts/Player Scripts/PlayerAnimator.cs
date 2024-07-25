@@ -53,9 +53,7 @@ public class PlayerAnimator : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
-    {
+    private void OnDestroy(){
         playerManager.OnPlayerMoveStateChange -= PlayerManager_OnPlayerMoveStateChange;
-
     }
 }
