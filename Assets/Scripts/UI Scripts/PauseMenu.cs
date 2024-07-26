@@ -11,6 +11,8 @@ public class PauseMenu : MonoBehaviour {
     // References of buttons
     [SerializeField] private Button pauseButton;
     [SerializeField] private Button playButton;
+    [SerializeField] private Button retryButton;
+    [SerializeField] private Button menuButton;
 
 
     public event EventHandler OnPauseButtonClick;
@@ -36,6 +38,13 @@ public class PauseMenu : MonoBehaviour {
             pauseMenuUI.SetActive(false);
             pauseButton.gameObject.SetActive(true);
 
+        });
+
+        retryButton.onClick.AddListener(() => {
+            Loader.LoadCurrentScene();
+        });
+        menuButton.onClick.AddListener(() => {
+            Loader.LoadScene(Loader.GameScenes.MainMenu);
         });
     }
 

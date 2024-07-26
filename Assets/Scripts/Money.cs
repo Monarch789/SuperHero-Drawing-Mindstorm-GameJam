@@ -16,7 +16,7 @@ public class Money : MonoBehaviour{
     private void Awake() {
         Instance = this;
 
-        money = 0;
+        money = 100;
     }
 
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour{
     //Singleton
@@ -12,6 +13,8 @@ public class GameManager : MonoBehaviour{
     [SerializeField] private int OneStarEnemies;
     [SerializeField] private int TwoStarEnemies;
     [SerializeField] private int ThreeStarEnemies;
+
+    [SerializeField] private Camera mainCam;
 
     //events of Pause and UnPause to send other scripts to not do stuff
     public event EventHandler OnPause;
@@ -35,6 +38,8 @@ public class GameManager : MonoBehaviour{
 
         EnemiesKilled = 0;
 
+        Time.timeScale = 1f;
+
         Enemy.OnEnemyDeath += Enemy_OnEnemyDeath;
 
         Player.Instance.OnDeath += Player_OnDeath;
@@ -45,9 +50,15 @@ public class GameManager : MonoBehaviour{
     }
 
     private void InputManager_OnTouchStarted(object sender, EventArgs e) {
-        if (!isGameWaitingToStart) {
-            OnGameStarted?.Invoke(this, EventArgs.Empty);
-            isGameWaitingToStart = true;
+        if (!isGameWaitingToStart){
+
+            var rayCastHit = Physics2D.GetRayIntersection(mainCam.ScreenPointToRay(InputManager.Instance.GetTouchPosition()));
+            
+            if (rayCastHit && rayCastHit.transform.tag == "LevelStartHitbox") {
+                OnGameStarted?.Invoke(this, EventArgs.Empty);
+                isGameWaitingToStart = true;
+
+            }
         }
     }
 
@@ -95,4 +106,5 @@ public class GameManager : MonoBehaviour{
         PauseMenu.Instance.OnPlayButtonClick -= PauseMenu_OnPlayButtonClick;
         InputManager.Instance.OnTouchStarted -= InputManager_OnTouchStarted;
     }
+
 }

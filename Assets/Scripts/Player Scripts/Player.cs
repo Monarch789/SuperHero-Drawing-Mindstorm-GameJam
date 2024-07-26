@@ -92,6 +92,17 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
         GameManager.Instance.OnPause += GameManager_OnPause;
         GameManager.Instance.OnUnPause += GameManager_OnUnPause;
 
+        IncreaseBuffsUI.Instance.OnHealthInreased += IncreaseBuffs_OnHealthInreased;
+        IncreaseBuffsUI.Instance.OnDamageInreased += IncreaseBuffs_OnDamageInreased;
+
+    }
+
+    private void IncreaseBuffs_OnDamageInreased(object sender, EventArgs e) {
+        damage += 5;
+    }
+
+    private void IncreaseBuffs_OnHealthInreased(object sender, EventArgs e) {
+        health += 20;
     }
 
     private void GameManager_OnUnPause(object sender, EventArgs e)
@@ -223,5 +234,9 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
 
         GameManager.Instance.OnPause -= GameManager_OnPause;
         GameManager.Instance.OnUnPause -= GameManager_OnUnPause;
+
+        IncreaseBuffsUI.Instance.OnHealthInreased -= IncreaseBuffs_OnHealthInreased;
+        IncreaseBuffsUI.Instance.OnDamageInreased -= IncreaseBuffs_OnDamageInreased;
+
     }
 }
