@@ -41,7 +41,7 @@ public class DrawManager : MonoBehaviour,IHasProgress{
             //Destroy the line only when its there
             Destroy(currentLine.gameObject);
         }
-    }
+    }   
 
     private void Player_OnDrawComplete(object sender, System.EventArgs e) {
         ShouldStartDrawing = false;

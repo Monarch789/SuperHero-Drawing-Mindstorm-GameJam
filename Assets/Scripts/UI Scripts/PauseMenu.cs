@@ -20,9 +20,13 @@ public class PauseMenu : MonoBehaviour {
 
     [SerializeField] private GameObject pauseMenuUI;
 
+    private Animator animator;
+
 
     private void Awake() {
         Instance = this;
+
+        animator = GetComponent<Animator>();
 
         pauseButton.onClick.AddListener(()=> { 
             OnPauseButtonClick?.Invoke(this, EventArgs.Empty);
@@ -30,6 +34,8 @@ public class PauseMenu : MonoBehaviour {
             //enable the play buttons and other stuff and disable pause button
             pauseMenuUI.SetActive(true);
             pauseButton.gameObject.SetActive(false);
+
+            animator.SetTrigger("OnPause");
         });
         playButton.onClick.AddListener(() => {
             OnPlayButtonClick?.Invoke(this, EventArgs.Empty);

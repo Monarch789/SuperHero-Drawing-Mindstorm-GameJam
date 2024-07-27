@@ -161,8 +161,8 @@ RectTransform:
   m_GameObject: {fileID: 1226747230894035886}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5455972234126181974}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2361,10 +2361,10 @@ RectTransform:
   m_Children:
   - {fileID: 583903708851954949}
   - {fileID: 4605087440851497923}
-  - {fileID: 363573805407231654}
   - {fileID: 1720773756097289144}
-  - {fileID: 7425764274066678498}
   - {fileID: 2948734592601808987}
+  - {fileID: 363573805407231654}
+  - {fileID: 7425764274066678498}
   - {fileID: 2199667521587413376}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2566,6 +2566,7 @@ GameObject:
   m_Component:
   - component: {fileID: 363573805407231654}
   - component: {fileID: 4852195333889763630}
+  - component: {fileID: 7697018893477153043}
   m_Layer: 5
   m_Name: PauseMenu
   m_TagString: Untagged
@@ -2583,7 +2584,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5455972234126181974}
   - {fileID: 7880054314035552569}
@@ -2611,6 +2612,27 @@ MonoBehaviour:
   retryButton: {fileID: 6384526438952430573}
   menuButton: {fileID: 3350390974011671106}
   pauseMenuUI: {fileID: 7061330031271647927}
+--- !u!95 &7697018893477153043
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6590760478141986432}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: db0e4ac35efbbc94c8fd9027c5a2667b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 2
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6704812048299733357
 GameObject:
   m_ObjectHideFlags: 0
