@@ -130,6 +130,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2964425960831891159, guid: ba086a7676610cf4f9607af13d0e1755, type: 3}
+      propertyPath: MaxPoints
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 4627855700621962444, guid: ba086a7676610cf4f9607af13d0e1755, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4294967295

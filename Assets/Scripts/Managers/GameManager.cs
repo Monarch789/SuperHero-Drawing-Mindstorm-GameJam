@@ -28,6 +28,14 @@ public class GameManager : MonoBehaviour{
 
     //event to send to tell that game is started
     public event EventHandler OnGameStarted;
+
+    //events to send On level failed and complete
+    public event EventHandler OnLevelFailed;
+
+    public class OnLevelCompletedEventArgs : EventArgs { public int Stars; }
+    public event EventHandler<OnLevelCompletedEventArgs> OnLevelPassed;
+
+    
     
     private void Awake() {
         Instance = this;
@@ -42,11 +50,32 @@ public class GameManager : MonoBehaviour{
 
         Enemy.OnEnemyDeath += Enemy_OnEnemyDeath;
 
-        Player.Instance.OnDeath += Player_OnDeath;
+        Player.Instance.OnPlayerPathFollowed += Player_OnPlayerPathFollowed;
+
         PauseMenu.Instance.OnPauseButtonClick += PauseMenu_OnPauseButtonClick;
         PauseMenu.Instance.OnPlayButtonClick += PauseMenu_OnPlayButtonClick;
 
         InputManager.Instance.OnTouchStarted += InputManager_OnTouchStarted;
+    }
+
+    private void Player_OnPlayerPathFollowed(object sender, EventArgs e) {
+        //check how the level is completed
+
+        if (EnemiesKilled < CompletionEnemies) {
+            OnLevelFailed?.Invoke(this, EventArgs.Empty);
+        }
+        else if (EnemiesKilled < OneStarEnemies) {
+            OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 0 });
+        }
+        else if (EnemiesKilled < TwoStarEnemies) {
+            OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 1 });
+        }
+        else if (EnemiesKilled < ThreeStarEnemies) {
+            OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 2 });
+        }
+        else {
+            OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 3});
+        }
     }
 
     private void InputManager_OnTouchStarted(object sender, EventArgs e) {
@@ -74,34 +103,13 @@ public class GameManager : MonoBehaviour{
         OnPause?.Invoke(this, EventArgs.Empty);
     }
 
-    private void Player_OnDeath(object sender, System.EventArgs e) {
-        //check how the level is completed
-
-        if(EnemiesKilled < CompletionEnemies) {
-            Debug.Log("Level failed");
-        }
-        else if(EnemiesKilled < OneStarEnemies) {
-            Debug.Log("level passed with 0 stars");
-        }
-        else if(EnemiesKilled < TwoStarEnemies) {
-            Debug.Log("level passed with 1 stars");
-        } 
-        else if(EnemiesKilled < ThreeStarEnemies) {
-            Debug.Log("level passed with 2 stars");
-        }
-        else {
-            Debug.Log("level passed with 3 stars");
-        }
-        
-    }
-
     private void Enemy_OnEnemyDeath(object sender, System.EventArgs e) {
         EnemiesKilled++;
     }
 
     private void OnDestroy() {
+        Player.Instance.OnPlayerPathFollowed -= Player_OnPlayerPathFollowed;
         Enemy.OnEnemyDeath -= Enemy_OnEnemyDeath;
-        Player.Instance.OnDeath -= Player_OnDeath;
         PauseMenu.Instance.OnPauseButtonClick -= PauseMenu_OnPauseButtonClick;
         PauseMenu.Instance.OnPlayButtonClick -= PauseMenu_OnPlayButtonClick;
         InputManager.Instance.OnTouchStarted -= InputManager_OnTouchStarted;
