@@ -72,5 +72,9 @@ public class LevelSelectUI : MonoBehaviour{
         animator.SetTrigger("OnPlayClick");
     }
 
+    private void OnDestroy() {
+        MainMenu.Instance.OnPlayButtonClick -= MainMenu_OnPlayButtonClick;
+    }
+
 
 }
