@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour{
     //Singleton
     public static MainMenu Instance {  get; private set; }
 
+
     //event to send level select to show itself
     public event EventHandler OnPlayButtonClick;
 

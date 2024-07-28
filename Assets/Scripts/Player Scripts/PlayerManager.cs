@@ -32,6 +32,7 @@ public class PlayerManager : MonoBehaviour
 
     private bool isPlayerDead;
 
+    private bool isCanAttackEventSent;
     // Different states of the player
     public enum PlayerMoveStates
     {
@@ -69,6 +70,7 @@ public class PlayerManager : MonoBehaviour
         HasReachedAttackingPosition = false;
         HasReachedIdlePosition = false;
         isGameStarted = false;
+        isCanAttackEventSent = false;
 
         OnPlayerMoveStateChange?.Invoke(this, new OnMoveStateChangeEventArgs { state = PlayerMoveStates.Idle});
 
@@ -140,9 +142,11 @@ public class PlayerManager : MonoBehaviour
                     OnFloorDisappear?.Invoke(this, EventArgs.Empty);
                 }
             }
-            else
+            else if(!isCanAttackEventSent)
             {
                 // Player has reached attacking position
+                isCanAttackEventSent = true;
+
                 OnPlayerCanAttack?.Invoke(this, EventArgs.Empty);
             }
         }

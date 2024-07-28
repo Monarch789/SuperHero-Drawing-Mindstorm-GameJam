@@ -49,7 +49,7 @@ MonoBehaviour:
   OneStarEnemies: 2
   TwoStarEnemies: 3
   ThreeStarEnemies: 4
-  mainCam: {fileID: 0}
+  mainCam: {fileID: 1698327875656944529, guid: e90244b574ad4884990651d5aa70b1f0, type: 3}
 --- !u!1 &6199095182609702234
 GameObject:
   m_ObjectHideFlags: 0

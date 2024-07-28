@@ -45,4 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerFollowCam: {fileID: 0}
-  WaveCam: {fileID: 0}
+  WaveCam: {fileID: 8187154070787581392, guid: a17e4a42cb5681e41868b5c6fbaf4ab1, type: 3}

@@ -838,8 +838,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8e485f78bb107488e4c767118b212c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IdlePosition: {fileID: 0}
-  AttackingPosition: {fileID: 0}
+  IdlePosition: {fileID: 8584198266074272540, guid: 3fb1d0a54ee1ccd44a68dc4447e5ff1b, type: 3}
+  AttackingPosition: {fileID: 4362767740168077771, guid: c8a3f9d3a4f9f9941b2d9ffab8508d0f, type: 3}
   FloorDeathLayerMask:
     serializedVersion: 2
     m_Bits: 64

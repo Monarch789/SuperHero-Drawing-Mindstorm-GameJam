@@ -8,7 +8,8 @@ public static class Loader {
     public enum GameScenes {
         MainMenu,
         SampleScene,
-        LoadingScene
+        LoadingScene,
+        TutorialScene,
     }
 
     private static GameScenes targetScene;

@@ -21,6 +21,8 @@ public class LevelSelectUI : MonoBehaviour{
     private Animator animator;
 
 
+    private const string TutorialSteps = "TutorialSteps";
+
     private void Awake() {
         animator = GetComponent<Animator>();
 
@@ -29,7 +31,10 @@ public class LevelSelectUI : MonoBehaviour{
         });
 
         TutorialButton.onClick.AddListener(() => {
-            Loader.LoadScene(Loader.GameScenes.SampleScene);
+            PlayerPrefs.SetInt(TutorialSteps,0);
+            PlayerPrefs.Save();
+
+            Loader.LoadScene(Loader.GameScenes.TutorialScene);
         });
 
         //load respective scenes
