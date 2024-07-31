@@ -8,7 +8,10 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
     //strings for health and damage
     private const string PlayerMaxHealthString = "MaxPlayerHealth";
     private const string PlayerDamageString = "PlayerDamage";
-    
+
+    //events for health and damage sounds
+    public event EventHandler OnHealthIncreased;
+    public event EventHandler OnDamageIncreased;
 
     //event to say to draw manager to start drawing
     public class OnPlayerTouchEventArgs : EventArgs { public Camera lookCamera; }
@@ -106,12 +109,16 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
     private void IncreaseBuffs_OnDamageInreased(object sender, EventArgs e) {
         damage += 5;
 
+        OnDamageIncreased?.Invoke(this, EventArgs.Empty);
+
         PlayerPrefs.SetFloat(PlayerDamageString,damage);
         PlayerPrefs.Save();
     }
 
     private void IncreaseBuffs_OnHealthInreased(object sender, EventArgs e) {
         MaxHealth += 10;
+
+        OnHealthIncreased?.Invoke(this, EventArgs.Empty);
 
         PlayerPrefs.SetFloat(PlayerMaxHealthString,MaxHealth);
         PlayerPrefs.Save();
@@ -132,12 +139,16 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
 
     private void DamageBuff_OnDamageAdd(object sender, DamageBuff.OnDamageAddEventArgs e)
     {
+        OnDamageIncreased?.Invoke(this, EventArgs.Empty);
         damage += e.addDamage;
+
     }
 
     private void HealthBuff_OnHealthAdd(object sender, HealthBuff.OnHealthAddEventArgs e)
     {
         health += e.addHealth;
+
+        OnHealthIncreased?.Invoke(this,EventArgs.Empty);
 
         health = Mathf.Clamp(health, 0f, MaxHealth);
 

@@ -34,11 +34,28 @@ public static class Loader {
     }
 
     public static void LoadCurrentScene() {
-
-        Loader.LoadScene(currentScene);
+        LoadScene(currentScene);
     }
 
     public static GameScenes GetCurrentScene() {
         return currentScene;
+    }
+
+    public static void LoadNextLevel() {
+        if(currentScene == GameScenes.Level1) {
+            LoadScene(GameScenes.Level2);
+        }
+        else if(currentScene == GameScenes.Level2) {
+            LoadScene(GameScenes.Level3);
+        }
+        else if (currentScene == GameScenes.Level3) {
+            LoadScene(GameScenes.Level4);
+        }
+        else if (currentScene == GameScenes.Level4) {
+            LoadScene(GameScenes.Level5);
+        }
+        else if (currentScene == GameScenes.Level5) {
+            LoadScene(GameScenes.MainMenu);
+        }
     }
 }

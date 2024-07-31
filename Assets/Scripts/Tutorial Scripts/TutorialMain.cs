@@ -25,6 +25,7 @@ public class TutorialMain : MonoBehaviour{
 
     //int to see how many steps hae been done
     private const string TutorialSteps = "TutorialSteps";
+    private const string TotalLevelsCompletedString = "LevelsCompleted";
 
     //get the steps completed and 0 if not saved
     private int StepsDone;
@@ -33,20 +34,26 @@ public class TutorialMain : MonoBehaviour{
     public class OnStepObjectActivateEventArgs:EventArgs { public int stepsNumber; }
     public event EventHandler<OnStepObjectActivateEventArgs> OnStepObjectActivate;
 
-    public static event EventHandler OnTutorialComplete;
-
     private void Awake() {
         NextButton.onClick.AddListener(() => {
-            if(StepsDone == 3) {
-                OnTutorialComplete?.Invoke(this, EventArgs.Empty);
+            SoundManager.Instance.PlayButtonTapSound();
 
-                Loader.LoadScene(Loader.GameScenes.SampleScene);
+            if (StepsDone == 3) {
+                
+                if (PlayerPrefs.GetInt(TotalLevelsCompletedString, -1) < 0) {
+                    PlayerPrefs.SetInt(TotalLevelsCompletedString, 0);
+                    PlayerPrefs.Save();
+                }
+
+                Loader.LoadScene(Loader.GameScenes.Level1);
             }
             else 
                 Loader.LoadScene(Loader.GameScenes.TutorialScene);
         });
 
         RetryButton.onClick.AddListener(() => {
+            SoundManager.Instance.PlayButtonTapSound();
+
             //subtract one from steps done if the user completed something and stil wishes to retry
             if (NextButton.interactable) {
                 // the user completed this step

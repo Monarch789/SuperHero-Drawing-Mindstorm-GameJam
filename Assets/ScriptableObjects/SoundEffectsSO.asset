@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18be5b9675e22f64c9e61ff59029437b, type: 3}
+  m_Name: SoundEffectsSO
+  m_EditorClassIdentifier: 
+  MonsterAttacks:
+  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  Fireball:
+  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  Run:
+  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  Jump:
+  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  PlayerDeath:
+  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  MonsterDeath:
+  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  HealthBuff:
+  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  DamageBuff:
+  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  MoneyIncreased:
+  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  MoneyDecreased:
+  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  ButtonTap:
+  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  OneStar:
+  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  TwoStar:
+  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  ThreeStar:
+  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  LevelPassed:
+  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  LevelFailed:
+  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}

@@ -39,10 +39,14 @@ public class LevelSelectUI : MonoBehaviour{
         animator = GetComponent<Animator>();
 
         BackButton.onClick.AddListener(() => {
+            SoundManager.Instance.PlayButtonTapSound();
+
             Hide();
         });
 
         TutorialButton.onClick.AddListener(() => {
+            SoundManager.Instance.PlayButtonTapSound();
+
             PlayerPrefs.SetInt(TutorialSteps,0);
             PlayerPrefs.Save();
 
@@ -51,18 +55,28 @@ public class LevelSelectUI : MonoBehaviour{
 
         //load respective scenes
         Level1Button.onClick.AddListener(() => {
+            SoundManager.Instance.PlayButtonTapSound();
+
             Loader.LoadScene(Loader.GameScenes.Level1);
         });
         Level2Button.onClick.AddListener(() => {
+            SoundManager.Instance.PlayButtonTapSound();
+
             Loader.LoadScene(Loader.GameScenes.Level2);
         });
         Level3Button.onClick.AddListener(() => {
+            SoundManager.Instance.PlayButtonTapSound();
+
             Loader.LoadScene(Loader.GameScenes.Level3);
         });
         Level4Button.onClick.AddListener(() => {
+            SoundManager.Instance.PlayButtonTapSound();
+
             Loader.LoadScene(Loader.GameScenes.Level4);
         });
         Level5Button.onClick.AddListener(() => {
+            SoundManager.Instance.PlayButtonTapSound();
+
             Loader.LoadScene(Loader.GameScenes.Level5);
         });
 
@@ -73,44 +87,8 @@ public class LevelSelectUI : MonoBehaviour{
         HideImmediately();
 
         MainMenu.Instance.OnPlayButtonClick += MainMenu_OnPlayButtonClick;
-        GameManager.Instance.OnLevelPassed += GameManager_OnLevelPassed;
-
-        TutorialMain.OnTutorialComplete += TutorialMain_OnTutorialComplete;
     }
 
-    private void TutorialMain_OnTutorialComplete(object sender, System.EventArgs e) {
-
-        if(PlayerPrefs.GetInt(TotalLevelsCompletedString,-1) < 0) {
-            PlayerPrefs.SetInt(TotalLevelsCompletedString,0);
-            PlayerPrefs.Save();
-        }
-
-    }
-
-    private void GameManager_OnLevelPassed(object sender, GameManager.OnLevelCompletedEventArgs e) {
-        
-        if(Loader.GetCurrentScene() == Loader.GameScenes.Level1) {
-            LevelsCompleted = 1;
-        }
-        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level2) {
-            LevelsCompleted = 2;
-        }
-        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level3) {
-            LevelsCompleted = 3;
-        }
-        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level4) {
-            LevelsCompleted = 4;
-        }
-        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level5) {
-            LevelsCompleted = 5;
-        }
-
-        if (LevelsCompleted > PlayerPrefs.GetInt(TotalLevelsCompletedString, -1)) {
-            //if the total levels completed is greater than the previous total levels completed
-            PlayerPrefs.SetInt(TotalLevelsCompletedString, LevelsCompleted);
-            PlayerPrefs.Save();
-        }
-    }
 
     private void MainMenu_OnPlayButtonClick(object sender, System.EventArgs e) {
         Show();
@@ -133,7 +111,6 @@ public class LevelSelectUI : MonoBehaviour{
 
     private void OnDestroy() {
         MainMenu.Instance.OnPlayButtonClick -= MainMenu_OnPlayButtonClick;
-        GameManager.Instance.OnLevelPassed -= GameManager_OnLevelPassed;
     }
 
     private IEnumerator AnimationHideDelay() {

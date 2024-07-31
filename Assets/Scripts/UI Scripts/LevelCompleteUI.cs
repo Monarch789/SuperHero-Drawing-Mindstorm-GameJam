@@ -27,14 +27,20 @@ public class LevelCompleteUI : MonoBehaviour{
         animator = GetComponent<Animator>();
 
         RetryButton.onClick.AddListener(() => {
+            SoundManager.Instance.PlayButtonTapSound();
+
             Loader.LoadCurrentScene();
         });
         MenuButton.onClick.AddListener(() => {
+            SoundManager.Instance.PlayButtonTapSound();
+
             Loader.LoadScene(Loader.GameScenes.MainMenu);
         });
 
         NextLevelButton.onClick.AddListener(() => {
-            Loader.LoadScene(Loader.GameScenes.SampleScene);
+            SoundManager.Instance.PlayButtonTapSound();
+
+            Loader.LoadNextLevel();
         });
     }
 

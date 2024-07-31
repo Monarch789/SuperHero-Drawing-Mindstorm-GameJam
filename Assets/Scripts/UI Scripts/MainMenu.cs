@@ -22,16 +22,21 @@ public class MainMenu : MonoBehaviour{
         Instance = this;
 
         PlayButton.onClick.AddListener(() => {
+            SoundManager.Instance.PlayButtonTapSound();
 
             OnPlayButtonClick?.Invoke(this, EventArgs.Empty);
 
         });
 
         OptionsButton.onClick.AddListener(() => {
+            SoundManager.Instance.PlayButtonTapSound();
+
             OnOptionsButtonClick?.Invoke(this, EventArgs.Empty);
         });
 
         QuitButton.onClick.AddListener(() => {
+            SoundManager.Instance.PlayButtonTapSound();
+
             Application.Quit();
         });
     }

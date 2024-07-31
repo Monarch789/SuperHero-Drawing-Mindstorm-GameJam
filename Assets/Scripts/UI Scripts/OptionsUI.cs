@@ -6,15 +6,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class OptionsUI : MonoBehaviour{
-
-    //Singleton
-    public static OptionsUI Instance { get; private set; }
-
     //events for sending to music and sound manager to change the volume multiplier
     public class OnValueChangedEventArgs:EventArgs { public float newValue; }
 
-    public event EventHandler<OnValueChangedEventArgs> OnMusicValueChanged;
-    public event EventHandler<OnValueChangedEventArgs> OnSFXValueChanged;
+    public static event EventHandler<OnValueChangedEventArgs> OnMusicValueChanged;
+    public static event EventHandler<OnValueChangedEventArgs> OnSFXValueChanged;
 
     [SerializeField] private Slider MusicSlider;
     [SerializeField] private Slider SFXSlider;
@@ -31,10 +27,11 @@ public class OptionsUI : MonoBehaviour{
     private void Awake() {
         animator = GetComponent<Animator>();
 
-        MusicPercentText.text = (Mathf.FloorToInt(MusicSlider.value * 100)).ToString() + "%";
-        SFXPercentText.text = (Mathf.FloorToInt(SFXSlider.value * 100)).ToString() + "%";
+
 
         BackButton.onClick.AddListener(() => {
+            SoundManager.Instance.PlayButtonTapSound();
+
             Hide();
         });
 
@@ -52,6 +49,11 @@ public class OptionsUI : MonoBehaviour{
 
     private void Start() {
         HideImmediatley();
+        SFXSlider.value = SoundManager.Instance.GetVolume();
+        MusicSlider.value = MusicManager.Instance.GetVolume();
+
+        MusicPercentText.text = (Mathf.FloorToInt(MusicSlider.value * 100)).ToString() + "%";
+        SFXPercentText.text = (Mathf.FloorToInt(SFXSlider.value * 100)).ToString() + "%";
 
         MainMenu.Instance.OnOptionsButtonClick += MainMenu_OnOptionsButtonClick;
     }
@@ -80,5 +82,9 @@ public class OptionsUI : MonoBehaviour{
 
         HideImmediatley();
     }
-    
+
+    private void OnDestroy() {
+        MainMenu.Instance.OnOptionsButtonClick -= MainMenu_OnOptionsButtonClick;
+    }
+
 }

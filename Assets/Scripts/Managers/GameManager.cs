@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.WSA;
 
 public class GameManager : MonoBehaviour{
     //Singleton
@@ -15,6 +16,9 @@ public class GameManager : MonoBehaviour{
     [SerializeField] private int ThreeStarEnemies;
 
     [SerializeField] private Camera mainCam;
+
+    private const string TotalLevelsCompletedString = "LevelsCompleted";
+    private int LevelsCompleted;
 
     //events of Pause and UnPause to send other scripts to not do stuff
     public event EventHandler OnPause;
@@ -39,6 +43,8 @@ public class GameManager : MonoBehaviour{
     
     private void Awake() {
         Instance = this;
+
+        LevelsCompleted = PlayerPrefs.GetInt(TotalLevelsCompletedString,-1);
     }
 
     private void Start() {
@@ -75,6 +81,28 @@ public class GameManager : MonoBehaviour{
         }
         else {
             OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 3});
+        }
+
+        if (Loader.GetCurrentScene() == Loader.GameScenes.Level1) {
+            LevelsCompleted = 1;
+        }
+        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level2) {
+            LevelsCompleted = 2;
+        }
+        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level3) {
+            LevelsCompleted = 3;
+        }
+        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level4) {
+            LevelsCompleted = 4;
+        }
+        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level5) {
+            LevelsCompleted = 5;
+        }
+
+        if (LevelsCompleted > PlayerPrefs.GetInt(TotalLevelsCompletedString, -1)) {
+            //if the total levels completed is greater than the previous total levels completed
+            PlayerPrefs.SetInt(TotalLevelsCompletedString, LevelsCompleted);
+            PlayerPrefs.Save();
         }
     }
 

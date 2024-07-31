@@ -28,7 +28,9 @@ public class PauseMenu : MonoBehaviour {
 
         animator = GetComponent<Animator>();
 
-        pauseButton.onClick.AddListener(()=> { 
+        pauseButton.onClick.AddListener(()=> {
+            SoundManager.Instance.PlayButtonTapSound();
+
             OnPauseButtonClick?.Invoke(this, EventArgs.Empty);
 
             //enable the play buttons and other stuff and disable pause button
@@ -40,15 +42,21 @@ public class PauseMenu : MonoBehaviour {
         playButton.onClick.AddListener(() => {
             OnPlayButtonClick?.Invoke(this, EventArgs.Empty);
 
+            SoundManager.Instance.PlayButtonTapSound();
+
             //disable the play buttons and other stuff and enable pause button
             pauseMenuUI.SetActive(false);
             pauseButton.gameObject.SetActive(true);
         });
 
         retryButton.onClick.AddListener(() => {
+            SoundManager.Instance.PlayButtonTapSound();
+
             Loader.LoadCurrentScene();
         });
         menuButton.onClick.AddListener(() => {
+            SoundManager.Instance.PlayButtonTapSound();
+
             Loader.LoadScene(Loader.GameScenes.MainMenu);
         });
     }
