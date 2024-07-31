@@ -211,6 +211,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
             //the player started from he hitbox so there are lines drawn
 
             OnDrawComplete?.Invoke(this, EventArgs.Empty);
+
             didDrawFromPlayer = false;
         }
     }

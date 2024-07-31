@@ -697,6 +697,7 @@ GameObject:
   - component: {fileID: 9096402138337013872}
   - component: {fileID: 2856625933201384853}
   - component: {fileID: 5625319275297394486}
+  - component: {fileID: 4523742178604147538}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -826,6 +827,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sideCollider: {fileID: 521051997850810127}
   downCollider: {fileID: 132475222270961854}
+  NinjaModel: {fileID: 5282982407416385224}
 --- !u!114 &2856625933201384853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -857,6 +859,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trailLinePrefab: {fileID: 8782145736878327818, guid: d903df075089ef945ba38f35017eaac8, type: 3}
   trailTransform: {fileID: 5282982407416746730}
+--- !u!114 &4523742178604147538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8489732540621868917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dccabd8693fdacc48bb691c738ab855f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9154455465448016829
 GameObject:
   m_ObjectHideFlags: 0
@@ -1059,6 +1073,11 @@ PrefabInstance:
       addedObject: {fileID: 7751012104479753763}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc7aca7dd7fa6d641a778e40737a5906, type: 3}
+--- !u!1 &5282982407416385224 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100098, guid: cc7aca7dd7fa6d641a778e40737a5906, type: 3}
+  m_PrefabInstance: {fileID: 5282982407416351178}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5282982407416746730 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400160, guid: cc7aca7dd7fa6d641a778e40737a5906, type: 3}
