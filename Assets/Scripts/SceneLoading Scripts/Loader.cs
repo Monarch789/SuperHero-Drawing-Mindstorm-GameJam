@@ -8,6 +8,11 @@ public static class Loader {
     public enum GameScenes {
         MainMenu,
         SampleScene,
+        Level1,
+        Level2,
+        Level3,
+        Level4,
+        Level5,
         LoadingScene,
         TutorialScene,
     }
@@ -31,5 +36,9 @@ public static class Loader {
     public static void LoadCurrentScene() {
 
         Loader.LoadScene(currentScene);
+    }
+
+    public static GameScenes GetCurrentScene() {
+        return currentScene;
     }
 }

@@ -33,9 +33,13 @@ public class TutorialMain : MonoBehaviour{
     public class OnStepObjectActivateEventArgs:EventArgs { public int stepsNumber; }
     public event EventHandler<OnStepObjectActivateEventArgs> OnStepObjectActivate;
 
+    public static event EventHandler OnTutorialComplete;
+
     private void Awake() {
         NextButton.onClick.AddListener(() => {
             if(StepsDone == 3) {
+                OnTutorialComplete?.Invoke(this, EventArgs.Empty);
+
                 Loader.LoadScene(Loader.GameScenes.SampleScene);
             }
             else 

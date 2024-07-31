@@ -43,7 +43,6 @@ public class PauseMenu : MonoBehaviour {
             //disable the play buttons and other stuff and enable pause button
             pauseMenuUI.SetActive(false);
             pauseButton.gameObject.SetActive(true);
-
         });
 
         retryButton.onClick.AddListener(() => {
@@ -58,4 +57,5 @@ public class PauseMenu : MonoBehaviour {
         //disable the pause menu at first
         pauseMenuUI.SetActive(false);
     }
+    
 }

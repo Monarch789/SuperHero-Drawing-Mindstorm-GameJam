@@ -12,8 +12,10 @@ public class MainMenu : MonoBehaviour{
 
     //event to send level select to show itself
     public event EventHandler OnPlayButtonClick;
+    public event EventHandler OnOptionsButtonClick;
 
     [SerializeField] private Button PlayButton;
+    [SerializeField] private Button OptionsButton;
     [SerializeField] private Button QuitButton;
 
     private void Awake() {
@@ -23,6 +25,10 @@ public class MainMenu : MonoBehaviour{
 
             OnPlayButtonClick?.Invoke(this, EventArgs.Empty);
 
+        });
+
+        OptionsButton.onClick.AddListener(() => {
+            OnOptionsButtonClick?.Invoke(this, EventArgs.Empty);
         });
 
         QuitButton.onClick.AddListener(() => {
