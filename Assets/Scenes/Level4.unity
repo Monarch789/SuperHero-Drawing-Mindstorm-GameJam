@@ -6225,7 +6225,7 @@ GameObject:
   - component: {fileID: 1425463254}
   - component: {fileID: 1425463253}
   m_Layer: 0
-  m_Name: WeakEnemy
+  m_Name: WeakEnemyBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6262,7 +6262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec8c0d4069c54804fb739f4a6d17fcf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyData: {fileID: 11400000, guid: 869166e7fad8d7b4b91f0c6264443679, type: 2}
+  enemyData: {fileID: 11400000, guid: 0508bf425c0df9e4495bf301f76799ac, type: 2}
 --- !u!61 &1425463254
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6620,6 +6620,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2199667521587413376, guid: ba086a7676610cf4f9607af13d0e1755, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -17.50003
+      objectReference: {fileID: 0}
     - target: {fileID: 2964425960831891159, guid: ba086a7676610cf4f9607af13d0e1755, type: 3}
       propertyPath: MaxPoints
       value: 100
