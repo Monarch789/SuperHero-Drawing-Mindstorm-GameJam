@@ -5,6 +5,11 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
     //Singleton
     public static Player Instance { get; private set; }
 
+    //strings for health and damage
+    private const string PlayerMaxHealthString = "MaxPlayerHealth";
+    private const string PlayerDamageString = "PlayerDamage";
+    
+
     //event to say to draw manager to start drawing
     public class OnPlayerTouchEventArgs : EventArgs { public Camera lookCamera; }
 
@@ -61,6 +66,9 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
 
         followLine = GetComponent<PlayerFollowLine>();
         playerManager = GetComponent<PlayerManager>();
+
+        MaxHealth = PlayerPrefs.GetFloat(PlayerMaxHealthString,50);
+        damage = PlayerPrefs.GetFloat(PlayerDamageString,5);
     }
 
     private void Start()
@@ -71,9 +79,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
         canAttack = false;
         isGamePaused = false;
 
-        MaxHealth = 50;
         health = MaxHealth;
-        damage = 5;
 
         InputManager.Instance.OnTouchStarted += InputManager_OnTouchStarted;
         InputManager.Instance.OnTouchEnded += InputManager_OnTouchEnded;
@@ -99,10 +105,18 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
 
     private void IncreaseBuffs_OnDamageInreased(object sender, EventArgs e) {
         damage += 5;
+
+        PlayerPrefs.SetFloat(PlayerDamageString,damage);
+        PlayerPrefs.Save();
     }
 
     private void IncreaseBuffs_OnHealthInreased(object sender, EventArgs e) {
-        health += 20;
+        MaxHealth += 10;
+
+        PlayerPrefs.SetFloat(PlayerMaxHealthString,MaxHealth);
+        PlayerPrefs.Save();
+
+        health = MaxHealth;
     }
 
     private void GameManager_OnUnPause(object sender, EventArgs e)

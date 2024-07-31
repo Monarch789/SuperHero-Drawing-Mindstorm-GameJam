@@ -13,10 +13,11 @@ public class Money : MonoBehaviour{
 
     private int money;
 
+    private const string PlayerMoneyString = "PlayerMoney";
     private void Awake() {
         Instance = this;
 
-        money = 100;
+        money = PlayerPrefs.GetInt(PlayerMoneyString,0);
     }
 
 
@@ -27,11 +28,17 @@ public class Money : MonoBehaviour{
         money += in_mon;
 
         OnMoneyIncreased?.Invoke(this, EventArgs.Empty);
+
+        PlayerPrefs.SetInt(PlayerMoneyString,money);
+        PlayerPrefs.Save();
     }
 
     public void DecreaseMoney(int de_mon) {
         money -= de_mon;
 
         OnMoneyDecreased?.Invoke(this, EventArgs.Empty);
+
+        PlayerPrefs.SetInt(PlayerMoneyString, money);
+        PlayerPrefs.Save();
     }
 }
