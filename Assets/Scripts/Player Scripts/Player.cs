@@ -56,6 +56,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
     //references for checking if the player collided with the floor
     [SerializeField] private PlayerCollideFloor sideCollider;
     [SerializeField] private PlayerCollideFloorDownwards downCollider;
+    [SerializeField] private GameObject PlayerModel;
 
 
     //health and damage
@@ -157,13 +158,21 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
 
     private void SpikeWall_OnPlayerCollisionWithSpikeWall(object sender, EventArgs e)
     {
-        //send events to stop following the line, and stop movement
-        OnPlayerMoveStop?.Invoke(this, EventArgs.Empty);
+        ////send events to make th eplayer follow the mext point on the line
 
-        OnPlayerDeath?.Invoke(this, EventArgs.Empty);
-        OnDeath?.Invoke(this, EventArgs.Empty);
+        OnMoveTowrdsNextPoint?.Invoke(this, EventArgs.Empty);
 
-        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = 0f });
+        health -= .5f;
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = health/MaxHealth});
+
+        if(health <= 0) {
+            OnPlayerMoveStop?.Invoke(this, EventArgs.Empty);
+            PlayerModel.SetActive(true);
+
+            OnPlayerDeath?.Invoke(this, EventArgs.Empty);
+            OnDeath?.Invoke(this, EventArgs.Empty);
+        }
+
     }
 
     private void Enemy_OnAttack(object sender, Enemy.OnAttackEventArgs e)
@@ -194,6 +203,8 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
     private void LeftCollider_OnPlayerCollideWithFloorFromSide(object sender, EventArgs e)
     {
         OnPlayerMoveStop?.Invoke(this, EventArgs.Empty);
+
+        PlayerModel.SetActive(true);
     }
 
     private void FollowLine_OnPathFollowed(object sender, EventArgs e)
@@ -202,6 +213,8 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
 
         //send event to say to draw manager to destory line
         OnPlayerPathFollowed?.Invoke(this, EventArgs.Empty);
+
+        PlayerModel.SetActive(true);
     }
 
     private void InputManager_OnTouchEnded(object sender, EventArgs e)
@@ -211,6 +224,8 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
             //the player started from he hitbox so there are lines drawn
 
             OnDrawComplete?.Invoke(this, EventArgs.Empty);
+
+            PlayerModel.SetActive(false);
 
             didDrawFromPlayer = false;
         }
