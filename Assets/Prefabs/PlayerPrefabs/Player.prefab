@@ -827,7 +827,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sideCollider: {fileID: 521051997850810127}
   downCollider: {fileID: 132475222270961854}
-  NinjaModel: {fileID: 5282982407416385224}
+  PlayerModel: {fileID: 5282982407416385224}
 --- !u!114 &2856625933201384853
 MonoBehaviour:
   m_ObjectHideFlags: 0
