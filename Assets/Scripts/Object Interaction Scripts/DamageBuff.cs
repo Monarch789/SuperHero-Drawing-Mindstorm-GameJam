@@ -3,16 +3,13 @@ using UnityEngine;
 
 public class DamageBuff : MonoBehaviour{
 
-    public class OnDamageAddEventArgs:EventArgs { public float addDamage; }
-    public static event EventHandler<OnDamageAddEventArgs> OnDamageAdd;
-
-    public float addedDamage = 3f;
+    public static event EventHandler OnDamageAdd;
 
     private void OnTriggerEnter2D(Collider2D collider) {
         if(collider.TryGetComponent(out Player player)) {
             //player got the damage upgrade
 
-            OnDamageAdd?.Invoke(this, new OnDamageAddEventArgs { addDamage = addedDamage });
+            OnDamageAdd?.Invoke(this, EventArgs.Empty);
 
             //delete this object
             gameObject.SetActive(false);

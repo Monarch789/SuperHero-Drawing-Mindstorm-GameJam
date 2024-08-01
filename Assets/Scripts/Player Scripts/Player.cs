@@ -9,6 +9,8 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
     private const string PlayerMaxHealthString = "MaxPlayerHealth";
     private const string PlayerDamageString = "PlayerDamage";
 
+    [SerializeField] private float AddedHealth;
+    [SerializeField] private float AddedDamage;
 
     //events for health and damage sounds
     public event EventHandler OnHealthIncreased;
@@ -148,16 +150,15 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
     }
 
 
-    private void DamageBuff_OnDamageAdd(object sender, DamageBuff.OnDamageAddEventArgs e)
+    private void DamageBuff_OnDamageAdd(object sender, EventArgs e)
     {
         OnDamageIncreased?.Invoke(this, EventArgs.Empty);
-        damage += e.addDamage;
-
+        damage += AddedDamage;
     }
 
-    private void HealthBuff_OnHealthAdd(object sender, HealthBuff.OnHealthAddEventArgs e)
+    private void HealthBuff_OnHealthAdd(object sender, EventArgs e)
     {
-        health += e.addHealth;
+        health += AddedHealth;
 
         OnHealthIncreased?.Invoke(this,EventArgs.Empty);
 

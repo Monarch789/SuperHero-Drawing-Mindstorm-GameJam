@@ -825,6 +825,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6c7fd9a4eb5db048ac6ea83d853157d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AddedHealth: 5
+  AddedDamage: 3
   sideCollider: {fileID: 521051997850810127}
   downCollider: {fileID: 132475222270961854}
   PlayerModel: {fileID: 5282982407416385224}

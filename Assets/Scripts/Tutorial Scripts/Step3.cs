@@ -16,11 +16,19 @@ public class Step3 : MonoBehaviour{
         isDamageBuffTaken = false;
         EnemiesKilled = 0;
 
-        HealthBuff.OnHealthAdd += HealthBuff_OnHealthAdd;
-        DamageBuff.OnDamageAdd += DamageBuff_OnDamageAdd;
+        Player.Instance.OnHealthIncreased += Player_OnHealthIncreased;
+        Player.Instance.OnDamageIncreased += Player_OnDamageIncreased;
 
         Enemy.OnEnemyDeath += Enemy_OnEnemyDeath;
         Player.Instance.OnPlayerPathFollowed += Player_OnPlayerPathFollowed;
+    }
+
+    private void Player_OnDamageIncreased(object sender, EventArgs e) {
+        isDamageBuffTaken = true;
+    }
+
+    private void Player_OnHealthIncreased(object sender, EventArgs e) {
+        isHealthBuffTaken = true;
     }
 
     private void Player_OnPlayerPathFollowed(object sender, EventArgs e) {
@@ -37,18 +45,10 @@ public class Step3 : MonoBehaviour{
             EnemiesKilled++;
     }
 
-    private void DamageBuff_OnDamageAdd(object sender, DamageBuff.OnDamageAddEventArgs e) {
-        isDamageBuffTaken = true;
-    }
-
-    private void HealthBuff_OnHealthAdd(object sender, HealthBuff.OnHealthAddEventArgs e) {
-        isHealthBuffTaken = true;
-    }
 
     private void OnDestroy() {
-
-        HealthBuff.OnHealthAdd -= HealthBuff_OnHealthAdd;
-        DamageBuff.OnDamageAdd -= DamageBuff_OnDamageAdd;
+        Player.Instance.OnHealthIncreased += Player_OnHealthIncreased;
+        Player.Instance.OnDamageIncreased += Player_OnDamageIncreased;
 
         Enemy.OnEnemyDeath -= Enemy_OnEnemyDeath;
         Player.Instance.OnPlayerPathFollowed -= Player_OnPlayerPathFollowed;
