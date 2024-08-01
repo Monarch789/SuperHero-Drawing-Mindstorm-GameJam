@@ -39,4 +39,8 @@ public class MusicManager : MonoBehaviour {
         return volume;
     }
 
+    private void OnDestroy() {
+        OptionsUI.OnMusicValueChanged -= OptionsUI_OnMusicValueChanged;
+    }
+
 }

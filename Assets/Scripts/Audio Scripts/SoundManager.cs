@@ -118,7 +118,7 @@ public class SoundManager : MonoBehaviour{
     }
 
     private void OnDestroy() {
-        OptionsUI.OnSFXValueChanged += OptionsUI_OnSFXValueChanged;
+        OptionsUI.OnSFXValueChanged -= OptionsUI_OnSFXValueChanged;
     }
 
     public void PlayButtonTapSound() {

@@ -21,6 +21,8 @@ public class MainMenu : MonoBehaviour{
     private void Awake() {
         Instance = this;
 
+        Time.timeScale = 1f;
+
         PlayButton.onClick.AddListener(() => {
             SoundManager.Instance.PlayButtonTapSound();
 
