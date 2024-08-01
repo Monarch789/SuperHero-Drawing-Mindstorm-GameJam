@@ -45,7 +45,7 @@ public class PlayerAnimator : MonoBehaviour
                 Destroy(trailObject); // Optionally destroy the old trail if it exists
             }
 
-            trailObject = Instantiate(trailLinePrefab, trailTransform.position, Quaternion.identity, trailTransform);
+            trailObject = Instantiate(trailLinePrefab, Player.Instance.transform);
             Debug.Log("Trail Line instantiated at the Trail position.");
         }
         else {
