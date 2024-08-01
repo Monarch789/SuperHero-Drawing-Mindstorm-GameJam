@@ -119,13 +119,24 @@ public class SoundManager : MonoBehaviour{
     }
 
     public void PlayButtonTapSound() {
-        PlaySound(sounds.ButtonTap,transform.position);
+        PlaySound(sounds.ButtonTap, Camera.main.transform.position);
     }
 
     public void PlayRunningSound() {
-        PlaySound(sounds.Run,transform.position);
+        PlaySound(sounds.Run, Camera.main.transform.position);
     }
     public void PlayFireballSound() {
-        PlaySound(sounds.Fireball, transform.position);
+        PlaySound(sounds.Fireball, Camera.main.transform.position);
     }
+
+    public void PlayLevelCompleteSound(bool WhichSound) {
+
+        if (WhichSound) {
+            PlaySound(sounds.LevelPassed,Camera.main.transform.position);
+        }
+        else {
+            PlaySound(sounds.LevelFailed, Camera.main.transform.position);
+        }
+    }
+
 }

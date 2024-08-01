@@ -22,11 +22,18 @@ public class TutorialMain : MonoBehaviour{
     private const string TutorialSteps = "TutorialSteps";
     private const string TotalLevelsCompletedString = "LevelsCompleted";
 
+
+    private const string AnimatorGoodComplete = "GoodComplete";
+    private const string AnimatorBadComplete = "BadComplete";
+
+    private Animator animator;
+
     //get the steps completed and 0 if not saved
     private int StepsDone;
 
 
     private void Awake() {
+        animator = GetComponent<Animator>();
 
         StepsDone = PlayerPrefs.GetInt(TutorialSteps, 0);
 
@@ -62,7 +69,10 @@ public class TutorialMain : MonoBehaviour{
     }
 
     private void Player_OnDeath(object sender, EventArgs e) {
-        Loader.LoadScene(Loader.GameScenes.TutorialScene);
+        animator.SetTrigger(AnimatorBadComplete);
+
+        StartCoroutine(NextStepDelay(false));
+
     }
 
     private void Step3_OnStepComplete(object sender, EventArgs e) {
@@ -78,7 +88,9 @@ public class TutorialMain : MonoBehaviour{
 
             StepsDone = 3;
 
-            Loader.LoadScene(Loader.GameScenes.Level1);
+            animator.SetTrigger(AnimatorGoodComplete);
+
+            StartCoroutine(NextStepDelay(true));
         }
     }
 
@@ -90,7 +102,9 @@ public class TutorialMain : MonoBehaviour{
 
             StepsDone = 2;
 
-            Loader.LoadScene(Loader.GameScenes.TutorialScene);
+            animator.SetTrigger(AnimatorGoodComplete);
+
+            StartCoroutine(NextStepDelay(false));
         }
     }
 
@@ -104,7 +118,9 @@ public class TutorialMain : MonoBehaviour{
 
             StepsDone = 1;
 
-            Loader.LoadScene(Loader.GameScenes.TutorialScene);
+            animator.SetTrigger(AnimatorGoodComplete);
+
+            StartCoroutine(NextStepDelay(false));
         }
     }
 
@@ -114,5 +130,17 @@ public class TutorialMain : MonoBehaviour{
         step3.OnStepComplete -= Step3_OnStepComplete;
 
         Player.Instance.OnDeath -= Player_OnDeath;
+    }
+
+    private IEnumerator NextStepDelay(bool isLastStep) {
+
+        yield return new WaitForSeconds(0.75f);
+
+        if (isLastStep) {
+            Loader.LoadScene(Loader.GameScenes.Level1);
+        }
+        else {
+            Loader.LoadScene(Loader.GameScenes.TutorialScene);
+        }
     }
 }
