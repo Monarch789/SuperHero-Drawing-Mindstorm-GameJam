@@ -1,7 +1,5 @@
 using System;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour,IHasProgress,IHasDeathEffect{
     //reference of Enemy Scriptable Object

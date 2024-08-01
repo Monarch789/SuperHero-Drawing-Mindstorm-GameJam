@@ -1,7 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,9 +7,6 @@ public class TutorialMain : MonoBehaviour{
 
     //Singleton
     public static TutorialMain Instance {  get; private set; }
-
-    [SerializeField] private Button NextButton;
-    [SerializeField] private Button RetryButton;
 
     //references of all the gameObjects of steps
     [SerializeField] private GameObject Step1GameObject;
@@ -30,45 +25,24 @@ public class TutorialMain : MonoBehaviour{
     //get the steps completed and 0 if not saved
     private int StepsDone;
 
-    //event to send all the steps objects to activate
-    public class OnStepObjectActivateEventArgs:EventArgs { public int stepsNumber; }
-    public event EventHandler<OnStepObjectActivateEventArgs> OnStepObjectActivate;
 
     private void Awake() {
-        NextButton.onClick.AddListener(() => {
-            SoundManager.Instance.PlayButtonTapSound();
-
-            if (StepsDone == 3) {
-                
-                if (PlayerPrefs.GetInt(TotalLevelsCompletedString, -1) < 0) {
-                    PlayerPrefs.SetInt(TotalLevelsCompletedString, 0);
-                    PlayerPrefs.Save();
-                }
-
-                Loader.LoadScene(Loader.GameScenes.Level1);
-            }
-            else 
-                Loader.LoadScene(Loader.GameScenes.TutorialScene);
-        });
-
-        RetryButton.onClick.AddListener(() => {
-            SoundManager.Instance.PlayButtonTapSound();
-
-            //subtract one from steps done if the user completed something and stil wishes to retry
-            if (NextButton.interactable) {
-                // the user completed this step
-
-                //save it so that it is subtracted by 1 so that it loads correct step
-                PlayerPrefs.SetInt(TutorialSteps,StepsDone-1);
-                PlayerPrefs.Save();
-            }
-
-            //load the tutorial scene
-            Loader.LoadScene(Loader.GameScenes.TutorialScene);
-
-        });
 
         StepsDone = PlayerPrefs.GetInt(TutorialSteps, 0);
+
+        Step1GameObject.SetActive(false);
+        Step2GameObject.SetActive(false);
+        Step3GameObject.SetActive(false);
+
+        if(StepsDone == 0) {
+            Step1GameObject.SetActive(true);
+        }
+        else if(StepsDone == 1) {
+            Step2GameObject.SetActive(true);
+        }
+        else if(StepsDone == 2) {
+            Step3GameObject.SetActive(true);
+        }
 
         Instance = this;
 
@@ -78,36 +52,45 @@ public class TutorialMain : MonoBehaviour{
     }
 
     private void Start() {
-        NextButton.interactable = false;
-
         Time.timeScale = 1f;
-
-        StartCoroutine(EventSendDelay());
 
         step1.OnStepComplete += Step1_OnStepComplete;
         step2.OnStepComplete += Step2_OnStepComplete;
         step3.OnStepComplete += Step3_OnStepComplete;
+
+        Player.Instance.OnDeath += Player_OnDeath;
+    }
+
+    private void Player_OnDeath(object sender, EventArgs e) {
+        Loader.LoadScene(Loader.GameScenes.TutorialScene);
     }
 
     private void Step3_OnStepComplete(object sender, EventArgs e) {
         if(StepsDone == 2) {
+
             PlayerPrefs.SetInt(TutorialSteps, 0);
+
+            if(PlayerPrefs.GetInt(TotalLevelsCompletedString,-1) < 0) {
+                PlayerPrefs.SetInt(TotalLevelsCompletedString,0);
+            }
+
             PlayerPrefs.Save();
 
             StepsDone = 3;
 
-            NextButton.interactable = true;
+            Loader.LoadScene(Loader.GameScenes.Level1);
         }
     }
 
     private void Step2_OnStepComplete(object sender, EventArgs e) {
         if(StepsDone == 1) {
+
             PlayerPrefs.SetInt(TutorialSteps,2);
             PlayerPrefs.Save();
 
             StepsDone = 2;
 
-            NextButton.interactable = true;
+            Loader.LoadScene(Loader.GameScenes.TutorialScene);
         }
     }
 
@@ -115,19 +98,21 @@ public class TutorialMain : MonoBehaviour{
         //only save if this step hasnt been done
         
         if (StepsDone == 0) {
+
             PlayerPrefs.SetInt(TutorialSteps, 1);
             PlayerPrefs.Save();
 
             StepsDone = 1;
 
-            NextButton.interactable = true;
+            Loader.LoadScene(Loader.GameScenes.TutorialScene);
         }
     }
 
-    //couroutine to send event after all have been initialized
-    private IEnumerator EventSendDelay() {
-        yield return new WaitForSeconds(0.8f);
+    private void OnDestroy() {
+        step1.OnStepComplete -= Step1_OnStepComplete;
+        step2.OnStepComplete -= Step2_OnStepComplete;
+        step3.OnStepComplete -= Step3_OnStepComplete;
 
-        OnStepObjectActivate?.Invoke(this, new OnStepObjectActivateEventArgs { stepsNumber = StepsDone });
+        Player.Instance.OnDeath -= Player_OnDeath;
     }
 }

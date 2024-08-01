@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Step3 : MonoBehaviour{
@@ -18,24 +16,25 @@ public class Step3 : MonoBehaviour{
         isDamageBuffTaken = false;
         EnemiesKilled = 0;
 
-        TutorialMain.Instance.OnStepObjectActivate += TutorialMain_OnStepObjectActivate;
-
         HealthBuff.OnHealthAdd += HealthBuff_OnHealthAdd;
         DamageBuff.OnDamageAdd += DamageBuff_OnDamageAdd;
 
         Enemy.OnEnemyDeath += Enemy_OnEnemyDeath;
+        Player.Instance.OnPlayerPathFollowed += Player_OnPlayerPathFollowed;
+    }
+
+    private void Player_OnPlayerPathFollowed(object sender, EventArgs e) {
+        if (EnemiesKilled >= 2) {
+            //check if both buffs were taken
+            if (isHealthBuffTaken && isDamageBuffTaken) {
+                OnStepComplete?.Invoke(this, EventArgs.Empty);
+            }
+        }
     }
 
     private void Enemy_OnEnemyDeath(object sender, EventArgs e) {
         if(gameObject.activeSelf)
             EnemiesKilled++;
-
-        if(EnemiesKilled >= 2) {
-            //check if both buffs were taken
-            if(isHealthBuffTaken && isDamageBuffTaken) {
-                OnStepComplete?.Invoke(this, EventArgs.Empty);
-            }
-        }
     }
 
     private void DamageBuff_OnDamageAdd(object sender, DamageBuff.OnDamageAddEventArgs e) {
@@ -46,23 +45,12 @@ public class Step3 : MonoBehaviour{
         isHealthBuffTaken = true;
     }
 
-    private void TutorialMain_OnStepObjectActivate(object sender, TutorialMain.OnStepObjectActivateEventArgs e) {
-        //this will be activated if 2 steps are done
-
-        if (e.stepsNumber == 2) {
-            gameObject.SetActive(true);
-        }
-        else {
-            gameObject.SetActive(false);
-        }
-    }
-
     private void OnDestroy() {
-        TutorialMain.Instance.OnStepObjectActivate -= TutorialMain_OnStepObjectActivate;
 
         HealthBuff.OnHealthAdd -= HealthBuff_OnHealthAdd;
         DamageBuff.OnDamageAdd -= DamageBuff_OnDamageAdd;
 
         Enemy.OnEnemyDeath -= Enemy_OnEnemyDeath;
+        Player.Instance.OnPlayerPathFollowed -= Player_OnPlayerPathFollowed;
     }
 }

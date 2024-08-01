@@ -98,6 +98,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
         playerManager.OnPlayerCanAttack += PlayerManager_OnPlayerCanAttack;
         
         SpikeWall.OnPlayerCollisionWithSpikeWall += SpikeWall_OnPlayerCollisionWithSpikeWall;
+        DeathArea.OnPlayerCollisionWithDeathArea += DeathArea_OnCollisionWithDeathArea;
         HealthBuff.OnHealthAdd += HealthBuff_OnHealthAdd;
         DamageBuff.OnDamageAdd += DamageBuff_OnDamageAdd;
 
@@ -109,6 +110,13 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
 
     }
 
+    private void DeathArea_OnCollisionWithDeathArea(object sender, EventArgs e) {
+        OnPlayerMoveStop?.Invoke(this, EventArgs.Empty);
+        PlayerModel.SetActive(true);
+
+        OnPlayerDeath?.Invoke(this, EventArgs.Empty);
+        OnDeath?.Invoke(this, EventArgs.Empty);
+    }
     private void IncreaseBuffs_OnDamageInreased(object sender, EventArgs e) {
         damage += 5;
 
@@ -272,6 +280,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
         playerManager.OnPlayerCanAttack -= PlayerManager_OnPlayerCanAttack;
         
         SpikeWall.OnPlayerCollisionWithSpikeWall -= SpikeWall_OnPlayerCollisionWithSpikeWall;
+        DeathArea.OnPlayerCollisionWithDeathArea -= DeathArea_OnCollisionWithDeathArea;
         HealthBuff.OnHealthAdd -= HealthBuff_OnHealthAdd;
         DamageBuff.OnDamageAdd -= DamageBuff_OnDamageAdd;
 

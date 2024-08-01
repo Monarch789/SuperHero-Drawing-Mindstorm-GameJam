@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 491781268120686030}
   - component: {fileID: 7976177694436546645}
-  - component: {fileID: 663332407234034426}
+  - component: {fileID: 6139437225447258661}
   m_Layer: 6
   m_Name: DeathArea
   m_TagString: Death
@@ -78,7 +78,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 50, y: 1}
   m_EdgeRadius: 0
---- !u!114 &663332407234034426
+--- !u!114 &6139437225447258661
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,6 +87,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2263076490907389798}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e761c7ba48a73d947a34a24ab125d715, type: 3}
+  m_Script: {fileID: 11500000, guid: 74c2e2dd29b2a584c809b995201dcfe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

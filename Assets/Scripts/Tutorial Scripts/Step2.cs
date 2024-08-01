@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Step2 : MonoBehaviour{
@@ -8,7 +6,6 @@ public class Step2 : MonoBehaviour{
     public event EventHandler OnStepComplete;
 
     private void Start() {
-        TutorialMain.Instance.OnStepObjectActivate += TutorialMain_OnStepObjectActivate;
 
         Enemy.OnEnemyDeath += Enemy_OnEnemyDeath;
     }
@@ -20,19 +17,8 @@ public class Step2 : MonoBehaviour{
         }
     }
 
-    private void TutorialMain_OnStepObjectActivate(object sender, TutorialMain.OnStepObjectActivateEventArgs e) {
-        //this will be activated if 1 step is done
-
-        if (e.stepsNumber == 1) {
-            gameObject.SetActive(true);
-        }
-        else {
-            gameObject.SetActive(false);
-        }
-    }
 
     private void OnDestroy() {
-        TutorialMain.Instance.OnStepObjectActivate -= TutorialMain_OnStepObjectActivate;
         Enemy.OnEnemyDeath -= Enemy_OnEnemyDeath;
     }
 }
