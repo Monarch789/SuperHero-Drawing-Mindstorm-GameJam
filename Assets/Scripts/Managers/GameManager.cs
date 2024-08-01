@@ -98,6 +98,27 @@ public class GameManager : MonoBehaviour{
         else if (Loader.GetCurrentScene() == Loader.GameScenes.Level5) {
             LevelsCompleted = 5;
         }
+        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level6) {
+            LevelsCompleted = 6;
+        }
+        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level7) {
+            LevelsCompleted = 7;
+        }
+        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level8) {
+            LevelsCompleted = 8;
+        }
+        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level9) {
+            LevelsCompleted = 9;
+        }
+        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level10) {
+            LevelsCompleted = 10;
+        }
+        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level11) {
+            LevelsCompleted = 11;
+        }
+        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level12) {
+            LevelsCompleted = 12;
+        }
 
         if (LevelsCompleted > PlayerPrefs.GetInt(TotalLevelsCompletedString, -1)) {
             //if the total levels completed is greater than the previous total levels completed

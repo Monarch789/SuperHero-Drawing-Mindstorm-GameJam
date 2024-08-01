@@ -19,6 +19,10 @@ public class IncreaseBuffsUI : MonoBehaviour{
     public event EventHandler OnHealthInreased;
     public event EventHandler OnDamageInreased;
 
+
+    private const string PlayerDamageCostString = "PlayerDamageCost";
+    private const string PlayerHealthCostString = "PlayerHealthCost";
+
     //prices of both
     private int HealthPrice;
     private int DamagePrice;
@@ -26,10 +30,16 @@ public class IncreaseBuffsUI : MonoBehaviour{
     private void Awake() {
         Instance = this;
 
+        HealthPrice = PlayerPrefs.GetInt(PlayerHealthCostString,10);
+        DamagePrice = PlayerPrefs.GetInt(PlayerDamageCostString,10);
+
         IncreaseHealthButton.onClick.AddListener(() => {
             Money.Instance.DecreaseMoney(HealthPrice);
 
             HealthPrice += 10;
+
+            PlayerPrefs.SetInt(PlayerHealthCostString,HealthPrice);
+            PlayerPrefs.Save();
 
             HealthPriceText.text = HealthPrice.ToString();
 
@@ -40,6 +50,9 @@ public class IncreaseBuffsUI : MonoBehaviour{
 
             DamagePrice += 10;
 
+            PlayerPrefs.SetInt(PlayerDamageCostString, DamagePrice);
+            PlayerPrefs.Save();
+
             DamagePriceText.text = DamagePrice.ToString();
 
             OnDamageInreased?.Invoke(this, EventArgs.Empty);
@@ -47,9 +60,6 @@ public class IncreaseBuffsUI : MonoBehaviour{
     }
 
     private void Start() {
-        HealthPrice = 10;
-        DamagePrice = 10;
-
         HealthPriceText.text = HealthPrice.ToString();
         DamagePriceText.text = DamagePrice.ToString();
 

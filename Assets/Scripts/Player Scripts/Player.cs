@@ -9,6 +9,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
     private const string PlayerMaxHealthString = "MaxPlayerHealth";
     private const string PlayerDamageString = "PlayerDamage";
 
+
     //events for health and damage sounds
     public event EventHandler OnHealthIncreased;
     public event EventHandler OnDamageIncreased;
@@ -73,6 +74,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
 
         MaxHealth = PlayerPrefs.GetFloat(PlayerMaxHealthString,50);
         damage = PlayerPrefs.GetFloat(PlayerDamageString,5);
+
     }
 
     private void Start()
