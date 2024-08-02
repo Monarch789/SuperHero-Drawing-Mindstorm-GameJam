@@ -6,12 +6,9 @@ public class Enemy : MonoBehaviour,IHasProgress,IHasDeathEffect{
     //reference of Enemy Scriptable Object
     [SerializeField] private EnemySO enemyData;
 
-    [SerializeField] private TextMeshProUGUI CurrentHealthText;
-    [SerializeField] private TextMeshProUGUI MaxHealthText;
-    [SerializeField] private TextMeshProUGUI DamageText;
-
     //health since we cant subtract from SO
     private float health;
+    private float damage;
 
     //event to send player to reduce its health 
     public class OnAttackEventArgs : EventArgs { public float Damage; }
@@ -31,14 +28,12 @@ public class Enemy : MonoBehaviour,IHasProgress,IHasDeathEffect{
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.TryGetComponent(out Player player)) {
             //attack the player first then reduce health
-            OnAttack?.Invoke(this, new OnAttackEventArgs { Damage = enemyData.Damage });
+            OnAttack?.Invoke(this, new OnAttackEventArgs { Damage = damage });
             OnThisAttack?.Invoke(this,EventArgs.Empty);
 
             health -= player.GetDamage();
 
             health = Mathf.Clamp(health, 0, enemyData.Health);
-
-            CurrentHealthText.text = health.ToString();
 
             OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = health / enemyData.Health });
 
@@ -57,11 +52,21 @@ public class Enemy : MonoBehaviour,IHasProgress,IHasDeathEffect{
 
     private void Start() {
         health = enemyData.Health;
+        damage = enemyData.Damage;
 
+        float healthMultiplier = 1f;
 
-        MaxHealthText.text = enemyData.Health.ToString();
-        CurrentHealthText.text = health.ToString();
+        string CurrentLevel = Loader.GetCurrentScene().ToString();
+        if (CurrentLevel != Loader.GameScenes.TutorialScene.ToString()) {
 
-        DamageText.text = enemyData.Damage.ToString();
+            int levelNumber = int.Parse(CurrentLevel.Substring(5));
+
+            for (int i = 1; i < levelNumber; i++) {
+                healthMultiplier += 0.2f;
+            }
+        }
+
+        health = health * healthMultiplier;
+        damage = damage * (healthMultiplier/2f);
     }
 }

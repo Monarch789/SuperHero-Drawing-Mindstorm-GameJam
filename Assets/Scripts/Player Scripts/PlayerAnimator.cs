@@ -10,6 +10,9 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private GameObject trailLinePrefab; // Reference to the trail_line prefab
     [SerializeField] private Transform trailTransform; // Reference to the Trail GameObject
 
+    //saving the scale of the trail
+    private Vector3 scaleOfTrail;
+
     private GameObject trailObject; // Reference to the instantiated trail object
     private void Awake()
     {
@@ -19,7 +22,12 @@ public class PlayerAnimator : MonoBehaviour
 
     private void Start()
     {
-        playerManager.OnPlayerMoveStateChange += PlayerManager_OnPlayerMoveStateChange;   
+        playerManager.OnPlayerMoveStateChange += PlayerManager_OnPlayerMoveStateChange;
+        Player.Instance.OnProgressChanged += Player_OnProgressChanged;
+    }
+
+    private void Player_OnProgressChanged(object sender, IHasProgress.OnProgressChangeEventAgs e) {
+        trailObject.transform.localScale = scaleOfTrail * e.progressAmount;
     }
 
     private void PlayerManager_OnPlayerMoveStateChange(object sender, PlayerManager.OnMoveStateChangeEventArgs e) {
@@ -46,6 +54,9 @@ public class PlayerAnimator : MonoBehaviour
             }
 
             trailObject = Instantiate(trailLinePrefab, Player.Instance.transform);
+
+            scaleOfTrail = trailObject.transform.localScale;
+
             Debug.Log("Trail Line instantiated at the Trail position.");
         }
         else {
@@ -55,5 +66,6 @@ public class PlayerAnimator : MonoBehaviour
 
     private void OnDestroy(){
         playerManager.OnPlayerMoveStateChange -= PlayerManager_OnPlayerMoveStateChange;
+        Player.Instance.OnProgressChanged -= Player_OnProgressChanged;
     }
 }

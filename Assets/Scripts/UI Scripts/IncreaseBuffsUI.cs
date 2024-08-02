@@ -28,13 +28,13 @@ public class IncreaseBuffsUI : MonoBehaviour{
     private void Awake() {
         Instance = this;
 
-        HealthPrice = PlayerPrefs.GetInt(PlayerHealthCostString,10);
-        DamagePrice = PlayerPrefs.GetInt(PlayerDamageCostString,10);
+        HealthPrice = PlayerPrefs.GetInt(PlayerHealthCostString,30);
+        DamagePrice = PlayerPrefs.GetInt(PlayerDamageCostString,30);
 
         IncreaseHealthButton.onClick.AddListener(() => {
             Money.Instance.DecreaseMoney(HealthPrice);
 
-            HealthPrice += 10;
+            HealthPrice += 30;
 
             PlayerPrefs.SetInt(PlayerHealthCostString,HealthPrice);
             PlayerPrefs.Save();
@@ -46,7 +46,7 @@ public class IncreaseBuffsUI : MonoBehaviour{
         IncreaseDamageButton.onClick.AddListener(() => {
             Money.Instance.DecreaseMoney(DamagePrice);
 
-            DamagePrice += 10;
+            DamagePrice += 30;
 
             PlayerPrefs.SetInt(PlayerDamageCostString, DamagePrice);
             PlayerPrefs.Save();

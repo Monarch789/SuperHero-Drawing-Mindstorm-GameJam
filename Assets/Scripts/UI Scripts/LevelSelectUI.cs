@@ -128,7 +128,6 @@ public class LevelSelectUI : MonoBehaviour{
             Loader.LoadScene(Loader.GameScenes.Level12);
         });
 
-
     }
 
     private void Start() {

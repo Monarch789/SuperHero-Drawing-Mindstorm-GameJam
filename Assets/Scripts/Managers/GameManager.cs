@@ -92,101 +92,18 @@ public class GameManager : MonoBehaviour{
             OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 3});
         }
 
-        if (Loader.GetCurrentScene() == Loader.GameScenes.Level1) {
-            if (PlayerPrefs.GetInt(LevelsStarsStrings[0],0) < StarsGot) {
-                PlayerPrefs.SetInt(LevelsStarsStrings[0],StarsGot);
+        string CurrentLevel = Loader.GetCurrentScene().ToString();
+
+        if (CurrentLevel != Loader.GameScenes.TutorialScene.ToString()) {
+            int levelNumber = int.Parse(CurrentLevel.Substring(5));
+
+
+            if (PlayerPrefs.GetInt(LevelsStarsStrings[levelNumber-1], 0) < StarsGot) {
+                PlayerPrefs.SetInt(LevelsStarsStrings[levelNumber-1], StarsGot);
                 PlayerPrefs.Save();
             }
 
-            LevelsCompleted = 1;
-        }
-        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level2) {
-            if (PlayerPrefs.GetInt(LevelsStarsStrings[1], 0) < StarsGot) {
-                PlayerPrefs.SetInt(LevelsStarsStrings[1], StarsGot);
-                PlayerPrefs.Save();
-            }
-
-            LevelsCompleted = 2;
-        }
-        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level3) {
-            if (PlayerPrefs.GetInt(LevelsStarsStrings[2], 0) < StarsGot) {
-                PlayerPrefs.SetInt(LevelsStarsStrings[2], StarsGot);
-                PlayerPrefs.Save();
-            }
-
-            LevelsCompleted = 3;
-        }
-        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level4) {
-            if (PlayerPrefs.GetInt(LevelsStarsStrings[3], 0) < StarsGot) {
-                PlayerPrefs.SetInt(LevelsStarsStrings[3], StarsGot);
-                PlayerPrefs.Save();
-            }
-
-            LevelsCompleted = 4;
-        }
-        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level5) {
-            if (PlayerPrefs.GetInt(LevelsStarsStrings[4], 0) < StarsGot) {
-                PlayerPrefs.SetInt(LevelsStarsStrings[4], StarsGot);
-                PlayerPrefs.Save();
-            }
-
-            LevelsCompleted = 5;
-        }
-        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level6) {
-            if (PlayerPrefs.GetInt(LevelsStarsStrings[5], 0) < StarsGot) {
-                PlayerPrefs.SetInt(LevelsStarsStrings[5], StarsGot);
-                PlayerPrefs.Save();
-            }
-
-            LevelsCompleted = 6;
-        }
-        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level7) {
-            if (PlayerPrefs.GetInt(LevelsStarsStrings[6], 0) < StarsGot) {
-                PlayerPrefs.SetInt(LevelsStarsStrings[6], StarsGot);
-                PlayerPrefs.Save();
-            }
-
-            LevelsCompleted = 7;
-        }
-        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level8) {
-            if (PlayerPrefs.GetInt(LevelsStarsStrings[7], 0) < StarsGot) {
-                PlayerPrefs.SetInt(LevelsStarsStrings[7], StarsGot);
-                PlayerPrefs.Save();
-            }
-
-            LevelsCompleted = 8;
-        }
-        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level9) {
-            if (PlayerPrefs.GetInt(LevelsStarsStrings[8], 0) < StarsGot) {
-                PlayerPrefs.SetInt(LevelsStarsStrings[8], StarsGot);
-                PlayerPrefs.Save();
-            }
-
-            LevelsCompleted = 9;
-        }
-        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level10) {
-            if (PlayerPrefs.GetInt(LevelsStarsStrings[9], 0) < StarsGot) {
-                PlayerPrefs.SetInt(LevelsStarsStrings[9], StarsGot);
-                PlayerPrefs.Save();
-            }
-
-            LevelsCompleted = 10;
-        }
-        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level11) {
-            if (PlayerPrefs.GetInt(LevelsStarsStrings[10], 0) < StarsGot) {
-                PlayerPrefs.SetInt(LevelsStarsStrings[10], StarsGot);
-                PlayerPrefs.Save();
-            }
-
-            LevelsCompleted = 11;
-        }
-        else if (Loader.GetCurrentScene() == Loader.GameScenes.Level12) {
-            if (PlayerPrefs.GetInt(LevelsStarsStrings[11], 0) < StarsGot) {
-                PlayerPrefs.SetInt(LevelsStarsStrings[11], StarsGot);
-                PlayerPrefs.Save();
-            }
-
-            LevelsCompleted = 12;
+            LevelsCompleted = levelNumber;
         }
 
         if (LevelsCompleted > PlayerPrefs.GetInt(TotalLevelsCompletedString, -1)) {

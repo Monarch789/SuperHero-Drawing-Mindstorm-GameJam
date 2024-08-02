@@ -13,10 +13,6 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
     [SerializeField] private float AddedHealth;
     [SerializeField] private float AddedDamage;
 
-    [SerializeField] private TextMeshProUGUI CurrentHealthText;
-    [SerializeField] private TextMeshProUGUI MaxHealthText;
-    [SerializeField] private TextMeshProUGUI DamageText;
-
     //events for health and damage sounds
     public event EventHandler OnHealthIncreased;
     public event EventHandler OnDamageIncreased;
@@ -115,10 +111,6 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
         IncreaseBuffsUI.Instance.OnHealthInreased += IncreaseBuffs_OnHealthInreased;
         IncreaseBuffsUI.Instance.OnDamageInreased += IncreaseBuffs_OnDamageInreased;
 
-        CurrentHealthText.text = health.ToString();
-        MaxHealthText.text = MaxHealth.ToString();
-        DamageText.text = damage.ToString();
-
     }
 
     private void DeathArea_OnCollisionWithDeathArea(object sender, EventArgs e) {
@@ -129,8 +121,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
         OnDeath?.Invoke(this, EventArgs.Empty);
     }
     private void IncreaseBuffs_OnDamageInreased(object sender, EventArgs e) {
-        damage += 5;
-        DamageText.text = damage.ToString();
+        damage += 3;
 
         OnDamageIncreased?.Invoke(this, EventArgs.Empty);
 
@@ -139,9 +130,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
     }
 
     private void IncreaseBuffs_OnHealthInreased(object sender, EventArgs e) {
-        MaxHealth += 10;
-
-        MaxHealthText.text = MaxHealth.ToString();
+        MaxHealth += 5;
 
         OnHealthIncreased?.Invoke(this, EventArgs.Empty);
 
@@ -149,7 +138,6 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
         PlayerPrefs.Save();
 
         health = MaxHealth;
-        CurrentHealthText.text = health.ToString();
     }
 
     private void GameManager_OnUnPause(object sender, EventArgs e)
@@ -167,8 +155,6 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
     {
         OnDamageIncreased?.Invoke(this, EventArgs.Empty);
         damage += AddedDamage;
-
-        DamageText.text = damage.ToString();
     }
 
     private void HealthBuff_OnHealthAdd(object sender, EventArgs e)
@@ -179,14 +165,12 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
 
         health = Mathf.Clamp(health, 0f, MaxHealth);
 
-        CurrentHealthText.text = health.ToString();
-
         OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = health / MaxHealth });
     }
 
     private void SpikeWall_OnPlayerCollisionWithSpikeWall(object sender, EventArgs e)
     {
-        ////send events to make th eplayer follow the mext point on the line
+        //send events to make th eplayer follow the mext point on the line
 
         OnMoveTowrdsNextPoint?.Invoke(this, EventArgs.Empty);
 
