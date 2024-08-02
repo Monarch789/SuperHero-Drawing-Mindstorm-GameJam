@@ -9,6 +9,7 @@ TagManager:
   - Floor
   - Death
   - LevelStartHitbox
+  - Spike
   layers:
   - Default
   - TransparentFX
