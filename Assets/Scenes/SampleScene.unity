@@ -232,7 +232,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5732535388770344959, guid: ba086a7676610cf4f9607af13d0e1755, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6439936279729295635, guid: ba086a7676610cf4f9607af13d0e1755, type: 3}
       propertyPath: m_Color.a
@@ -1928,7 +1928,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8187154070787581392, guid: a17e4a42cb5681e41868b5c6fbaf4ab1, type: 3}
       propertyPath: m_Priority
-      value: 11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8187154070787581392, guid: a17e4a42cb5681e41868b5c6fbaf4ab1, type: 3}
       propertyPath: m_Lens.OrthographicSize
@@ -1949,19 +1949,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1698327875656944529, guid: e90244b574ad4884990651d5aa70b1f0, type: 3}
       propertyPath: orthographic size
-      value: 7
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6626291926191874366, guid: e90244b574ad4884990651d5aa70b1f0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.34
+      value: -6.69
       objectReference: {fileID: 0}
     - target: {fileID: 6626291926191874366, guid: e90244b574ad4884990651d5aa70b1f0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.35
       objectReference: {fileID: 0}
     - target: {fileID: 6626291926191874366, guid: e90244b574ad4884990651d5aa70b1f0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -30.16597
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 6626291926191874366, guid: e90244b574ad4884990651d5aa70b1f0, type: 3}
       propertyPath: m_LocalRotation.w
