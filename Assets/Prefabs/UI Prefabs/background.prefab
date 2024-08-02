@@ -27,11 +27,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.6164162, y: 4.558462, z: 2.3649504}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 643746638350000205}
-  - {fileID: 4744440795711527078}
   - {fileID: 948728570715545289}
+  - {fileID: 4744440795711527078}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4798899596002331122
@@ -50,7 +50,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4744440795711527078
 Transform:
   m_ObjectHideFlags: 0
@@ -61,7 +61,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 8.27, y: -4.5609, z: 50}
-  m_LocalScale: {x: 37.717243, y: 13.515, z: 0.1}
+  m_LocalScale: {x: 50, y: 15, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 347413723490339728}
@@ -134,7 +134,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &948728570715545289
 Transform:
   m_ObjectHideFlags: 0
@@ -212,15 +212,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: dacdca73f60e5804399eed8ef37addae, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.65
+      value: 0.74999994
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dacdca73f60e5804399eed8ef37addae, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.65
+      value: 0.74999994
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dacdca73f60e5804399eed8ef37addae, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.65
+      value: 0.74999994
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dacdca73f60e5804399eed8ef37addae, type: 3}
       propertyPath: m_LocalPosition.x

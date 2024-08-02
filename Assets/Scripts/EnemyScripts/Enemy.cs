@@ -1,9 +1,14 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour,IHasProgress,IHasDeathEffect{
     //reference of Enemy Scriptable Object
     [SerializeField] private EnemySO enemyData;
+
+    [SerializeField] private TextMeshProUGUI CurrentHealthText;
+    [SerializeField] private TextMeshProUGUI MaxHealthText;
+    [SerializeField] private TextMeshProUGUI DamageText;
 
     //health since we cant subtract from SO
     private float health;
@@ -33,6 +38,8 @@ public class Enemy : MonoBehaviour,IHasProgress,IHasDeathEffect{
 
             health = Mathf.Clamp(health, 0, enemyData.Health);
 
+            CurrentHealthText.text = health.ToString();
+
             OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = health / enemyData.Health });
 
             if(health <= 0) {
@@ -50,5 +57,11 @@ public class Enemy : MonoBehaviour,IHasProgress,IHasDeathEffect{
 
     private void Start() {
         health = enemyData.Health;
+
+
+        MaxHealthText.text = enemyData.Health.ToString();
+        CurrentHealthText.text = health.ToString();
+
+        DamageText.text = enemyData.Damage.ToString();
     }
 }
