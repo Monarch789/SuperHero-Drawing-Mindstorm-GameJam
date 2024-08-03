@@ -14,7 +14,10 @@ public class Line : MonoBehaviour{
 
         //extrude the vertex
         lineRenderer.positionCount++;
-        
+
+        if(lineRenderer.positionCount % 12 == 0)
+            SoundManager.Instance.PlayDrawingSound();
+
         //set the position of extruded vertex to the mouse position
         lineRenderer.SetPosition(lineRenderer.positionCount - 1,position);
     }

@@ -35,8 +35,12 @@ public class GameManager : MonoBehaviour{
     //events to send On level failed and complete
     public event EventHandler OnLevelFailed;
 
+    private bool isLevelDone;
+
     public class OnLevelCompletedEventArgs : EventArgs { public int Stars; }
     public event EventHandler<OnLevelCompletedEventArgs> OnLevelPassed;
+
+    public event EventHandler OnLevelDone;
 
     
     
@@ -48,6 +52,7 @@ public class GameManager : MonoBehaviour{
 
     private void Start() {
         isGameWaitingToStart = false;
+        isLevelDone = false;
 
         EnemiesKilled = 0;
 
@@ -65,6 +70,9 @@ public class GameManager : MonoBehaviour{
 
     private void Player_OnPlayerPathFollowed(object sender, EventArgs e) {
         //check how the level is completed
+
+        isLevelDone = true;
+        OnLevelDone?.Invoke(this, EventArgs.Empty);
 
         int StarsGot = 0;
 
@@ -139,7 +147,8 @@ public class GameManager : MonoBehaviour{
     }
 
     private void Enemy_OnEnemyDeath(object sender, System.EventArgs e) {
-        EnemiesKilled++;
+        if(!isLevelDone)
+            EnemiesKilled++;
     }
 
     private void OnDestroy() {

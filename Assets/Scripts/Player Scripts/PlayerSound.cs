@@ -19,8 +19,8 @@ public class PlayerSound : MonoBehaviour{
     }
 
     private void Start() {
-        MaxRunTime = 0.2f;
-        MaxFlameTime = 0.2f;
+        MaxRunTime = 0.3f;
+        MaxFlameTime = 0.6f;
         Timer = 0f;
         ShouldStartFlameTime = false;
         ShouldStartRunTime = false;
@@ -31,7 +31,7 @@ public class PlayerSound : MonoBehaviour{
     private void PlayerManager_OnPlayerMoveStateChange(object sender, PlayerManager.OnMoveStateChangeEventArgs e) {
         ShouldStartFlameTime = false;
         ShouldStartRunTime = false;
-        Timer = 0f;
+        Timer = MaxFlameTime;
 
         if (e.state == PlayerManager.PlayerMoveStates.Running) {
             ShouldStartRunTime = true;

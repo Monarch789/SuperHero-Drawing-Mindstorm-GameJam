@@ -13,33 +13,42 @@ MonoBehaviour:
   m_Name: SoundEffectsSO
   m_EditorClassIdentifier: 
   MonsterAttacks:
-  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  - {fileID: 8300000, guid: d1ca98cc3a35c424da871f539bab4941, type: 3}
+  - {fileID: 8300000, guid: 35bf864d69bf4294eac68f5b49a7daea, type: 3}
   Fireball:
-  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  - {fileID: 8300000, guid: 56781026d9abea64599a3cfc04734ad0, type: 3}
+  - {fileID: 8300000, guid: 58f22c54fdafdb1448593ecd06d00a71, type: 3}
   Run:
-  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  - {fileID: 8300000, guid: 548960d3cef67e14dafb298a2a728c5f, type: 3}
+  - {fileID: 8300000, guid: de33e6b94e8d5f5459bf300320a7e7e7, type: 3}
   Jump:
-  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  - {fileID: 8300000, guid: 23dd880002171df408c4fcce9b7294da, type: 3}
+  - {fileID: 8300000, guid: abf126a768825af49a16169c2cac55f9, type: 3}
+  - {fileID: 8300000, guid: 0ee953b5910145d4690a817431c8e8d2, type: 3}
   PlayerDeath:
-  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  - {fileID: 8300000, guid: 9b4b62f4644d7ed40b874d0b03e2d9b1, type: 3}
+  - {fileID: 8300000, guid: 5d3c3c62430eacf4caab351f67f39dc7, type: 3}
   MonsterDeath:
-  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  - {fileID: 8300000, guid: 15c8929ecfc74704b8432cbe0e0181df, type: 3}
+  - {fileID: 8300000, guid: 88ffecd6421046740b80e1427dc0b1df, type: 3}
   HealthBuff:
   - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
   DamageBuff:
   - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  DrawingAudio:
+  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
   MoneyIncreased:
-  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  - {fileID: 8300000, guid: 50b69fba45e74354297f119aec6de430, type: 3}
   MoneyDecreased:
-  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  - {fileID: 8300000, guid: 50b69fba45e74354297f119aec6de430, type: 3}
   ButtonTap:
   - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
   OneStar:
-  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  - {fileID: 8300000, guid: bce420987b67ee84ebed31bdc154a660, type: 3}
   TwoStar:
-  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  - {fileID: 8300000, guid: 8bf3395c8e1059e40a7e743027900a9f, type: 3}
   ThreeStar:
-  - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
+  - {fileID: 8300000, guid: 4bfc576c71bde704fa02389153714dea, type: 3}
   LevelPassed:
   - {fileID: 8300000, guid: 476f9843178b0b148afe489c8d5b18b3, type: 3}
   LevelFailed:

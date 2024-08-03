@@ -29,6 +29,8 @@ public class PlayerFollowLine : MonoBehaviour
     //direction of force to be applied after its done
     private Vector2 Direction;
 
+    private bool isLevelDone;
+
     private void Awake()
     {
         rigidbodyComponent = GetComponent<Rigidbody2D>();
@@ -37,7 +39,8 @@ public class PlayerFollowLine : MonoBehaviour
     private void Start()
     {
         ShouldStartFollow = false;
-        
+        isLevelDone = false;
+
         MinDistanceRequired = 0.05f;
         ForceMultiplier = 20f;
 
@@ -45,6 +48,12 @@ public class PlayerFollowLine : MonoBehaviour
         player.OnPlayerMoveStop += Player_OnPlayerMoveStop;
         player.OnMoveTowrdsNextPoint += Player_OnMoveTowrdsNextPoint;
 
+
+        GameManager.Instance.OnLevelDone += GameManager_OnLevelDone;
+    }
+
+    private void GameManager_OnLevelDone(object sender, EventArgs e) {
+        isLevelDone = true;
     }
 
     private void Player_OnMoveTowrdsNextPoint(object sender, EventArgs e)
@@ -66,26 +75,26 @@ public class PlayerFollowLine : MonoBehaviour
 
     private void Player_OnPlayerMoveStop(object sender, EventArgs e)
     {
-        ShouldStartFollow = false;
+        if (!isLevelDone) {
+            ShouldStartFollow = false;
 
-        //get direction of force
+            //get direction of force
 
-        if (moveIndex < FollowPositions.Length)
-        {
-            if (FollowPositions.Length > 1)
-                Direction = (-FollowPositions[moveIndex] + FollowPositions[moveIndex - 1]).normalized;
-            else
-                Direction = FollowPositions[0] - transform.position;
+            if (moveIndex < FollowPositions.Length) {
+                if (FollowPositions.Length > 1)
+                    Direction = (-FollowPositions[moveIndex] + FollowPositions[moveIndex - 1]).normalized;
+                else
+                    Direction = FollowPositions[0] - transform.position;
 
-            rigidbodyComponent.AddForce(Direction * speed * ForceMultiplier, ForceMode2D.Force);
+                rigidbodyComponent.AddForce(Direction * speed * ForceMultiplier, ForceMode2D.Force);
 
+            }
+            else {
+                //delete any force from the rigidBody
+                rigidbodyComponent.velocity = Vector2.zero;
+            }
+            OnPathFollowed?.Invoke(this, EventArgs.Empty);
         }
-        else
-        {
-            //delete any force from the rigidBody
-            rigidbodyComponent.velocity = Vector2.zero;
-        }
-        OnPathFollowed?.Invoke(this, EventArgs.Empty);
     }
 
     private void Player_OnDrawComplete(object sender, System.EventArgs e)
@@ -146,5 +155,7 @@ public class PlayerFollowLine : MonoBehaviour
         player.OnDrawComplete -= Player_OnDrawComplete;
         player.OnPlayerMoveStop -= Player_OnPlayerMoveStop;
         player.OnMoveTowrdsNextPoint -= Player_OnMoveTowrdsNextPoint;
+
+        GameManager.Instance.OnLevelDone -= GameManager_OnLevelDone;
     }
 }

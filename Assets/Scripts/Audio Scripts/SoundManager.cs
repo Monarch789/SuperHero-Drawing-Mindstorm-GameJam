@@ -107,7 +107,7 @@ public class SoundManager : MonoBehaviour{
         PlaySound(sounds[Random.Range(0,sounds.Length)], PositionOfPlay);
     }
     private void PlaySound(AudioClip sound, Vector3 PositionOfPlay) {
-        AudioSource.PlayClipAtPoint(sound,PositionOfPlay,volume);
+        AudioSource.PlayClipAtPoint(sound,PositionOfPlay,volume*2);
     }
 
     public float GetVolume() {
@@ -123,10 +123,10 @@ public class SoundManager : MonoBehaviour{
     }
 
     public void PlayRunningSound() {
-        PlaySound(sounds.Run, Camera.main.transform.position);
+        PlaySound(sounds.Run, Player.Instance.transform.position);
     }
     public void PlayFireballSound() {
-        PlaySound(sounds.Fireball, Camera.main.transform.position);
+        PlaySound(sounds.Fireball, Player.Instance.transform.position);
     }
 
     public void PlayLevelCompleteSound(bool WhichSound) {
@@ -137,6 +137,10 @@ public class SoundManager : MonoBehaviour{
         else {
             PlaySound(sounds.LevelFailed, Camera.main.transform.position);
         }
+    }
+
+    public void PlayDrawingSound() {
+        PlaySound(sounds.DrawingAudio,Camera.main.transform.position);
     }
 
 }
