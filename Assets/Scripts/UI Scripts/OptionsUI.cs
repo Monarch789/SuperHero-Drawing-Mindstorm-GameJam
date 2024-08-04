@@ -11,8 +11,12 @@ public class OptionsUI : MonoBehaviour{
     public static event EventHandler<OnValueChangedEventArgs> OnMusicValueChanged;
     public static event EventHandler<OnValueChangedEventArgs> OnSFXValueChanged;
 
+    public class OnVibrationToggleEventArgs:EventArgs { public bool CanVibrate; }
+    public static event EventHandler<OnVibrationToggleEventArgs> OnVibrationToggle;
+
     [SerializeField] private Slider MusicSlider;
     [SerializeField] private Slider SFXSlider;
+    [SerializeField] private Toggle VibrationToggle;
 
     [SerializeField] private TextMeshProUGUI MusicPercentText;
     [SerializeField] private TextMeshProUGUI SFXPercentText;
@@ -23,10 +27,15 @@ public class OptionsUI : MonoBehaviour{
     private const string OptionsUIActiveAnimatorTrigger = "OptionsClick";
     private const string OptionsUIBackAnimatorTrigger = "OptionsBackClick";
 
+    private bool CanVibrate;
+
+    private const string VibrateString = "Vibrate";
+
     private void Awake() {
         animator = GetComponent<Animator>();
+        CanVibrate = PlayerPrefs.GetInt(VibrateString,1) == 1;
 
-
+        VibrationToggle.isOn = CanVibrate;
 
         BackButton.onClick.AddListener(() => {
             SoundManager.Instance.PlayButtonTapSound();
@@ -44,6 +53,11 @@ public class OptionsUI : MonoBehaviour{
             OnSFXValueChanged?.Invoke(this, new OnValueChangedEventArgs { newValue = newSliderValue});
             SFXPercentText.text = (Mathf.FloorToInt(SFXSlider.value * 100)).ToString() + "%";
         });
+
+        VibrationToggle.onValueChanged.AddListener(newVal => {
+            OnVibrationToggle?.Invoke(this, new OnVibrationToggleEventArgs { CanVibrate = newVal });
+        });
+
     }
 
     private void Start() {

@@ -35,6 +35,8 @@ public class Enemy : MonoBehaviour,IHasProgress,IHasDeathEffect{
 
             health = Mathf.Clamp(health, 0, enemyData.Health);
 
+            MobileVibrations.Instance.VibrateMobile();
+
             OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = health / enemyData.Health });
 
             if(health <= 0) {
@@ -53,20 +55,5 @@ public class Enemy : MonoBehaviour,IHasProgress,IHasDeathEffect{
     private void Start() {
         health = enemyData.Health;
         damage = enemyData.Damage;
-
-        float healthMultiplier = 1f;
-
-        string CurrentLevel = Loader.GetCurrentScene().ToString();
-        if (CurrentLevel != Loader.GameScenes.TutorialScene.ToString()) {
-
-            int levelNumber = int.Parse(CurrentLevel.Substring(5));
-
-            for (int i = 1; i < levelNumber; i++) {
-                healthMultiplier += 0.2f;
-            }
-        }
-
-        health = health * healthMultiplier;
-        damage = damage * (healthMultiplier/2f);
     }
 }
