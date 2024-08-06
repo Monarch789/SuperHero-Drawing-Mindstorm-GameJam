@@ -68,6 +68,8 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
     private float health;
     private float damage;
 
+    private bool isLevelDone;
+
     private void Awake()
     {
         Instance = this;
@@ -87,6 +89,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
         hasFollowedPath = true;
         canAttack = false;
         isGamePaused = false;
+        isLevelDone = false;
 
         health = MaxHealth;
 
@@ -107,18 +110,25 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
 
         GameManager.Instance.OnPause += GameManager_OnPause;
         GameManager.Instance.OnUnPause += GameManager_OnUnPause;
+        GameManager.Instance.OnLevelDone += GameManager_OnLevelDone;
 
         IncreaseBuffsUI.Instance.OnHealthInreased += IncreaseBuffs_OnHealthInreased;
         IncreaseBuffsUI.Instance.OnDamageInreased += IncreaseBuffs_OnDamageInreased;
 
     }
 
-    private void DeathArea_OnCollisionWithDeathArea(object sender, EventArgs e) {
-        OnPlayerMoveStop?.Invoke(this, EventArgs.Empty);
-        PlayerModel.SetActive(true);
+    private void GameManager_OnLevelDone(object sender, EventArgs e) {
+        isLevelDone = true;
+    }
 
-        OnPlayerDeath?.Invoke(this, EventArgs.Empty);
-        OnDeath?.Invoke(this, EventArgs.Empty);
+    private void DeathArea_OnCollisionWithDeathArea(object sender, EventArgs e) {
+        if (!isLevelDone) {
+            OnPlayerMoveStop?.Invoke(this, EventArgs.Empty);
+            PlayerModel.SetActive(true);
+
+            OnPlayerDeath?.Invoke(this, EventArgs.Empty);
+            OnDeath?.Invoke(this, EventArgs.Empty);
+        }
     }
     private void IncreaseBuffs_OnDamageInreased(object sender, EventArgs e) {
         damage += 3;
@@ -177,7 +187,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
         health -= .5f;
         OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = health/MaxHealth});
 
-        if(health <= 0) {
+        if(health <= 0 && !isLevelDone) {
             OnPlayerMoveStop?.Invoke(this, EventArgs.Empty);
             PlayerModel.SetActive(true);
 

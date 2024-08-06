@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds: {fileID: 11400000, guid: 8b163d2a9b54f0b418f554d832e605cd, type: 2}
   isNotOnMainMenu: 1
+  isOnTutorial: 0

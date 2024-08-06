@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour{
     //events to send On level failed and complete
     public event EventHandler OnLevelFailed;
 
+    [SerializeField] private bool isOnTutorial = false;
+
     private bool isLevelDone;
 
     public class OnLevelCompletedEventArgs : EventArgs { public int Stars; }
@@ -70,54 +72,56 @@ public class GameManager : MonoBehaviour{
 
     private void Player_OnPlayerPathFollowed(object sender, EventArgs e) {
         //check how the level is completed
+        if (!isOnTutorial) {
 
-        isLevelDone = true;
-        OnLevelDone?.Invoke(this, EventArgs.Empty);
+            isLevelDone = true;
+            OnLevelDone?.Invoke(this, EventArgs.Empty);
 
-        int StarsGot = 0;
+            int StarsGot = 0;
 
-        if (EnemiesKilled < CompletionEnemies) {
-            OnLevelFailed?.Invoke(this, EventArgs.Empty);
-        }
-        else if (EnemiesKilled < OneStarEnemies) {
-            StarsGot = 0;
+            if (EnemiesKilled < CompletionEnemies) {
+                OnLevelFailed?.Invoke(this, EventArgs.Empty);
+            }
+            else if (EnemiesKilled < OneStarEnemies) {
+                StarsGot = 0;
 
-            OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 0 });
-        }
-        else if (EnemiesKilled < TwoStarEnemies) {
-            StarsGot = 1;
+                OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 0 });
+            }
+            else if (EnemiesKilled < TwoStarEnemies) {
+                StarsGot = 1;
 
-            OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 1 });
-        }
-        else if (EnemiesKilled < ThreeStarEnemies) {
-            StarsGot = 2;
+                OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 1 });
+            }
+            else if (EnemiesKilled < ThreeStarEnemies) {
+                StarsGot = 2;
 
-            OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 2 });
-        }
-        else {
-            StarsGot = 3;
+                OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 2 });
+            }
+            else {
+                StarsGot = 3;
 
-            OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 3});
-        }
-
-        string CurrentLevel = Loader.GetCurrentScene().ToString();
-
-        if (CurrentLevel != Loader.GameScenes.TutorialScene.ToString()) {
-            int levelNumber = int.Parse(CurrentLevel.Substring(5));
-
-
-            if (PlayerPrefs.GetInt(LevelsStarsStrings[levelNumber-1], 0) < StarsGot) {
-                PlayerPrefs.SetInt(LevelsStarsStrings[levelNumber-1], StarsGot);
-                PlayerPrefs.Save();
+                OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 3 });
             }
 
-            LevelsCompleted = levelNumber;
-        }
+            string CurrentLevel = Loader.GetCurrentScene().ToString();
 
-        if (LevelsCompleted > PlayerPrefs.GetInt(TotalLevelsCompletedString, -1)) {
-            //if the total levels completed is greater than the previous total levels completed
-            PlayerPrefs.SetInt(TotalLevelsCompletedString, LevelsCompleted);
-            PlayerPrefs.Save();
+            if (CurrentLevel != Loader.GameScenes.TutorialScene.ToString()) {
+                int levelNumber = int.Parse(CurrentLevel.Substring(5));
+
+
+                if (PlayerPrefs.GetInt(LevelsStarsStrings[levelNumber - 1], 0) < StarsGot) {
+                    PlayerPrefs.SetInt(LevelsStarsStrings[levelNumber - 1], StarsGot);
+                    PlayerPrefs.Save();
+                }
+
+                LevelsCompleted = levelNumber;
+            }
+
+            if (LevelsCompleted > PlayerPrefs.GetInt(TotalLevelsCompletedString, -1)) {
+                //if the total levels completed is greater than the previous total levels completed
+                PlayerPrefs.SetInt(TotalLevelsCompletedString, LevelsCompleted);
+                PlayerPrefs.Save();
+            }
         }
     }
 

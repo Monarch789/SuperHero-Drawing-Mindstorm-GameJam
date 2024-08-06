@@ -7,6 +7,7 @@ public class SoundManager : MonoBehaviour{
     [SerializeField] private SoundEffectSO sounds;
 
     [SerializeField] private bool isNotOnMainMenu;
+    [SerializeField] private bool isOnTutorial;
 
     //string to save sound effect volume
     private const string SoundEffectVolumeString = "SoundEffectVolume";
@@ -64,7 +65,8 @@ public class SoundManager : MonoBehaviour{
     }
 
     private void GameManager_OnLevelFailed(object sender, System.EventArgs e) {
-        PlaySound(sounds.LevelFailed,transform.position);
+        if(!isOnTutorial)
+            PlaySound(sounds.LevelFailed,transform.position);
     }
 
     private void Money_OnMoneyDecreased(object sender, System.EventArgs e) {
@@ -107,7 +109,7 @@ public class SoundManager : MonoBehaviour{
         PlaySound(sounds[Random.Range(0,sounds.Length)], PositionOfPlay);
     }
     private void PlaySound(AudioClip sound, Vector3 PositionOfPlay) {
-        AudioSource.PlayClipAtPoint(sound,PositionOfPlay,volume*2);
+        AudioSource.PlayClipAtPoint(sound,PositionOfPlay,volume);
     }
 
     public float GetVolume() {
@@ -138,9 +140,4 @@ public class SoundManager : MonoBehaviour{
             PlaySound(sounds.LevelFailed, Camera.main.transform.position);
         }
     }
-
-    public void PlayDrawingSound() {
-        PlaySound(sounds.DrawingAudio,Camera.main.transform.position);
-    }
-
 }

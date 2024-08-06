@@ -13,7 +13,6 @@ public class SoundEffectSO : ScriptableObject{
     public AudioClip[] MonsterDeath;
     public AudioClip[] HealthBuff;
     public AudioClip[] DamageBuff;
-    public AudioClip[] DrawingAudio;
     
     //UI Sound Effects
     public AudioClip[] MoneyIncreased;

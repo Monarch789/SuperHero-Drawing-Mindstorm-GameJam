@@ -231,6 +231,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7643201379676420869, guid: b741f77bd5de8864d9e3d45cb415f182, type: 3}
+      propertyPath: isOnTutorial
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3650,6 +3654,10 @@ PrefabInstance:
     - target: {fileID: 2896665338294122089, guid: 4ae72938e4fcc7e4a8f7ffadb06a76d5, type: 3}
       propertyPath: m_Name
       value: SoundManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 2946300976134791211, guid: 4ae72938e4fcc7e4a8f7ffadb06a76d5, type: 3}
+      propertyPath: isOnTutorial
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4360189149354819267, guid: 4ae72938e4fcc7e4a8f7ffadb06a76d5, type: 3}
       propertyPath: m_LocalPosition.x

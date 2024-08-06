@@ -134,6 +134,8 @@ public class TutorialMain : MonoBehaviour{
 
     private IEnumerator NextStepDelay(bool isLastStep) {
 
+        SoundManager.Instance.PlayLevelCompleteSound(isLastStep);
+
         yield return new WaitForSeconds(1.5f);
 
         if (isLastStep) {
