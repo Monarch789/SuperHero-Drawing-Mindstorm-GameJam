@@ -1,9 +1,10 @@
 using System;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour{
+public class GameManager : MonoBehaviour
+{
     //Singleton
-    public static GameManager Instance {  get; private set; }
+    public static GameManager Instance { get; private set; }
 
     //ints to see how many enemies required for completion, one star, 2 star and 3 star
     [SerializeField] private int CompletionEnemies;
@@ -44,15 +45,17 @@ public class GameManager : MonoBehaviour{
 
     public event EventHandler OnLevelDone;
 
-    
-    
-    private void Awake() {
+
+
+    private void Awake()
+    {
         Instance = this;
 
-        LevelsCompleted = PlayerPrefs.GetInt(TotalLevelsCompletedString,-1);
+        LevelsCompleted = PlayerPrefs.GetInt(TotalLevelsCompletedString, -1);
     }
 
-    private void Start() {
+    private void Start()
+    {
         isGameWaitingToStart = false;
         isLevelDone = false;
 
@@ -64,40 +67,47 @@ public class GameManager : MonoBehaviour{
 
         Player.Instance.OnPlayerPathFollowed += Player_OnPlayerPathFollowed;
 
-        PauseMenu.Instance.OnPauseButtonClick += PauseMenu_OnPauseButtonClick;
-        PauseMenu.Instance.OnPlayButtonClick += PauseMenu_OnPlayButtonClick;
+        //PauseMenu.Instance.OnPauseButtonClick += PauseMenu_OnPauseButtonClick;
+        //PauseMenu.Instance.OnPlayButtonClick += PauseMenu_OnPlayButtonClick;
 
         InputManager.Instance.OnTouchStarted += InputManager_OnTouchStarted;
     }
 
-    private void Player_OnPlayerPathFollowed(object sender, EventArgs e) {
+    private void Player_OnPlayerPathFollowed(object sender, EventArgs e)
+    {
         //check how the level is completed
-        if (!isOnTutorial) {
+        if (!isOnTutorial)
+        {
 
             isLevelDone = true;
             OnLevelDone?.Invoke(this, EventArgs.Empty);
 
             int StarsGot = 0;
 
-            if (EnemiesKilled < CompletionEnemies) {
+            if (EnemiesKilled < CompletionEnemies)
+            {
                 OnLevelFailed?.Invoke(this, EventArgs.Empty);
             }
-            else if (EnemiesKilled < OneStarEnemies) {
+            else if (EnemiesKilled < OneStarEnemies)
+            {
                 StarsGot = 0;
 
                 OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 0 });
             }
-            else if (EnemiesKilled < TwoStarEnemies) {
+            else if (EnemiesKilled < TwoStarEnemies)
+            {
                 StarsGot = 1;
 
                 OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 1 });
             }
-            else if (EnemiesKilled < ThreeStarEnemies) {
+            else if (EnemiesKilled < ThreeStarEnemies)
+            {
                 StarsGot = 2;
 
                 OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 2 });
             }
-            else {
+            else
+            {
                 StarsGot = 3;
 
                 OnLevelPassed?.Invoke(this, new OnLevelCompletedEventArgs { Stars = 3 });
@@ -105,11 +115,13 @@ public class GameManager : MonoBehaviour{
 
             string CurrentLevel = Loader.GetCurrentScene().ToString();
 
-            if (CurrentLevel != Loader.GameScenes.TutorialScene.ToString()) {
+            if (CurrentLevel != Loader.GameScenes.TutorialScene.ToString())
+            {
                 int levelNumber = int.Parse(CurrentLevel.Substring(5));
 
 
-                if (PlayerPrefs.GetInt(LevelsStarsStrings[levelNumber - 1], 0) < StarsGot) {
+                if (PlayerPrefs.GetInt(LevelsStarsStrings[levelNumber - 1], 0) < StarsGot)
+                {
                     PlayerPrefs.SetInt(LevelsStarsStrings[levelNumber - 1], StarsGot);
                     PlayerPrefs.Save();
                 }
@@ -117,7 +129,8 @@ public class GameManager : MonoBehaviour{
                 LevelsCompleted = levelNumber;
             }
 
-            if (LevelsCompleted > PlayerPrefs.GetInt(TotalLevelsCompletedString, -1)) {
+            if (LevelsCompleted > PlayerPrefs.GetInt(TotalLevelsCompletedString, -1))
+            {
                 //if the total levels completed is greater than the previous total levels completed
                 PlayerPrefs.SetInt(TotalLevelsCompletedString, LevelsCompleted);
                 PlayerPrefs.Save();
@@ -125,12 +138,15 @@ public class GameManager : MonoBehaviour{
         }
     }
 
-    private void InputManager_OnTouchStarted(object sender, EventArgs e) {
-        if (!isGameWaitingToStart){
+    private void InputManager_OnTouchStarted(object sender, EventArgs e)
+    {
+        if (!isGameWaitingToStart)
+        {
 
             var rayCastHit = Physics2D.GetRayIntersection(mainCam.ScreenPointToRay(InputManager.Instance.GetTouchPosition()));
-            
-            if (rayCastHit && rayCastHit.transform.tag == "LevelStartHitbox") {
+
+            if (rayCastHit && rayCastHit.transform.tag == "LevelStartHitbox")
+            {
                 OnGameStarted?.Invoke(this, EventArgs.Empty);
                 isGameWaitingToStart = true;
 
@@ -138,24 +154,28 @@ public class GameManager : MonoBehaviour{
         }
     }
 
-    private void PauseMenu_OnPlayButtonClick(object sender, System.EventArgs e) {
+    private void PauseMenu_OnPlayButtonClick(object sender, System.EventArgs e)
+    {
         Time.timeScale = 1f;
 
         OnUnPause?.Invoke(this, EventArgs.Empty);
     }
 
-    private void PauseMenu_OnPauseButtonClick(object sender, System.EventArgs e) {
+    private void PauseMenu_OnPauseButtonClick(object sender, System.EventArgs e)
+    {
         Time.timeScale = 0f;
 
         OnPause?.Invoke(this, EventArgs.Empty);
     }
 
-    private void Enemy_OnEnemyDeath(object sender, System.EventArgs e) {
-        if(!isLevelDone)
+    private void Enemy_OnEnemyDeath(object sender, System.EventArgs e)
+    {
+        if (!isLevelDone)
             EnemiesKilled++;
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
         Player.Instance.OnPlayerPathFollowed -= Player_OnPlayerPathFollowed;
         Enemy.OnEnemyDeath -= Enemy_OnEnemyDeath;
         PauseMenu.Instance.OnPauseButtonClick -= PauseMenu_OnPauseButtonClick;

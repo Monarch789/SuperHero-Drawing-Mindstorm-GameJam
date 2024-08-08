@@ -1,8 +1,8 @@
 using System;
-using TMPro;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
+public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect
+{
     //Singleton
     public static Player Instance { get; private set; }
 
@@ -77,8 +77,8 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
         followLine = GetComponent<PlayerFollowLine>();
         playerManager = GetComponent<PlayerManager>();
 
-        MaxHealth = PlayerPrefs.GetFloat(PlayerMaxHealthString,50);
-        damage = PlayerPrefs.GetFloat(PlayerDamageString,5);
+        MaxHealth = PlayerPrefs.GetFloat(PlayerMaxHealthString, 50);
+        damage = PlayerPrefs.GetFloat(PlayerDamageString, 5);
 
     }
 
@@ -102,7 +102,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
         downCollider.OnColliderFloorFromDown += DownCollider_OnColliderFloorFromDown;
 
         playerManager.OnPlayerCanAttack += PlayerManager_OnPlayerCanAttack;
-        
+
         SpikeWall.OnPlayerCollisionWithSpikeWall += SpikeWall_OnPlayerCollisionWithSpikeWall;
         DeathArea.OnPlayerCollisionWithDeathArea += DeathArea_OnCollisionWithDeathArea;
         HealthBuff.OnHealthAdd += HealthBuff_OnHealthAdd;
@@ -112,17 +112,20 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
         GameManager.Instance.OnUnPause += GameManager_OnUnPause;
         GameManager.Instance.OnLevelDone += GameManager_OnLevelDone;
 
-        IncreaseBuffsUI.Instance.OnHealthInreased += IncreaseBuffs_OnHealthInreased;
-        IncreaseBuffsUI.Instance.OnDamageInreased += IncreaseBuffs_OnDamageInreased;
+        //IncreaseBuffsUI.Instance.OnHealthInreased += IncreaseBuffs_OnHealthInreased;
+        //IncreaseBuffsUI.Instance.OnDamageInreased += IncreaseBuffs_OnDamageInreased;
 
     }
 
-    private void GameManager_OnLevelDone(object sender, EventArgs e) {
+    private void GameManager_OnLevelDone(object sender, EventArgs e)
+    {
         isLevelDone = true;
     }
 
-    private void DeathArea_OnCollisionWithDeathArea(object sender, EventArgs e) {
-        if (!isLevelDone) {
+    private void DeathArea_OnCollisionWithDeathArea(object sender, EventArgs e)
+    {
+        if (!isLevelDone)
+        {
             OnPlayerMoveStop?.Invoke(this, EventArgs.Empty);
             PlayerModel.SetActive(true);
 
@@ -130,21 +133,23 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
             OnDeath?.Invoke(this, EventArgs.Empty);
         }
     }
-    private void IncreaseBuffs_OnDamageInreased(object sender, EventArgs e) {
+    private void IncreaseBuffs_OnDamageInreased(object sender, EventArgs e)
+    {
         damage += 3;
 
         OnDamageIncreased?.Invoke(this, EventArgs.Empty);
 
-        PlayerPrefs.SetFloat(PlayerDamageString,damage);
+        PlayerPrefs.SetFloat(PlayerDamageString, damage);
         PlayerPrefs.Save();
     }
 
-    private void IncreaseBuffs_OnHealthInreased(object sender, EventArgs e) {
+    private void IncreaseBuffs_OnHealthInreased(object sender, EventArgs e)
+    {
         MaxHealth += 5;
 
         OnHealthIncreased?.Invoke(this, EventArgs.Empty);
 
-        PlayerPrefs.SetFloat(PlayerMaxHealthString,MaxHealth);
+        PlayerPrefs.SetFloat(PlayerMaxHealthString, MaxHealth);
         PlayerPrefs.Save();
 
         health = MaxHealth;
@@ -171,7 +176,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
     {
         health += AddedHealth;
 
-        OnHealthIncreased?.Invoke(this,EventArgs.Empty);
+        OnHealthIncreased?.Invoke(this, EventArgs.Empty);
 
         health = Mathf.Clamp(health, 0f, MaxHealth);
 
@@ -185,9 +190,10 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
         OnMoveTowrdsNextPoint?.Invoke(this, EventArgs.Empty);
 
         health -= .5f;
-        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = health/MaxHealth});
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventAgs { progressAmount = health / MaxHealth });
 
-        if(health <= 0 && !isLevelDone) {
+        if (health <= 0 && !isLevelDone)
+        {
             OnPlayerMoveStop?.Invoke(this, EventArgs.Empty);
             PlayerModel.SetActive(true);
 
@@ -290,7 +296,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect{
         downCollider.OnColliderFloorFromDown -= DownCollider_OnColliderFloorFromDown;
 
         playerManager.OnPlayerCanAttack -= PlayerManager_OnPlayerCanAttack;
-        
+
         SpikeWall.OnPlayerCollisionWithSpikeWall -= SpikeWall_OnPlayerCollisionWithSpikeWall;
         DeathArea.OnPlayerCollisionWithDeathArea -= DeathArea_OnCollisionWithDeathArea;
         HealthBuff.OnHealthAdd -= HealthBuff_OnHealthAdd;

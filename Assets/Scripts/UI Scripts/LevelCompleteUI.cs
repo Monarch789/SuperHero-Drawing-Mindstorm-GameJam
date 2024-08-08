@@ -1,6 +1,7 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelCompleteUI : MonoBehaviour
 {
@@ -14,37 +15,37 @@ public class LevelCompleteUI : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI LevelCompletedText;
 
-    //[SerializeField] private Button NextLevelButton;
+    [SerializeField] private Button NextLevelButton;
     //[SerializeField] private Button RetryButton;
     //[SerializeField] private Button MenuButton;
 
     private Animator animator;
 
 
-    //private void Awake()
-    //{
-    //    animator = GetComponent<Animator>();
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
 
-    //    RetryButton.onClick.AddListener(() =>
-    //    {
-    //        SoundManager.Instance.PlayButtonTapSound();
+        //    RetryButton.onClick.AddListener(() =>
+        //    {
+        //        SoundManager.Instance.PlayButtonTapSound();
 
-    //        Loader.LoadCurrentScene();
-    //    });
-    //    MenuButton.onClick.AddListener(() =>
-    //    {
-    //        SoundManager.Instance.PlayButtonTapSound();
+        //        Loader.LoadCurrentScene();
+        //    });
+        //    MenuButton.onClick.AddListener(() =>
+        //    {
+        //        SoundManager.Instance.PlayButtonTapSound();
 
-    //        Loader.LoadScene(Loader.GameScenes.MainMenu);
-    //    });
+        //        Loader.LoadScene(Loader.GameScenes.MainMenu);
+        //    });
 
-    //    NextLevelButton.onClick.AddListener(() =>
-    //    {
-    //        SoundManager.Instance.PlayButtonTapSound();
+        NextLevelButton.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.PlayButtonTapSound();
 
-    //        Loader.LoadNextLevel();
-    //    });
-    //}
+            Loader.LoadNextLevel();
+        });
+    }
 
     private void Start()
     {
@@ -84,7 +85,7 @@ public class LevelCompleteUI : MonoBehaviour
 
     private void GameManager_OnLevelFailed(object sender, System.EventArgs e)
     {
-        //NextLevelButton.interactable = false;    //make this continue button
+        NextLevelButton.interactable = false;
 
         LevelCompletedText.text = "Level Failed";
 
