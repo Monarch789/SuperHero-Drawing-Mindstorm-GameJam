@@ -1232,6 +1232,10 @@ PrefabInstance:
       propertyPath: MaxPoints
       value: 200
       objectReference: {fileID: 0}
+    - target: {fileID: 3018634309072949971, guid: ba086a7676610cf4f9607af13d0e1755, type: 3}
+      propertyPath: MaxPoints
+      value: 230
+      objectReference: {fileID: 0}
     - target: {fileID: 5315175931609473582, guid: ba086a7676610cf4f9607af13d0e1755, type: 3}
       propertyPath: m_Pivot.x
       value: 0
