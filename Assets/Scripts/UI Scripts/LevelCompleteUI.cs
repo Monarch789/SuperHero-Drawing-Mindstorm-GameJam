@@ -1,9 +1,9 @@
 
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class LevelCompleteUI : MonoBehaviour{
+public class LevelCompleteUI : MonoBehaviour
+{
 
     //strings for triggers
     private const string LevelFailed_Trigger = "LevelFailed";
@@ -14,49 +14,56 @@ public class LevelCompleteUI : MonoBehaviour{
 
     [SerializeField] private TextMeshProUGUI LevelCompletedText;
 
-    [SerializeField] private Button NextLevelButton;
-    [SerializeField] private Button RetryButton;
-    [SerializeField] private Button MenuButton;
+    //[SerializeField] private Button NextLevelButton;
+    //[SerializeField] private Button RetryButton;
+    //[SerializeField] private Button MenuButton;
 
     private Animator animator;
 
 
-    private void Awake() {
-        animator = GetComponent<Animator>();
+    //private void Awake()
+    //{
+    //    animator = GetComponent<Animator>();
 
-        RetryButton.onClick.AddListener(() => {
-            SoundManager.Instance.PlayButtonTapSound();
+    //    RetryButton.onClick.AddListener(() =>
+    //    {
+    //        SoundManager.Instance.PlayButtonTapSound();
 
-            Loader.LoadCurrentScene();
-        });
-        MenuButton.onClick.AddListener(() => {
-            SoundManager.Instance.PlayButtonTapSound();
+    //        Loader.LoadCurrentScene();
+    //    });
+    //    MenuButton.onClick.AddListener(() =>
+    //    {
+    //        SoundManager.Instance.PlayButtonTapSound();
 
-            Loader.LoadScene(Loader.GameScenes.MainMenu);
-        });
+    //        Loader.LoadScene(Loader.GameScenes.MainMenu);
+    //    });
 
-        NextLevelButton.onClick.AddListener(() => {
-            SoundManager.Instance.PlayButtonTapSound();
+    //    NextLevelButton.onClick.AddListener(() =>
+    //    {
+    //        SoundManager.Instance.PlayButtonTapSound();
 
-            Loader.LoadNextLevel();
-        });
-    }
+    //        Loader.LoadNextLevel();
+    //    });
+    //}
 
-    private void Start() {
+    private void Start()
+    {
         Hide();
 
         GameManager.Instance.OnLevelFailed += GameManager_OnLevelFailed;
         GameManager.Instance.OnLevelPassed += GameManager_OnLevelPassed;
-        
+
     }
 
-    private void GameManager_OnLevelPassed(object sender, GameManager.OnLevelCompletedEventArgs e) {
+    private void GameManager_OnLevelPassed(object sender, GameManager.OnLevelCompletedEventArgs e)
+    {
         LevelCompletedText.text = "Level Passed";
 
         //see how many stars and set teigger accordingly
         Show();
-        
-        switch (e.Stars) {
+
+        switch (e.Stars)
+        {
             case 0:
                 animator.SetTrigger(LevelPassed_0_Trigger);
                 break;
@@ -75,25 +82,29 @@ public class LevelCompleteUI : MonoBehaviour{
         }
     }
 
-    private void GameManager_OnLevelFailed(object sender, System.EventArgs e) {
-        NextLevelButton.interactable = false;
+    private void GameManager_OnLevelFailed(object sender, System.EventArgs e)
+    {
+        //NextLevelButton.interactable = false;    //make this continue button
 
         LevelCompletedText.text = "Level Failed";
-        
+
         Show();
-        
+
         animator.SetTrigger(LevelFailed_Trigger);
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
         GameManager.Instance.OnLevelFailed -= GameManager_OnLevelFailed;
         GameManager.Instance.OnLevelPassed -= GameManager_OnLevelPassed;
     }
 
-    private void Show() {
+    private void Show()
+    {
         gameObject.SetActive(true);
     }
-    private void Hide() {
+    private void Hide()
+    {
         gameObject.SetActive(false);
     }
 
