@@ -69,6 +69,8 @@ public class TutorialMain : MonoBehaviour{
     }
 
     private void Player_OnDeath(object sender, EventArgs e) {
+        SoundManager.Instance.PlayLevelCompleteSound(false);
+
         animator.SetTrigger(AnimatorBadComplete);
 
         StartCoroutine(NextStepDelay(false));
@@ -77,6 +79,8 @@ public class TutorialMain : MonoBehaviour{
 
     private void Step3_OnStepComplete(object sender, EventArgs e) {
         if(StepsDone == 2) {
+
+            SoundManager.Instance.PlayLevelCompleteSound(true);
 
             PlayerPrefs.SetInt(TutorialSteps, 0);
 
@@ -97,6 +101,8 @@ public class TutorialMain : MonoBehaviour{
     private void Step2_OnStepComplete(object sender, EventArgs e) {
         if(StepsDone == 1) {
 
+            SoundManager.Instance.PlayLevelCompleteSound(true);
+
             PlayerPrefs.SetInt(TutorialSteps,2);
             PlayerPrefs.Save();
 
@@ -112,6 +118,8 @@ public class TutorialMain : MonoBehaviour{
         //only save if this step hasnt been done
         
         if (StepsDone == 0) {
+
+            SoundManager.Instance.PlayLevelCompleteSound(true);
 
             PlayerPrefs.SetInt(TutorialSteps, 1);
             PlayerPrefs.Save();
@@ -133,8 +141,6 @@ public class TutorialMain : MonoBehaviour{
     }
 
     private IEnumerator NextStepDelay(bool isLastStep) {
-
-        SoundManager.Instance.PlayLevelCompleteSound(isLastStep);
 
         yield return new WaitForSeconds(1.5f);
 

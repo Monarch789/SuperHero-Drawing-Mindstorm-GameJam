@@ -10753,6 +10753,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MusicManaer
       objectReference: {fileID: 0}
+    - target: {fileID: 7590357551964109468, guid: 76502f88944331140bffc6d8c74fbd24, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 029d6a86c9e64d74a882d6eb456ecc4c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
