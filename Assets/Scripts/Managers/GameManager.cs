@@ -67,8 +67,8 @@ public class GameManager : MonoBehaviour
 
         Player.Instance.OnPlayerPathFollowed += Player_OnPlayerPathFollowed;
 
-        //PauseMenu.Instance.OnPauseButtonClick += PauseMenu_OnPauseButtonClick;
-        //PauseMenu.Instance.OnPlayButtonClick += PauseMenu_OnPlayButtonClick;
+        PauseMenu.Instance.OnPauseButtonClick += PauseMenu_OnPauseButtonClick;
+        PauseMenu.Instance.OnPlayButtonClick += PauseMenu_OnPlayButtonClick;
 
         InputManager.Instance.OnTouchStarted += InputManager_OnTouchStarted;
     }

@@ -112,8 +112,8 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect
         GameManager.Instance.OnUnPause += GameManager_OnUnPause;
         GameManager.Instance.OnLevelDone += GameManager_OnLevelDone;
 
-        //IncreaseBuffsUI.Instance.OnHealthInreased += IncreaseBuffs_OnHealthInreased;
-        //IncreaseBuffsUI.Instance.OnDamageInreased += IncreaseBuffs_OnDamageInreased;
+        IncreaseBuffsUI.Instance.OnHealthInreased += IncreaseBuffs_OnHealthInreased;
+        IncreaseBuffsUI.Instance.OnDamageInreased += IncreaseBuffs_OnDamageInreased;
 
     }
 

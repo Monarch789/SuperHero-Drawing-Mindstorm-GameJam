@@ -16,8 +16,8 @@ public class LevelCompleteUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI LevelCompletedText;
 
     [SerializeField] private Button NextLevelButton;
-    //[SerializeField] private Button RetryButton;
-    //[SerializeField] private Button MenuButton;
+    [SerializeField] private Button RetryButton;
+    [SerializeField] private Button MenuButton;
 
     private Animator animator;
 
@@ -26,18 +26,18 @@ public class LevelCompleteUI : MonoBehaviour
     {
         animator = GetComponent<Animator>();
 
-        //    RetryButton.onClick.AddListener(() =>
-        //    {
-        //        SoundManager.Instance.PlayButtonTapSound();
+        RetryButton.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.PlayButtonTapSound();
 
-        //        Loader.LoadCurrentScene();
-        //    });
-        //    MenuButton.onClick.AddListener(() =>
-        //    {
-        //        SoundManager.Instance.PlayButtonTapSound();
+            Loader.LoadCurrentScene();
+        });
+        MenuButton.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.PlayButtonTapSound();
 
-        //        Loader.LoadScene(Loader.GameScenes.MainMenu);
-        //    });
+            Loader.LoadScene(Loader.GameScenes.MainMenu);
+        });
 
         NextLevelButton.onClick.AddListener(() =>
         {
