@@ -199,6 +199,9 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect
 
             OnPlayerDeath?.Invoke(this, EventArgs.Empty);
             OnDeath?.Invoke(this, EventArgs.Empty);
+
+            OnPlayerPathFollowed?.Invoke(this, EventArgs.Empty);
+
         }
 
     }
@@ -214,6 +217,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect
         if (health <= 0)
         {
             OnPlayerDeath?.Invoke(this, EventArgs.Empty);
+            OnPlayerPathFollowed?.Invoke(this, EventArgs.Empty);
             OnDeath?.Invoke(this, EventArgs.Empty);
         }
     }
