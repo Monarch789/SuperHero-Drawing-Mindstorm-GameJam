@@ -135,7 +135,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect
     }
     private void IncreaseBuffs_OnDamageInreased(object sender, EventArgs e)
     {
-        damage += 3;
+        damage += 1;
 
         OnDamageIncreased?.Invoke(this, EventArgs.Empty);
 
@@ -145,7 +145,7 @@ public class Player : MonoBehaviour, IHasProgress, IHasDeathEffect
 
     private void IncreaseBuffs_OnHealthInreased(object sender, EventArgs e)
     {
-        MaxHealth += 5;
+        MaxHealth += 1;
 
         OnHealthIncreased?.Invoke(this, EventArgs.Empty);
 
