@@ -3125,17 +3125,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 8
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ddb5904072d592042a4a98adab51351e, type: 2}
-  m_sharedMaterial: {fileID: -2740647128324037872, guid: ddb5904072d592042a4a98adab51351e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b25e88a61ce05db45af7ac99fce41928, type: 2}
+  m_sharedMaterial: {fileID: 5503474110164916398, guid: b25e88a61ce05db45af7ac99fce41928, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255609
-  m_fontColor: {r: 0.9772811, g: 1, b: 0, a: 1}
+    rgba: 4287627260
+  m_fontColor: {r: 0.98967814, g: 1, b: 0.5613208, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
