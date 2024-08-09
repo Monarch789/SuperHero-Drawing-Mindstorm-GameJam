@@ -963,8 +963,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 168.3, y: -117.01}
-  m_SizeDelta: {x: 70.076, y: 61.27}
+  m_AnchoredPosition: {x: 172.6534, y: -118.31604}
+  m_SizeDelta: {x: 75.1129, y: 59.7589}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2630253345129135302
 CanvasRenderer:
@@ -1061,7 +1061,7 @@ GameObject:
   - component: {fileID: 1234193112950207500}
   - component: {fileID: 7580351791189933207}
   m_Layer: 5
-  m_Name: LevelSelectButton
+  m_Name: MainMenuButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1084,8 +1084,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -160, y: -112}
-  m_SizeDelta: {x: 70.076, y: 61.27}
+  m_AnchoredPosition: {x: -167.48877, y: -112}
+  m_SizeDelta: {x: 75.6166, y: 61.27}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7317683986411288229
 CanvasRenderer:
@@ -1414,7 +1414,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000091552734, y: -0.000015258789}
+  m_AnchoredPosition: {x: -0.00012207031, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &546076973401785046
@@ -3200,7 +3200,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000091552734, y: -0.000015258789}
+  m_AnchoredPosition: {x: -0.00012207031, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &278041785886709196
