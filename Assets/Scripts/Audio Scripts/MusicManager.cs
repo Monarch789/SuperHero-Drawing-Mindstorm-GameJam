@@ -21,6 +21,8 @@ public class MusicManager : MonoBehaviour {
     }
 
     private void Start() {
+        audioSource.volume = volume;
+
         OptionsUI.OnMusicValueChanged += OptionsUI_OnMusicValueChanged;
     }
 

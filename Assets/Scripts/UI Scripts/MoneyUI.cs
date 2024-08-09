@@ -15,20 +15,20 @@ public class MoneyUI : MonoBehaviour{
 
 
     private void Start() {
-        moneyText.text = "Money:" + Money.Instance.GetMoney();
+        moneyText.text = Money.Instance.GetMoney().ToString();
 
         Money.Instance.OnMoneyIncreased += Money_OnMoneyIncreased;
         Money.Instance.OnMoneyDecreased += Money_OnMoneyDecreased;
     }
 
     private void Money_OnMoneyDecreased(object sender, System.EventArgs e) {
-        moneyText.text = "Money:" + Money.Instance.GetMoney();
+        moneyText.text = Money.Instance.GetMoney().ToString();
 
         animator.SetTrigger("MoneyDecrease");
     }
 
     private void Money_OnMoneyIncreased(object sender, System.EventArgs e) {
-        moneyText.text = "Money:" + Money.Instance.GetMoney();
+        moneyText.text = Money.Instance.GetMoney().ToString();
 
         animator.SetTrigger("MoneyIncrease");
     }
