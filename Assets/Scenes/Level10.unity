@@ -5653,6 +5653,22 @@ PrefabInstance:
       propertyPath: mainCam
       value: 
       objectReference: {fileID: 1256359697}
+    - target: {fileID: 7643201379676420869, guid: b741f77bd5de8864d9e3d45cb415f182, type: 3}
+      propertyPath: OneStarEnemies
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7643201379676420869, guid: b741f77bd5de8864d9e3d45cb415f182, type: 3}
+      propertyPath: TwoStarEnemies
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7643201379676420869, guid: b741f77bd5de8864d9e3d45cb415f182, type: 3}
+      propertyPath: ThreeStarEnemies
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7643201379676420869, guid: b741f77bd5de8864d9e3d45cb415f182, type: 3}
+      propertyPath: CompletionEnemies
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6746,11 +6762,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5022586278843445571, guid: 0e50427c9e0afca4aa36bbaf794d0cda, type: 3}
       propertyPath: speed
-      value: 10
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8489732540621868917, guid: 0e50427c9e0afca4aa36bbaf794d0cda, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 9096402138337013872, guid: 0e50427c9e0afca4aa36bbaf794d0cda, type: 3}
+      propertyPath: AddedDamage
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9096402138337013872, guid: 0e50427c9e0afca4aa36bbaf794d0cda, type: 3}
+      propertyPath: AddedHealth
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9347,7 +9371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec8c0d4069c54804fb739f4a6d17fcf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyData: {fileID: 11400000, guid: 68c2b56277ef03940a6450e983a08d2a, type: 2}
+  enemyData: {fileID: 11400000, guid: b91acbc7ceaf0744eae22713a23fa33d, type: 2}
 --- !u!61 &1576866614
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11197,7 +11221,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.46, y: 0.98}
+  m_Size: {x: 1.33, y: 0.82}
   m_EdgeRadius: 0
 --- !u!212 &1922083283
 SpriteRenderer:
@@ -11265,7 +11289,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3018634309072949971, guid: ba086a7676610cf4f9607af13d0e1755, type: 3}
       propertyPath: MaxPoints
-      value: 350
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 5315175931609473582, guid: ba086a7676610cf4f9607af13d0e1755, type: 3}
       propertyPath: m_Pivot.x
