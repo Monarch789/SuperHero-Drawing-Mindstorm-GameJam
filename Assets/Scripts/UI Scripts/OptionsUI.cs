@@ -11,9 +11,6 @@ public class OptionsUI : MonoBehaviour{
     public static event EventHandler<OnValueChangedEventArgs> OnMusicValueChanged;
     public static event EventHandler<OnValueChangedEventArgs> OnSFXValueChanged;
 
-    public class OnVibrationToggleEventArgs:EventArgs { public bool CanVibrate; }
-    public static event EventHandler<OnVibrationToggleEventArgs> OnVibrationToggle;
-
     [SerializeField] private Slider MusicSlider;
     [SerializeField] private Slider SFXSlider;
     [SerializeField] private Toggle VibrationToggle;
@@ -55,7 +52,10 @@ public class OptionsUI : MonoBehaviour{
         });
 
         VibrationToggle.onValueChanged.AddListener(newVal => {
-            OnVibrationToggle?.Invoke(this, new OnVibrationToggleEventArgs { CanVibrate = newVal });
+            MobileVibrations.Instance.SetBool(newVal);
+
+            PlayerPrefs.SetInt(VibrateString, newVal ? 1: 0 );
+            PlayerPrefs.Save();
         });
 
     }

@@ -19,8 +19,6 @@ public class LevelSelectUI : MonoBehaviour{
     [SerializeField] private Button Level8Button;
     [SerializeField] private Button Level9Button;
     [SerializeField] private Button Level10Button;
-    [SerializeField] private Button Level11Button;
-    [SerializeField] private Button Level12Button;
 
     //string for getting total levels completed
     private const string TotalLevelsCompletedString = "LevelsCompleted";
@@ -46,8 +44,6 @@ public class LevelSelectUI : MonoBehaviour{
         Level8Button.interactable = LevelsCompleted >= 7;
         Level9Button.interactable = LevelsCompleted >= 8;
         Level10Button.interactable = LevelsCompleted >= 9;
-        Level11Button.interactable = LevelsCompleted >= 10;
-        Level12Button.interactable = LevelsCompleted >= 11;
 
         animator = GetComponent<Animator>();
 
@@ -117,17 +113,6 @@ public class LevelSelectUI : MonoBehaviour{
 
             Loader.LoadScene(Loader.GameScenes.Level10);
         });
-        Level11Button.onClick.AddListener(() => {
-            SoundManager.Instance.PlayButtonTapSound();
-
-            Loader.LoadScene(Loader.GameScenes.Level11);
-        });
-        Level12Button.onClick.AddListener(() => {
-            SoundManager.Instance.PlayButtonTapSound();
-
-            Loader.LoadScene(Loader.GameScenes.Level12);
-        });
-
     }
 
     private void Start() {

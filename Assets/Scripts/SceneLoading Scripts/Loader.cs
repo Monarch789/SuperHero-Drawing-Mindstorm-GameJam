@@ -16,8 +16,6 @@ public static class Loader {
         Level8,
         Level9,
         Level10,
-        Level11,
-        Level12,
         LoadingScene,
         TutorialScene,
     }
@@ -75,12 +73,6 @@ public static class Loader {
             LoadScene(GameScenes.Level10);
         }
         else if (currentScene == GameScenes.Level10) {
-            LoadScene(GameScenes.Level11);
-        }
-        else if (currentScene == GameScenes.Level11) {
-            LoadScene(GameScenes.Level12);
-        }
-        else if (currentScene == GameScenes.Level12) {
             LoadScene(GameScenes.MainMenu);
         }
     }

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class LevelsStarsUI : MonoBehaviour{
 
-    private readonly string[] LevelsStarsStrings = { "Level1Stars", "Level2Stars", "Level3Stars", "Level4Stars", "Level5Stars", "Level6Stars", "Level7Stars", "Level8Stars", "Level9Stars", "Level10Stars", "Level11Stars", "Level12Stars" };
+    private readonly string[] LevelsStarsStrings = { "Level1Stars", "Level2Stars", "Level3Stars", "Level4Stars", "Level5Stars", "Level6Stars", "Level7Stars", "Level8Stars", "Level9Stars", "Level10Stars" };
     
     [SerializeField] private Image[] Level1Stars;
     [SerializeField] private Image[] Level2Stars;
@@ -15,8 +15,6 @@ public class LevelsStarsUI : MonoBehaviour{
     [SerializeField] private Image[] Level8Stars;
     [SerializeField] private Image[] Level9Stars;
     [SerializeField] private Image[] Level10Stars;
-    [SerializeField] private Image[] Level11Stars;
-    [SerializeField] private Image[] Level12Stars;
 
     private int Level1StarsInt;
     private int Level2StarsInt;
@@ -28,8 +26,6 @@ public class LevelsStarsUI : MonoBehaviour{
     private int Level8StarsInt;
     private int Level9StarsInt;
     private int Level10StarsInt;
-    private int Level11StarsInt;
-    private int Level12StarsInt;
 
     private void Awake() {
         Level1StarsInt = PlayerPrefs.GetInt(LevelsStarsStrings[0],0);
@@ -42,8 +38,6 @@ public class LevelsStarsUI : MonoBehaviour{
         Level8StarsInt = PlayerPrefs.GetInt(LevelsStarsStrings[7],0);
         Level9StarsInt = PlayerPrefs.GetInt(LevelsStarsStrings[8],0);
         Level10StarsInt = PlayerPrefs.GetInt(LevelsStarsStrings[9],0);
-        Level11StarsInt = PlayerPrefs.GetInt(LevelsStarsStrings[10],0);
-        Level12StarsInt = PlayerPrefs.GetInt(LevelsStarsStrings[11],0);
     }
 
     private void Start() {
@@ -75,12 +69,6 @@ public class LevelsStarsUI : MonoBehaviour{
             star.gameObject.SetActive(false);
         }
         foreach (Image star in Level10Stars) {
-            star.gameObject.SetActive(false);
-        }
-        foreach (Image star in Level11Stars) {
-            star.gameObject.SetActive(false);
-        }
-        foreach (Image star in Level12Stars) {
             star.gameObject.SetActive(false);
         }
 
@@ -115,12 +103,6 @@ public class LevelsStarsUI : MonoBehaviour{
         }
         for (int i = 0; i < Level10StarsInt; i++) {
             Level10Stars[i].gameObject.SetActive(true);
-        }
-        for (int i = 0; i < Level11StarsInt; i++) {
-            Level11Stars[i].gameObject.SetActive(true);
-        }
-        for (int i = 0; i < Level12StarsInt; i++) {
-            Level12Stars[i].gameObject.SetActive(true);
         }
     }
 

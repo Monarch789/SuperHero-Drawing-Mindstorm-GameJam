@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MobileVibrations : MonoBehaviour {
@@ -20,15 +21,9 @@ public class MobileVibrations : MonoBehaviour {
         CanVibrate = PlayerPrefs.GetInt(VibrateString,1) == 1;
     }
 
-    private void Start() {
-        OptionsUI.OnVibrationToggle += OptionsUI_OnVibrationToggle;
-    }
+    public void SetBool(bool newVal) {
+        CanVibrate = newVal;
 
-    private void OptionsUI_OnVibrationToggle(object sender, OptionsUI.OnVibrationToggleEventArgs e) {
-        CanVibrate = e.CanVibrate;
-    }
-
-    private void OnDestroy() {
-        OptionsUI.OnVibrationToggle -= OptionsUI_OnVibrationToggle;
+        Debug.Log("Mobile Vibrations:" + CanVibrate);
     }
 }

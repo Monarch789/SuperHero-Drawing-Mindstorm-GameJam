@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     private int LevelsCompleted;
 
     //stars of all levels
-    private readonly string[] LevelsStarsStrings = { "Level1Stars", "Level2Stars", "Level3Stars", "Level4Stars", "Level5Stars", "Level6Stars", "Level7Stars", "Level8Stars", "Level9Stars", "Level10Stars", "Level11Stars", "Level12Stars" };
+    private readonly string[] LevelsStarsStrings = { "Level1Stars", "Level2Stars", "Level3Stars", "Level4Stars", "Level5Stars", "Level6Stars", "Level7Stars", "Level8Stars", "Level9Stars", "Level10Stars"};
 
     //events of Pause and UnPause to send other scripts to not do stuff
     public event EventHandler OnPause;
