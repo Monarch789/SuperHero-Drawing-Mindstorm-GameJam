@@ -5684,6 +5684,10 @@ PrefabInstance:
       propertyPath: MaxPoints
       value: 220
       objectReference: {fileID: 0}
+    - target: {fileID: 3018634309072949971, guid: ba086a7676610cf4f9607af13d0e1755, type: 3}
+      propertyPath: MaxPoints
+      value: 220
+      objectReference: {fileID: 0}
     - target: {fileID: 5295313605887072292, guid: ba086a7676610cf4f9607af13d0e1755, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -0.00012207031
