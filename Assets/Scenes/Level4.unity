@@ -819,7 +819,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9096402138337013872, guid: 0e50427c9e0afca4aa36bbaf794d0cda, type: 3}
       propertyPath: AddedDamage
-      value: 7
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9096402138337013872, guid: 0e50427c9e0afca4aa36bbaf794d0cda, type: 3}
       propertyPath: AddedHealth
@@ -1813,7 +1813,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7643201379676420869, guid: b741f77bd5de8864d9e3d45cb415f182, type: 3}
       propertyPath: CompletionEnemies
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
