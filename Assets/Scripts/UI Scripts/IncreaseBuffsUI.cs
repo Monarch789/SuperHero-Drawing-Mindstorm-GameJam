@@ -66,13 +66,7 @@ public class IncreaseBuffsUI : MonoBehaviour{
 
         Money.Instance.OnMoneyDecreased += Money_OnMoneyDecreased;
 
-        GameManager.Instance.OnGameStarted += GameManager_OnGameStarted;
     }
-
-    private void GameManager_OnGameStarted(object sender, EventArgs e) {
-        Hide();
-    }
-
     private void Money_OnMoneyDecreased(object sender, EventArgs e) {
         IncreaseHealthButton.interactable = Money.Instance.GetMoney() >= HealthPrice;
         IncreaseDamageButton.interactable = Money.Instance.GetMoney() >= DamagePrice;
@@ -86,7 +80,5 @@ public class IncreaseBuffsUI : MonoBehaviour{
 
     private void OnDestroy() {
         Money.Instance.OnMoneyDecreased -= Money_OnMoneyDecreased;
-
-        GameManager.Instance.OnGameStarted -= GameManager_OnGameStarted;
     }
 }

@@ -19,6 +19,12 @@ public class MoneyUI : MonoBehaviour{
 
         Money.Instance.OnMoneyIncreased += Money_OnMoneyIncreased;
         Money.Instance.OnMoneyDecreased += Money_OnMoneyDecreased;
+
+        GameManager.Instance.OnLevelDone += GameManager_OnLevelDone;
+    }
+
+    private void GameManager_OnLevelDone(object sender, System.EventArgs e) {
+        gameObject.SetActive(false);
     }
 
     private void Money_OnMoneyDecreased(object sender, System.EventArgs e) {
@@ -33,6 +39,12 @@ public class MoneyUI : MonoBehaviour{
         animator.SetTrigger("MoneyIncrease");
     }
 
+    private void OnDestroy() {
+        GameManager.Instance.OnLevelDone -= GameManager_OnLevelDone;
+
+        Money.Instance.OnMoneyIncreased -= Money_OnMoneyIncreased;
+        Money.Instance.OnMoneyDecreased -= Money_OnMoneyDecreased;
+    }
 
 
 }
