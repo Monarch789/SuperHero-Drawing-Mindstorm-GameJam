@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: 20
   Damage: 8
-  moneyIncrease: 2
+  moneyIncrease: 4
