@@ -597,7 +597,6 @@ MonoBehaviour:
   PlayButton: {fileID: 1668424593}
   OptionsButton: {fileID: 1797682977}
   QuitButton: {fileID: 507927390}
-  PlayerPrefDeleteButton: {fileID: 0}
 --- !u!1 &96115041
 GameObject:
   m_ObjectHideFlags: 0
@@ -3784,14 +3783,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.67315763, g: 0.6934561, b: 0.7207546, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2f081d826e31baa4f9655304bbbe38b2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c4b50eeb7cb039640a001b8f0bf839e8, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
