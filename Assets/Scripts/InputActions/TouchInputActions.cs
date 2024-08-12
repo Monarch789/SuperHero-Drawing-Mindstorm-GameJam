@@ -44,6 +44,15 @@ public partial class @TouchInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""BackButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""60d84b46-6a8b-4d0c-aad6-8152f4802702"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -90,6 +99,17 @@ public partial class @TouchInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""TouchPosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""60bcbed0-c106-4948-ad52-9e9eff68bc3c"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BackButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -100,6 +120,7 @@ public partial class @TouchInputActions: IInputActionCollection2, IDisposable
         m_Touch = asset.FindActionMap("Touch", throwIfNotFound: true);
         m_Touch_TouchContact = m_Touch.FindAction("TouchContact", throwIfNotFound: true);
         m_Touch_TouchPosition = m_Touch.FindAction("TouchPosition", throwIfNotFound: true);
+        m_Touch_BackButton = m_Touch.FindAction("BackButton", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -163,12 +184,14 @@ public partial class @TouchInputActions: IInputActionCollection2, IDisposable
     private List<ITouchActions> m_TouchActionsCallbackInterfaces = new List<ITouchActions>();
     private readonly InputAction m_Touch_TouchContact;
     private readonly InputAction m_Touch_TouchPosition;
+    private readonly InputAction m_Touch_BackButton;
     public struct TouchActions
     {
         private @TouchInputActions m_Wrapper;
         public TouchActions(@TouchInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @TouchContact => m_Wrapper.m_Touch_TouchContact;
         public InputAction @TouchPosition => m_Wrapper.m_Touch_TouchPosition;
+        public InputAction @BackButton => m_Wrapper.m_Touch_BackButton;
         public InputActionMap Get() { return m_Wrapper.m_Touch; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -184,6 +207,9 @@ public partial class @TouchInputActions: IInputActionCollection2, IDisposable
             @TouchPosition.started += instance.OnTouchPosition;
             @TouchPosition.performed += instance.OnTouchPosition;
             @TouchPosition.canceled += instance.OnTouchPosition;
+            @BackButton.started += instance.OnBackButton;
+            @BackButton.performed += instance.OnBackButton;
+            @BackButton.canceled += instance.OnBackButton;
         }
 
         private void UnregisterCallbacks(ITouchActions instance)
@@ -194,6 +220,9 @@ public partial class @TouchInputActions: IInputActionCollection2, IDisposable
             @TouchPosition.started -= instance.OnTouchPosition;
             @TouchPosition.performed -= instance.OnTouchPosition;
             @TouchPosition.canceled -= instance.OnTouchPosition;
+            @BackButton.started -= instance.OnBackButton;
+            @BackButton.performed -= instance.OnBackButton;
+            @BackButton.canceled -= instance.OnBackButton;
         }
 
         public void RemoveCallbacks(ITouchActions instance)
@@ -215,5 +244,6 @@ public partial class @TouchInputActions: IInputActionCollection2, IDisposable
     {
         void OnTouchContact(InputAction.CallbackContext context);
         void OnTouchPosition(InputAction.CallbackContext context);
+        void OnBackButton(InputAction.CallbackContext context);
     }
 }

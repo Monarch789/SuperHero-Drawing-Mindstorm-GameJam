@@ -11,6 +11,7 @@ public class InputManager : MonoBehaviour {
     //events to send the player about touch contact and touch ended
     public event EventHandler OnTouchStarted;
     public event EventHandler OnTouchEnded;
+    public event EventHandler OnEscaePressed;
 
     private void Awake() {
         if (Instance == null)
@@ -26,6 +27,11 @@ public class InputManager : MonoBehaviour {
 
         inputActions.Touch.TouchContact.started += TouchContact_started;
         inputActions.Touch.TouchContact.canceled += TouchContact_canceled;
+        inputActions.Touch.BackButton.performed += BackButton_performed;
+    }
+
+    private void BackButton_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+        OnEscaePressed?.Invoke(this, EventArgs.Empty);
     }
 
     private void TouchContact_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
@@ -41,6 +47,8 @@ public class InputManager : MonoBehaviour {
 
         inputActions.Touch.TouchContact.started -= TouchContact_started;
         inputActions.Touch.TouchContact.canceled -= TouchContact_canceled;
+
+        inputActions.Touch.BackButton.performed += BackButton_performed;
 
         inputActions.Dispose();
     }

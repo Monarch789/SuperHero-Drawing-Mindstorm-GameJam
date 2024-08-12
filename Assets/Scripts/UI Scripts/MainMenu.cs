@@ -14,7 +14,6 @@ public class MainMenu : MonoBehaviour{
     [SerializeField] private Button PlayButton;
     [SerializeField] private Button OptionsButton;
     [SerializeField] private Button QuitButton;
-    [SerializeField] private Button PlayerPrefDeleteButton;
 
     private void Awake() {
         Instance = this;
@@ -36,12 +35,6 @@ public class MainMenu : MonoBehaviour{
 
         QuitButton.onClick.AddListener(() => {
             SoundManager.Instance.PlayButtonTapSound();
-
-            Application.Quit();
-        });
-
-        PlayerPrefDeleteButton.onClick.AddListener(() => {
-            PlayerPrefs.DeleteAll();
 
             Application.Quit();
         });

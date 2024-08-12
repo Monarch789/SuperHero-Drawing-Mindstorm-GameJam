@@ -5,7 +5,6 @@ public static class Loader {
 
     public enum GameScenes {
         MainMenu,
-        SampleScene,
         Level1,
         Level2,
         Level3,
